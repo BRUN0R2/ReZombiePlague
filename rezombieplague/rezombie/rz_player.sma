@@ -197,8 +197,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 	}
 }
 
-@MSG_ScreenFade(id, dest, player)
-{
+@MSG_ScreenFade(id, dest, player) {
 	return PLUGIN_HANDLED;
 }
 
@@ -218,7 +217,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 
 		enabled = !enabled;
 
-		set_member(id, m_flLastCommandTime, time + 0.3, CMD_NIGHTVISION);
+		set_member(id, m_flLastCommandTime, time + 0.15, CMD_NIGHTVISION);
 		rz_nightvisions_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), enabled);
 
 		if (is_user_alive(id))
@@ -376,8 +375,8 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 
 	if (get_member(id, m_iNumSpawns) == 1)
 	{
-		client_print_color(id, print_team_default, "^1• • • ^4Re Zombie Plague %s.%s ^1• • •", REZP_VERSION_MAJOR, REZP_VERSION_MINOR);
-		rz_print_chat(id, print_team_default, "%L", LANG_PLAYER, "RZ_PRESS_GAME_MENU");
+		rz_print_chat(id, print_team_grey, "^3• • • ^4Re Zombie Plague %s.%s ^3• • •", REZP_VERSION_MAJOR, REZP_VERSION_MINOR);
+		rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_PRESS_GAME_MENU");
 	}
 }
 
@@ -462,20 +461,20 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 		set_member(id, m_flVelocityModifier, Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_VELMOD));
 }
 
-@CBasePlayer_Killed_Post(id, attacker, gib)
+@CBasePlayer_Killed_Post(victim, attacker, gib)
 {
-	if (rg_is_player_can_respawn(id))
+	if (rg_is_player_can_respawn(victim))
 	{
 		new gameMode = rz_gamemodes_get(RZ_GAMEMODES_CURRENT);
 
 		if (gameMode && rz_gamemode_get(gameMode, RZ_GAMEMODE_DEATHMATCH))
 		{
-			set_member(id, m_flRespawnPending, get_gametime() + float(RESPAWN_TIME));
+			set_member(victim, m_flRespawnPending, get_gametime() + float(RESPAWN_TIME));
 
-			message_begin(MSG_ONE, gmsgBarTime, _, id);
+			message_begin(MSG_ONE, gmsgBarTime, _, victim);
 			SendBarTime(RESPAWN_TIME);
 			
-			client_print(id, print_center, "Time until Respawn: %d sec", RESPAWN_TIME);
+			client_print(victim, print_center, "%L", LANG_PLAYER, "RZ_NOTICE_RESPAWN_TIME", RESPAWN_TIME);
 		}
 	}
 }
