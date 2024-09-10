@@ -1,0 +1,6 @@
+[bp]
+RZ_AWARD_PLAYER_KILLED = Prêmio por neutralizar um inimigo.
+RZ_AWARD_PLAYER_INFECT = Prêmio por infectar um inimigo.
+RZ_AWARD_TEAM_WIN = Prêmio da equipe.
+RZ_AWARD_TEAM_LOSER = Prêmio por perder.
+RZ_AWARD_TEAM_DRAW = Prêmio da equipe.

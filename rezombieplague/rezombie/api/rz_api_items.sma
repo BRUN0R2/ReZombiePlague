@@ -71,7 +71,6 @@ public plugin_init()
 	ExecuteForward(gForwards[Fw_Items_Select_Post], gForwards[Fw_Return], id, item);
 	
 	rg_add_account(id, -cost);
-	rz_print_chat(0, id, "%l", "RZ_ITEMS_PLAYER_BOUGHT", id, name);
 	return PLUGIN_HANDLED;
 }
 

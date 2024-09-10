@@ -1,0 +1,15 @@
+[bp]
+RZ_ITEMS_INSUFFICIENT_FUNDS = Fundos insuficientes para comprar! ^3%L^1 custo: ^4%L
+RZ_ITEMS_TITLE = Itens extras
+RZ_ITEM_MADNESS = Fúria
+RZ_ITEM_ANTIDOTE = Antídoto
+RZ_ITEM_NIGHTVISION = Visão noturna
+RZ_ITEM_ARMOR = Colete
+RZ_ITEM_WPN_AWP = AWP Magnum Sniper
+RZ_ITEM_WPN_M249 = M249 Para Machinegun
+RZ_ITEM_WPN_SG550 = SG550 Auto-Sniper
+RZ_ITEM_WPN_G3SG1 = G3SG1 Auto-Sniper
+RZ_ITEM_NADE_INFECTION = Bomba de infecção
+RZ_ITEM_NADE_FIRE = Granada de fogo
+RZ_ITEM_NADE_FROST = Granada de gelo
+RZ_ITEM_NADE_FLARE = Granada de luz

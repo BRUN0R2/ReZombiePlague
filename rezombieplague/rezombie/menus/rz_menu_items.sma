@@ -187,9 +187,7 @@ Items_Show(id, page = 0)
 	}
 
 	rg_add_account(id, -cost);
-
 	rz_items_player_give(id, item);
-	rz_print_chat(0, id, "%l", "RZ_ITEMS_PLAYER_BOUGHT", id, name);
 	
 	return PLUGIN_HANDLED;
 }
