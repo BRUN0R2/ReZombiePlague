@@ -1,147 +1,119 @@
 #pragma semicolon 1
 
 #include <amxmodx>
+#include <cstrike>
 #include <reapi>
 #include <rezp_inc/rezp_main>
 
-const GAMEMODE_LAUNCH_MINALIVES = 2;
-
 new Float:rz_gamemode_notice_hud_pos[2];
+new Array:gamemodesArray;
 
-public plugin_precache()
-{
-	register_plugin("[ReZP] Game Modes", REZP_VERSION_STR, "fl0wer");
+public plugin_precache() {
+    register_plugin("[ReZP] Game Modes", REZP_VERSION_STR, "fl0wer");
 }
 
-public plugin_init()
-{
-	RegisterHookChain(RG_CSGameRules_RestartRound, "@CSGameRules_RestartRound_Pre", false);
-	RegisterHookChain(RG_CSGameRules_OnRoundFreezeEnd, "@CSGameRules_OnRoundFreezeEnd_Pre", false);
+public plugin_init() {
+    RegisterHookChain(RG_CSGameRules_RestartRound, "@CSGameRules_RestartRound_Pre", false);
+    RegisterHookChain(RG_CSGameRules_OnRoundFreezeEnd, "@CSGameRules_OnRoundFreezeEnd_Pre", false);
 
-	bind_pcvar_float(create_cvar("rz_gamemode_notice_hud_x", "-1.0", _, "", true, -1.0, true, 1.0), rz_gamemode_notice_hud_pos[0]);
-	bind_pcvar_float(create_cvar("rz_gamemode_notice_hud_y", "0.17", _, "", true, -1.0, true, 1.0), rz_gamemode_notice_hud_pos[1]);
+    bind_pcvar_float(create_cvar("rz_gamemode_notice_hud_x", "-1.0", _, "", true, -1.0, true, 1.0), rz_gamemode_notice_hud_pos[0]);
+    bind_pcvar_float(create_cvar("rz_gamemode_notice_hud_y", "0.17", _, "", true, -1.0, true, 1.0), rz_gamemode_notice_hud_pos[1]);
 
-	rz_load_langs("gamemodes");
+    // Initialize gamemodesArray
+    gamemodesArray = ArrayCreate(1, 0);
+    loadGamemodes();
+
+    rz_load_langs("gamemodes");
 }
 
-public plugin_cfg()
-{
-	if (!rz_gamemodes_size())
-		rz_sys_error("No loaded game modes");
+public plugin_cfg() {
+    if (!rz_gamemodes_size()) {
+        rz_sys_error("No loaded game modes");
+    }
 }
 
-public rz_gamemodes_change_pre(gameMode, alivesNum, bool:force)
-{
-	//if (alivesNum < GAMEMODE_LAUNCH_MINALIVES)
-	//	return RZ_SUPERCEDE;
-
-	server_print("gamemode %d %d %d", gameMode, alivesNum, force);
-	if (alivesNum < rz_gamemode_get(gameMode, RZ_GAMEMODE_MIN_ALIVES))
-		return RZ_SUPERCEDE;
-
-	if (!force)
-	{
-		if (rz_gamemodes_get(RZ_GAMEMODES_LAST) == gameMode)
-			return RZ_SUPERCEDE;
-
-		new chance = rz_gamemode_get(gameMode, RZ_GAMEMODE_CHANCE);
-
-		if (chance)
-		{
-			if (random_num(1, chance) != 1)
-				return RZ_SUPERCEDE;
-		}
-	}
-
-	return RZ_CONTINUE;
+public loadGamemodes() {
+    new totalMods = rz_gamemodes_size();
+    for (new i = 0; i < totalMods; i++) {
+        new mode = i + rz_gamemodes_start();
+        ArrayPushCell(gamemodesArray, mode);
+    }
 }
 
-public rz_gamemodes_change_post(gameMode, Array:alivesArray)
-{
-	server_print("gamemode started");
-	rz_gamemodes_set(RZ_GAMEMODES_CURRENT, gameMode);
-	rz_gamemodes_set(RZ_GAMEMODES_LAST, gameMode);
+public rz_gamemodes_change_post(gameMode) {
+    rz_gamemodes_set(RZ_GAMEMODES_CURRENT, gameMode);
+    rz_gamemodes_set(RZ_GAMEMODES_LAST, gameMode);
 
-	new roundTime = rz_gamemode_get(gameMode, RZ_GAMEMODE_ROUND_TIME);
-	new hudColor[3];
-	new notice[RZ_MAX_LANGKEY_LENGTH];
+    new roundTime = rz_gamemode_get(gameMode, RZ_GAMEMODE_ROUND_TIME);
+    new hudColor[3], notice[RZ_MAX_LANGKEY_LENGTH];
 
-	rz_gamemode_get(gameMode, RZ_GAMEMODE_HUD_COLOR, hudColor);
-	rz_gamemode_get(gameMode, RZ_GAMEMODE_NOTICE, notice, charsmax(notice));
+    rz_gamemode_get(gameMode, RZ_GAMEMODE_HUD_COLOR, hudColor);
+    rz_gamemode_get(gameMode, RZ_GAMEMODE_NOTICE, notice, charsmax(notice));
 
-	set_dhudmessage(hudColor[0], hudColor[1], hudColor[2],
-		rz_gamemode_notice_hud_pos[0], rz_gamemode_notice_hud_pos[1],
-		0, 0.0, 5.0, 1.0, 1.0);
-	show_dhudmessage(0, "%l", "RZ_GAMEMODE_FMT", LANG_PLAYER, notice);
+    set_dhudmessage(
+        hudColor[0],
+        hudColor[1],
+        hudColor[2],
+        rz_gamemode_notice_hud_pos[0], 
+        rz_gamemode_notice_hud_pos[1],
+        0, 0.0, 5.0, 1.0, 1.0
+    );
 
-	if (roundTime)
-		set_member_game(m_iRoundTime, roundTime);
+    show_dhudmessage(0, "~ %L ~", LANG_PLAYER, notice);
+
+    if (roundTime) {
+        set_member_game(m_iRoundTime, roundTime);
+    }
 }
 
-@CSGameRules_RestartRound_Pre()
-{
-	rz_main_lighting_global_reset();
-	rz_main_lighting_nvg_reset();
+@CSGameRules_RestartRound_Pre() {
+    rz_main_lighting_global_reset();
+    rz_main_lighting_nvg_reset();
 
-	rz_gamemodes_set(RZ_GAMEMODES_CURRENT, 0);
-	rz_gamemodes_set(RZ_GAMEMODES_FORCE, 0);
+    rz_gamemodes_set(RZ_GAMEMODES_CURRENT, 0);
 
-	rz_class_override_default(TEAM_TERRORIST, 0);
-	rz_class_override_default(TEAM_CT, 0);
+    rz_class_override_default(TEAM_TERRORIST, 0);
+    rz_class_override_default(TEAM_CT, 0);
 }
 
-@CSGameRules_OnRoundFreezeEnd_Pre()
-{
-	if (!get_member_game(m_bGameStarted))
-		return;
+new lastChanceMod = 0;
 
-	new alivesNum;
+@CSGameRules_OnRoundFreezeEnd_Pre() {
+    new numAliveTR;
+    rg_initialize_player_counts(numAliveTR);
+    if (!get_member_game(m_bGameStarted) || numAliveTR) {
+        return;
+    }
 
-	for (new i = 1; i <= MaxClients; i++)
-	{
-		if (!is_user_alive(i))
-			continue;
+    new modSortIndex = xRandomMod();
+    new alivesNum = rz_game_get_alivesnum();
 
-		alivesNum++;
-	}
+    if (xUserChance(lastChanceMod) && alivesNum >= rz_gamemode_get(modSortIndex, RZ_GAMEMODE_MIN_ALIVES)) {}
+    else modSortIndex = rz_gamemodes_get(RZ_GAMEMODES_DEFAULT);
 
-	if (alivesNum < GAMEMODE_LAUNCH_MINALIVES)
-		return;
+    rz_gamemodes_change(modSortIndex);
+}
 
-	new gameMode = rz_gamemodes_get(RZ_GAMEMODES_FORCE);
+public xRandomMod() {
+    new chance, modSortIndex;
+    new Array:modsChancesArray = ArrayCreate(1, 0);
 
-	if (gameMode)
-	{
-		if (rz_gamemodes_get_status(gameMode, true) == RZ_CONTINUE)
-			gameMode = 0;
-	}
+    for (new i = 0; i < ArraySize(gamemodesArray); i++) {
+        chance = rz_gamemode_get(ArrayGetCell(gamemodesArray, i), RZ_GAMEMODE_CHANCE);
+        ArrayPushCell(modsChancesArray, chance);
+    }
 
-	if (!gameMode)
-	{
-		new start = rz_gamemodes_start();
-		new end = start + rz_gamemodes_size();
-		//new Array:gameModes = ArrayCreate(1, 0);
+    new chanceSortIndex = random(ArraySize(modsChancesArray));
+    new chanceRandom = ArrayGetCell(modsChancesArray, chanceSortIndex);
+    modSortIndex = ArrayGetCell(gamemodesArray, chanceSortIndex);
 
-		for (new i = start; i < end; i++)
-		{
-			if (rz_gamemodes_get_status(i) != RZ_CONTINUE)
-				continue;
+    lastChanceMod = chanceRandom;
 
-			//ArrayPushCell(gameModes, gameMode);
-			gameMode = i;
-			break;
-		}
+    ArrayDestroy(modsChancesArray);
 
-		/*gameModesNum = ArraySize(gameModes);
+    return modSortIndex;
+}
 
-		if (gameModesNum)
-			mode = ArrayGetCell(gameModes, random_num(0, gameModesNum - 1));
-
-		ArrayDestroy(gameModes);*/
-	}
-
-	if (!gameMode)
-		gameMode = rz_gamemodes_get(RZ_GAMEMODES_DEFAULT);
-	
-	rz_gamemodes_change(gameMode);
+stock xUserChance(chance) {
+    return random(100) < chance;
 }
