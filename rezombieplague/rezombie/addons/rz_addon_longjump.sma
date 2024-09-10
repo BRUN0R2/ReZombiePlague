@@ -9,7 +9,6 @@
 #include <rezp_inc/util_tempentities>
 
 new const LONGJUMP_ICON_SPRITE[] = "item_longjump";
-new const LONGJUMP_ACTIVATE_SOUND[] = "zombie_plague/boss_shokwave.wav";
 
 enum LongJumpData
 {
@@ -34,8 +33,6 @@ new g_iModelIndex_Trail;
 public plugin_precache()
 {
 	register_plugin("[ReZP] Addon: Long Jump", REZP_VERSION_STR, "fl0wer");
-
-	precache_sound(LONGJUMP_ACTIVATE_SOUND);
 
 	g_iModelIndex_Trail = precache_model("sprites/laserbeam.spr");
 }
@@ -148,8 +145,6 @@ ChangeLongJump(id, bool:enabled, Float:force = 0.0, Float:height = 0.0, Float:co
 	}
 
 	gLongJump[id][LongJump_KillBeamTime] = time + 1.0;
-
-	rh_emit_sound2(id, 0, CHAN_ITEM, LONGJUMP_ACTIVATE_SOUND, VOL_NORM, ATTN_NORM);
 	
 	message_begin_f(MSG_ALL, SVC_TEMPENTITY);
 	TE_BeamFollow(id, g_iModelIndex_Trail, 10, 10, { 255, 255, 0 }, 200);

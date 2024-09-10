@@ -29,19 +29,19 @@ public plugin_precache()
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_SPEED, 270.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_FOOTSTEPS, false);
 
-	rz_playermodel_add(model, "zombie_source", false);
+	rz_playermodel_add(model, "rz_source", .defaultHitboxes = true);
 
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "zombie_plague/zombie_pain1.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "zombie_plague/zombie_pain2.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "zombie_plague/zombie_pain3.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "zombie_plague/zombie_pain4.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "zombie_plague/zombie_pain5.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/zombie_pain1.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/zombie_pain2.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/zombie_pain3.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/zombie_pain4.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/zombie_pain5.wav");
 
-	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "zombie_plague/zombie_die1.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "zombie_plague/zombie_die2.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "zombie_plague/zombie_die3.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "zombie_plague/zombie_die4.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "zombie_plague/zombie_die5.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie_die1.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie_die2.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie_die3.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie_die4.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie_die5.wav");
 
 	rz_knife_sound_add(knife, RZ_KNIFE_SOUND_HIT, "weapons/knife_hit1.wav");
 	rz_knife_sound_add(knife, RZ_KNIFE_SOUND_HIT, "weapons/knife_hit2.wav");
@@ -56,7 +56,7 @@ public plugin_precache()
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 0, 150, 0 });
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 63);
 
-	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/zombie_plague/v_knife_zombie.mdl");
+	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
 	rz_knife_set(knife, RZ_KNIFE_PLAYER_MODEL, "hide");
 }
 

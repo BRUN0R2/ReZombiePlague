@@ -26,17 +26,17 @@ public plugin_precache()
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_SPEED, 265.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_FOOTSTEPS, false);
 
-	rz_playermodel_add(model, "zombie_source", false);
+	rz_playermodel_add(model, "rz_source", .defaultHitboxes = true);
 
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "zombie_plague/nemesis_pain1.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "zombie_plague/nemesis_pain2.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "zombie_plague/nemesis_pain3.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/nemesis_pain1.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/nemesis_pain2.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/nemesis_pain3.wav");
 	
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 150, 0, 0 });
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 63);
 
-	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/zombie_plague/v_knife_zombie.mdl");
+	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
 	rz_knife_set(knife, RZ_KNIFE_PLAYER_MODEL, "hide");
 }
 

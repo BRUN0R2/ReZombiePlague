@@ -8,7 +8,7 @@
 #include <rezp_inc/util_messages>
 #include <rezp_inc/util_tempentities>
 
-new const FROST_VIEW_MODEL[] = "models/zombie_plague/v_grenade_frost.mdl";
+new const FROST_VIEW_MODEL[] = "models/rezombie/weapons/grenades/frost_v.mdl";
 new const FROST_EXPLODE_SOUND[]= "warcraft3/frostnova.wav";
 new const FROST_FREEZE_SOUND[] = "warcraft3/impalehit.wav";
 new const FROST_BREAK_SOUND[] = "warcraft3/impalelaunch1.wav";

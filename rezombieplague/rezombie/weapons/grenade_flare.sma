@@ -5,7 +5,7 @@
 #include <rezp_inc/rezp_main>
 #include <rezp_inc/util_tempentities>
 
-new const FLARE_VIEW_MODEL[] = "models/zombie_plague/v_grenade_flare.mdl";
+new const FLARE_VIEW_MODEL[] = "models/rezombie/weapons/grenades/flare_v.mdl";
 new const FLARE_EXPLODE_SOUND[] = "items/nvg_on.wav";
 
 new g_iModelIndex_LaserBeam;

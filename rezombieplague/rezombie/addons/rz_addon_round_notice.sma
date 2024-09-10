@@ -8,7 +8,7 @@ new const BLOCKED_TEXTMSG[][] = { "#Cstrike_Tutor_Round_Over", "#Round_Draw", "#
 new const BLOCKED_SENDAUDIO[][] = { "%!MRAD_rounddraw", "%!MRAD_terwin", "%!MRAD_ctwin" };
 
 new const SOUND_WIN_ZOMBIES[][] = { "ambience/the_horror1.wav", "ambience/the_horror3.wav", "ambience/the_horror4.wav" };
-new const SOUND_WIN_HUMANS[][] = { "zombie_plague/win_humans1.wav", "zombie_plague/win_humans2.wav" };
+new const SOUND_WIN_HUMANS[][] = { "rezombie/win_humans1.wav", "rezombie/win_humans2.wav" };
 new const SOUND_WIN_NO_ONE[][] = { "ambience/3dmstart.wav" };
 
 new Trie:g_tBlockedTextMsg;

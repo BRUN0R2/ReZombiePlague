@@ -7,12 +7,12 @@
 #include <rezp_inc/rezp_main>
 #include <rezp_inc/util_tempentities>
 
-new const FIRE_VIEW_MODEL[] = "models/zombie_plague/v_grenade_fire.mdl";
-new const FIRE_EXPLODE_SOUND[] = "zombie_plague/grenade_explode.wav";
-new const FIRE_BURN_SOUND[][] = { "zombie_plague/zombie_burn3.wav" , "zombie_plague/zombie_burn4.wav" , "zombie_plague/zombie_burn5.wav" , "zombie_plague/zombie_burn6.wav" , "zombie_plague/zombie_burn7.wav" };
+new const FIRE_VIEW_MODEL[] = "models/rezombie/weapons/grenades/fire_v.mdl";
+new const FIRE_EXPLODE_SOUND[] = "rezombie/grenade_explode.wav";
+new const FIRE_BURN_SOUND[][] = { "rezombie/zombie_burn3.wav" , "rezombie/zombie_burn4.wav" , "rezombie/zombie_burn5.wav" , "rezombie/zombie_burn6.wav" , "rezombie/zombie_burn7.wav" };
 
-new const FLAME_SPRITE[] = "sprites/flame.spr";
-new const FLAME_CLASSNAME[] = "ent_flame";
+new const FLAME_SPRITE[] = "sprites/rezombie/weapons/grenades/flame.spr";
+new const FLAME_CLASSNAME[] = "ent_flame2";
 
 new g_iFlameEntity[MAX_PLAYERS + 1];
 new bool:g_bFireDamage;

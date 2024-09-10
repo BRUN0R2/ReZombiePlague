@@ -26,13 +26,13 @@ public plugin_precache()
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_SPEED, 600.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_BLOOD_COLOR, 195);
 
-	rz_playermodel_add(model, "zombie_source");
+	rz_playermodel_add(model, "rz_source", .defaultHitboxes = true);
 
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 150, 150, 0 });
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 63);
 
-	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/zombie_plague/v_knife_zombie.mdl");
+	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
 	rz_knife_set(knife, RZ_KNIFE_PLAYER_MODEL, "hide");
 	rz_knife_set(knife, RZ_KNIFE_STAB_BASE_DAMAGE, 200.0);
 	rz_knife_set(knife, RZ_KNIFE_SWING_BASE_DAMAGE, 200.0);

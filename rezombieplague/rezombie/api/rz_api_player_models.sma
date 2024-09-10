@@ -112,10 +112,12 @@ public plugin_natives()
 	get_string(arg_model_name, header[PlayerModel_ModelName], charsmax(header[PlayerModel_ModelName]));
 	header[PlayerModel_Body] = get_param(arg_body);
 
-	if (get_param(arg_default_hitboxes))
+	if (get_param(arg_default_hitboxes)) {
 		header[PlayerModel_ModelIndex] = precache_model("models/player.mdl");
-	else
+		precache_model(fmt("models/player/%s/%s.mdl", header[PlayerModel_ModelName], header[PlayerModel_ModelName]));
+	} else {
 		header[PlayerModel_ModelIndex] = precache_model(fmt("models/player/%s/%s.mdl", header[PlayerModel_ModelName], header[PlayerModel_ModelName]));
+	}
 
 	ArrayPushArray(gLocalData[PlayerModel_Models], header);
 	return true;
