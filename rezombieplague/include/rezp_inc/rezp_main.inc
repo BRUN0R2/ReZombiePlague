@@ -8,10 +8,10 @@
  * Constants.
  */
 const RZ_MAX_COLOR_LENGTH = 3;
-const RZ_MAX_HANDLE_LENGTH = 32;
-const RZ_MAX_LANGKEY_LENGTH = 32;
-const RZ_MAX_REFERENCE_LENGTH = 32;
-const RZ_MAX_PLAYER_MODEL_LENGTH = 32;
+const RZ_MAX_HANDLE_LENGTH = 64;
+const RZ_MAX_LANGKEY_LENGTH = 64;
+const RZ_MAX_REFERENCE_LENGTH = 64;
+const RZ_MAX_PLAYER_MODEL_LENGTH = 64;
 const RZ_MAX_RESOURCE_PATH = 64;
 
 #include <rezp_inc/rezp_trie>
