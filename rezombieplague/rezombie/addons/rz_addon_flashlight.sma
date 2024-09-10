@@ -156,6 +156,9 @@ public rz_class_change_post(id, attacker, class)
 
 SetFlashlightEnabled(id, bool:enabled = false)
 {
+	// In this part a bug occurs when the human becomes a zombie
+	// a deactivated flashlight sound comes out
+
 	new Float:GameTime = get_gametime();
 
 	g_bFlashLightOn[id] = enabled;
