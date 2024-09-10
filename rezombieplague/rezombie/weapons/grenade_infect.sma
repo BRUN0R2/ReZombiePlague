@@ -7,7 +7,7 @@
 #include <rezp_inc/util_tempentities>
 
 new const INFECTION_VIEW_MODEL[] = "models/rezombie/weapons/grenades/infect_v.mdl";
-new const INFECTION_EXPLODE_SOUND[] = "rezombie/grenade_infect.wav";
+new const INFECTION_EXPLODE_SOUND[] = "rezombie/weapons/grenade/infect.wav";
 
 new g_iModelIndex_LaserBeam;
 new g_iModelIndex_ShockWave;

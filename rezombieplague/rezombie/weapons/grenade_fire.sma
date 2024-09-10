@@ -8,7 +8,7 @@
 #include <rezp_inc/util_tempentities>
 
 new const FIRE_VIEW_MODEL[] = "models/rezombie/weapons/grenades/fire_v.mdl";
-new const FIRE_EXPLODE_SOUND[] = "rezombie/grenade_explode.wav";
+new const FIRE_EXPLODE_SOUND[] = "rezombie/weapons/grenade/explode.wav";
 new const FIRE_BURN_SOUND[][] = {
 	"rezombie/zombie/burn3.wav",
 	"rezombie/zombie/burn4.wav",
