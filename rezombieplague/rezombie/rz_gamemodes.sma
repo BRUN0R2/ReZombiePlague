@@ -1,7 +1,6 @@
 #pragma semicolon 1
 
 #include <amxmodx>
-#include <cstrike>
 #include <reapi>
 #include <rezp_inc/rezp_main>
 
@@ -76,58 +75,42 @@ public rz_gamemodes_change_post(gameMode) {
     rz_class_override_default(TEAM_CT, 0);
 }
 
-@CSGameRules_OnRoundFreezeEnd_Pre()
-{
-	if (!get_member_game(m_bGameStarted))
-		return;
+new lastChanceMod = 0;
 
-	new alivesNum;
+@CSGameRules_OnRoundFreezeEnd_Pre() {
+    if (!get_member_game(m_bGameStarted)) {
+        return;
+    }
 
-	for (new i = 1; i <= MaxClients; i++)
-	{
-		if (!is_user_alive(i))
-			continue;
+    new modSortIndex = xRandomMod();
+    new alivesNum = rz_game_get_alivesnum();
 
-		alivesNum++;
-	}
+    if (xUserChance(lastChanceMod) && alivesNum >= rz_gamemode_get(modSortIndex, RZ_GAMEMODE_MIN_ALIVES)) {}
+    else modSortIndex = rz_gamemodes_get(RZ_GAMEMODES_DEFAULT);
 
-	if (alivesNum < GAMEMODE_LAUNCH_MINALIVES)
-		return;
+    rz_gamemodes_change(modSortIndex, false);
+}
 
-	new gameMode = rz_gamemodes_get(RZ_GAMEMODES_FORCE);
+public xRandomMod() {
+    new chance, modSortIndex;
+    new Array:modsChancesArray = ArrayCreate(1, 0);
 
-	if (gameMode)
-	{
-		if (rz_gamemodes_get_status(gameMode, true) == RZ_CONTINUE)
-			gameMode = 0;
-	}
+    for (new i = 0; i < ArraySize(gamemodesArray); i++) {
+        chance = rz_gamemode_get(ArrayGetCell(gamemodesArray, i), RZ_GAMEMODE_CHANCE);
+        ArrayPushCell(modsChancesArray, chance);
+    }
 
-	if (!gameMode)
-	{
-		new start = rz_gamemodes_start();
-		new end = start + rz_gamemodes_size();
-		//new Array:gameModes = ArrayCreate(1, 0);
+    new chanceSortIndex = random(ArraySize(modsChancesArray));
+    new chanceRandom = ArrayGetCell(modsChancesArray, chanceSortIndex);
+    modSortIndex = ArrayGetCell(gamemodesArray, chanceSortIndex);
 
-		for (new i = start; i < end; i++)
-		{
-			if (rz_gamemodes_get_status(i) != RZ_CONTINUE)
-				continue;
+    lastChanceMod = chanceRandom;
 
-			//ArrayPushCell(gameModes, gameMode);
-			gameMode = i;
-			break;
-		}
+    ArrayDestroy(modsChancesArray);
 
-		/*gameModesNum = ArraySize(gameModes);
+    return modSortIndex;
+}
 
-		if (gameModesNum)
-			mode = ArrayGetCell(gameModes, random_num(0, gameModesNum - 1));
-
-		ArrayDestroy(gameModes);*/
-	}
-
-	if (!gameMode)
-		gameMode = rz_gamemodes_get(RZ_GAMEMODES_DEFAULT);
-	
-	rz_gamemodes_change(gameMode);
+stock xUserChance(chance) {
+    return random(100) < chance;
 }
