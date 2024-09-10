@@ -50,8 +50,6 @@ native rz_class_player_change(id, attacker, class, bool:preSpawn = false);
 forward rz_class_change_pre(id, attacker, class, bool:preSpawn);
 forward rz_class_change_post(id, attacker, class, bool:preSpawn);
 
-
-
 enum RZSubclassProp
 {
 	RZ_SUBCLASS_HANDLE, // [RZ_MAX_HANDLE_LENGTH]
@@ -82,8 +80,6 @@ native rz_subclass_player_get_status(id, subclass);
 forward rz_subclass_change_pre(id, subclass);
 forward rz_subclass_change_post(id, subclass);
 
-
-
 enum RZPlayerPropsProp
 {
 	RZ_PLAYER_PROPS_HANDLE, // [RZ_MAX_HANDLE_LENGTH]
@@ -107,8 +103,6 @@ native rz_playerprops_valid(playerProps);
 
 native rz_playerprops_player_change(id, playerProps, bool:spawn = false);
 
-
-
 native rz_playermodel_create(const handle[]);
 
 native rz_playermodel_get_handle(playerModel, handle[], len);
@@ -116,8 +110,6 @@ native rz_playermodel_find(const handle[]);
 native rz_playermodel_add(playerModel, const modelName[], bool:defaultHitboxes = false, body = 0);
 
 native rz_playermodel_player_change(id, playerModel, bool:preSpawn = false);
-
-
 
 enum RZPainSound
 {
@@ -145,8 +137,6 @@ native rz_playersound_valid(playerSound);
 
 native rz_playersound_add(playerSound, RZPainSound:painSound, const sample[]);
 
-
-
 enum RZNightVisionProp
 {
 	RZ_NIGHTVISION_HANDLE, // [RZ_MAX_HANDLE_LENGTH]
@@ -173,5 +163,3 @@ native rz_nightvisions_player_change(id, nightVision, bool:enabled = true);
 
 forward rz_nightvisions_change_pre(id, player, bool:enabled);
 forward rz_nightvisions_change_post(id, player, bool:enabled);
-
-//native rz_nightvision_player_update(id = 0);
