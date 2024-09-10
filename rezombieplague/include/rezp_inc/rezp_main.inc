@@ -95,8 +95,14 @@ native rz_multi_mother_player_get(id);
 native rz_longjump_player_get(id);
 native rz_longjump_player_give(id, bool:enabled = true, Float:force = 560.0, Float:height = 300.0, Float:cooldown = 0.0);
 
+#define RZ_CHECK_MOD_EXISTS(%0,%1) \
+	(%0 = (%0 = rz_gamemodes_find(%1)) != 0 ? %0 : set_fail_state("Mod '%s' not found", %1))
+
 #define RZ_CHECK_CLASS_EXISTS(%0,%1) \
 	(%0 = (%0 = rz_class_find(%1)) != 0 ? %0 : set_fail_state("Class '%s' not found", %1))
+
+#define RZ_CHECK_WEAPON_EXISTS(%0,%1) \
+	(%0 = (%0 = rz_weapons_find(%1)) != 0 ? %0 : set_fail_state("Weapon '%s' not found", %1))
 
 #define RZ_CHECK_NATIVE_ARGS_NUM(%0,%1,%2) \
 	if (%0 < %1) { \
