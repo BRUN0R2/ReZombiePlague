@@ -7,9 +7,9 @@
 /**
  * You have to create len and text[] variables before call add_formatex.
  */
-#define add_formatex(%0)			len += formatex(text[len], charsmax(text) - len, %0)
+#define ADD_FORMATEX(%0)			len += formatex(text[len], charsmax(text) - len, %0)
 
-#define MENU_CLOSE(%0)				(show_menu(%0, 0, "", 0))
+#define MENU_CLOSER(%0)				(show_menu(%0, 0, "", 0))
 
 #define FixedUnsigned16(%0,%1)		clamp(floatround(%0 * %1), 0, 0xFFFF)
 
@@ -46,15 +46,14 @@ stock rz_util_send_weaponanim(id, anim, body = 0)
 
 stock rz_util_send_screenfade(id, color[3], Float:fadeTime, Float:fadeHold = 0.0, alpha = 0, fadeFlags = 0)
 {
-	static msg;
+	static pMsg;
 
-	if (!msg)
-		msg = get_user_msgid("ScreenFade");
+	if (!pMsg) pMsg = get_user_msgid("ScreenFade");
 
 	new duration = FixedUnsigned16(fadeTime, (1<<12));
 	new holdTime = FixedUnsigned16(fadeHold, (1<<12));
 
-	message_begin(MSG_ONE, msg, _, id);
+	message_begin(MSG_ONE, pMsg, _, id);
 	write_short(duration);
 	write_short(holdTime);
 	write_short(fadeFlags);
@@ -62,5 +61,19 @@ stock rz_util_send_screenfade(id, color[3], Float:fadeTime, Float:fadeHold = 0.0
 	write_byte(color[1]);
 	write_byte(color[2]);
 	write_byte(alpha);
+	message_end();
+}
+
+// All stocks are from tempentities.inc and messages.inc
+// I just did it to make things easier
+
+stock rz_util_te_worlddecal(Float:position[3], textureIndex)
+{
+	message_begin(MSG_BROADCAST, SVC_TEMPENTITY);
+	write_byte(TE_WORLDDECAL);
+	write_coord_f(position[0]); // position.x
+	write_coord_f(position[1]); // position.y
+	write_coord_f(position[2]); // position.z
+	write_byte(textureIndex); // texture index of precached decal texture name
 	message_end();
 }

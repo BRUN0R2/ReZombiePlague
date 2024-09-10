@@ -4,19 +4,8 @@
 #include <fakemeta>
 #include <reapi>
 #include <rezp_inc/rezp_main>
-#include <util_tempentities>
 
 new const BLEEDING_DECALS[] = { 99 , 107 , 108 , 184 , 185 , 186 , 187 , 188 , 189 };
-
-/*new const BLEEDING_DECAL_NAMES[][] =
-{
-	"{blood1",
-	"{blood2",
-	"{blood3",
-	"{blood4",
-	"{blood5",
-	"{blood6",
-};*/
 
 new Array:g_aBleedingDecals;
 
@@ -34,18 +23,6 @@ public plugin_precache()
 
 	for (new i = 0; i < sizeof(BLEEDING_DECALS); i++)
 		ArrayPushCell(g_aBleedingDecals, BLEEDING_DECALS[i]);
-
-	/*new decal;
-
-	for (new i = 0; i < sizeof(BLEEDING_DECAL_NAMES); i++)
-	{
-		decal = engfunc(EngFunc_DecalIndex, BLEEDING_DECAL_NAMES[i]);
-
-		if (decal == -1)
-			continue;
-
-		ArrayPushCell(g_aBleedingDecals, decal);
-	}*/
 }
 
 public plugin_cfg()
@@ -94,8 +71,6 @@ public plugin_cfg()
 
 		vecOrigin[2] += vecMins[2];
 		textureIndex = ArrayGetCell(g_aBleedingDecals, random_num(0, ArraySize(g_aBleedingDecals) - 1));
-
-		message_begin(MSG_BROADCAST, SVC_TEMPENTITY);
-		TE_WorldDecal(vecOrigin, textureIndex);
+		rz_util_te_worlddecal(vecOrigin, textureIndex);
 	}
 }
