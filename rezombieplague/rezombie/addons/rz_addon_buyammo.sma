@@ -33,7 +33,7 @@ public plugin_cfg()
 
 	if (get_member(id, m_iAccount) < 1)
 	{
-		rz_print_chat(id, print_team_default, "You don't have enough ammo packs.");
+		rz_print_chat(id, print_team_grey, "You don't have enough ammo packs.");
 		return PLUGIN_HANDLED;
 	}
 
@@ -69,7 +69,7 @@ public plugin_cfg()
 
 	rg_add_account(id, -1);
 	rh_emit_sound2(id, 0, CHAN_ITEM, "items/9mmclip1.wav", VOL_NORM, ATTN_NORM);
-	rz_print_chat(id, print_team_default, "You purchased extra ammo for your guns.");
+	rz_print_chat(id, print_team_grey, "You purchased extra ammo for your guns.");
 
 	return PLUGIN_HANDLED;
 }
@@ -88,5 +88,5 @@ public plugin_cfg()
 	if (get_member(id, m_iNumSpawns) != 1)
 		return;
 
-	rz_print_chat(id, print_team_default, "%L", LANG_PLAYER, "RZ_PRESS_BUY_AMMO");
+	rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_PRESS_BUY_AMMO");
 }

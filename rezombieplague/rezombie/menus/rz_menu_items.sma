@@ -180,7 +180,7 @@ Items_Show(id, page = 0)
 
 	if (get_member(id, m_iAccount) < cost)
 	{
-		rz_print_chat(id, print_team_default, "%L", LANG_PLAYER, "RZ_ITEMS_INSUFFICIENT_FUNDS",
+		rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_ITEMS_INSUFFICIENT_FUNDS",
 			LANG_PLAYER, name,
 			LANG_PLAYER, rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED) ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
 		return PLUGIN_HANDLED;

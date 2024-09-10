@@ -58,11 +58,11 @@ public plugin_init()
 	ArrayGetArray(g_aItems, index, gItemData);
 
 	new cost = gItemData[Item_Cost];
-	new name[RZ_MAX_LANGKEY_LENGTH];
+	//new name[RZ_MAX_LANGKEY_LENGTH];
 
 	if (get_member(id, m_iAccount) < cost)
 	{
-		rz_print_chat(id, print_team_default, "%L", LANG_PLAYER, "RZ_ITEMS_INSUFFICIENT_FUNDS",
+		rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_ITEMS_INSUFFICIENT_FUNDS",
 			LANG_PLAYER, gItemData[Item_Name],
 			LANG_PLAYER, rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED) ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
 		return false;
