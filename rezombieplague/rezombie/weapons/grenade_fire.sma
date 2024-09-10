@@ -9,7 +9,13 @@
 
 new const FIRE_VIEW_MODEL[] = "models/rezombie/weapons/grenades/fire_v.mdl";
 new const FIRE_EXPLODE_SOUND[] = "rezombie/grenade_explode.wav";
-new const FIRE_BURN_SOUND[][] = { "rezombie/zombie_burn3.wav" , "rezombie/zombie_burn4.wav" , "rezombie/zombie_burn5.wav" , "rezombie/zombie_burn6.wav" , "rezombie/zombie_burn7.wav" };
+new const FIRE_BURN_SOUND[][] = {
+	"rezombie/zombie/burn3.wav",
+	"rezombie/zombie/burn4.wav",
+	"rezombie/zombie/burn5.wav",
+	"rezombie/zombie/burn6.wav",
+	"rezombie/zombie/burn7.wav",
+};
 
 new const FLAME_SPRITE[] = "sprites/rezombie/weapons/grenades/flame.spr";
 new const FLAME_CLASSNAME[] = "ent_flame2";

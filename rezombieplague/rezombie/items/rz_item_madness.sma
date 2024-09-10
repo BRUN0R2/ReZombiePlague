@@ -5,7 +5,7 @@
 #include <rezp_inc/rezp_main>
 #include <rezp_inc/util_tempentities>
 
-new const MADNESS_SOUND[] = "rezombie/zombie_madness1.wav";
+new const MADNESS_SOUND[] = "rezombie/zombie/madness1.wav";
 
 new g_iItem_Madness;
 new g_iClass_Zombie;
