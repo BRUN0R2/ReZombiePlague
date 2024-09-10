@@ -88,7 +88,7 @@ new lastChanceMod = 0;
     if (xUserChance(lastChanceMod) && alivesNum >= rz_gamemode_get(modSortIndex, RZ_GAMEMODE_MIN_ALIVES)) {}
     else modSortIndex = rz_gamemodes_get(RZ_GAMEMODES_DEFAULT);
 
-    rz_gamemodes_change(modSortIndex, false);
+    rz_gamemodes_change(modSortIndex);
 }
 
 public xRandomMod() {
