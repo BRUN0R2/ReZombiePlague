@@ -10,13 +10,13 @@ new g_SubClass_Hector;
 
 public plugin_precache()
 {
-	register_plugin("[ReZP] Zombie Sub-class: Stone", REZP_VERSION_STR, "fl0wer");
+	register_plugin("[ReZP] Zombie Sub-class: Hector", REZP_VERSION_STR, "fl0wer");
 
-	new const handle[] = "subclass_zombie_stone";
+	new const handle[] = "subclass_zombie_hector";
 
 	new class; RZ_CHECK_CLASS_EXISTS(class, "class_zombie");
 	new SubClass = g_SubClass_Hector = rz_subclass_create(handle, class);
-	new nightVision = rz_subclass_get(SubClass, RZ_SUBCLASS_NIGHTVISION);
+	new nvg = rz_subclass_get(SubClass, RZ_SUBCLASS_NIGHTVISION);
 
 	new props = rz_playerprops_create(handle);
 	new model = rz_subclass_get(SubClass, RZ_SUBCLASS_MODEL);
@@ -26,6 +26,7 @@ public plugin_precache()
 	rz_subclass_set(SubClass, RZ_SUBCLASS_NAME, "RZ_SUBZOMBIE_HECTOR_NAME");
 	rz_subclass_set(SubClass, RZ_SUBCLASS_DESC, "RZ_SUBZOMBIE_HECTOR_DESC");
 	rz_subclass_set(SubClass, RZ_SUBCLASS_PROPS, props);
+	rz_subclass_set(SubClass, RZ_SUBCLASS_KNIFE, knife);
 
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_HEALTH, 2500.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_SPEED, 250.0);
@@ -45,9 +46,9 @@ public plugin_precache()
 	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie/die4.wav");
 	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie/die5.wav");
 
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 150, 150, 0 });
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 63);
+	rz_nightvision_set(nvg, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
+	rz_nightvision_set(nvg, RZ_NIGHTVISION_COLOR, { 0, 100, 200 });
+	rz_nightvision_set(nvg, RZ_NIGHTVISION_ALPHA, 63);
 
 	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
 	rz_knife_set(knife, RZ_KNIFE_PLAYER_MODEL, "hide");
