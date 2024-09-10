@@ -14,12 +14,12 @@ const RZ_MAX_REFERENCE_LENGTH = 32;
 const RZ_MAX_PLAYER_MODEL_LENGTH = 32;
 const RZ_MAX_RESOURCE_PATH = 64;
 
-#include <rezp_gamemodes>
-#include <rezp_weapons>
-#include <rezp_items>
-#include <rezp_player>
-#include <rezp_util>
-#include <rezp_version>
+#include <rezp_inc/rezp_gamemodes>
+#include <rezp_inc/rezp_weapons>
+#include <rezp_inc/rezp_items>
+#include <rezp_inc/rezp_player>
+#include <rezp_inc/rezp_util>
+#include <rezp_inc/rezp_version>
 
 /**
  * Forward return types.

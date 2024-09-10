@@ -4,7 +4,7 @@
 #include <hamsandwich>
 #include <fakemeta>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 #include <util_messages>
 
 const TASK_COUNTDOWN = 1337;

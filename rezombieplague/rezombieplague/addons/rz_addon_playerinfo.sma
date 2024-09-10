@@ -2,7 +2,7 @@
 
 #include <amxmodx>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 #include <util_messages>
 
 new Float:g_flNextHudInfoTime[MAX_PLAYERS + 1];

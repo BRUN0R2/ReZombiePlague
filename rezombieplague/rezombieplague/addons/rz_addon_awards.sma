@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <hamsandwich>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 const AWARD_PLAYER_KILLED = 3;
 const AWARD_PLAYER_INFECT = 2;

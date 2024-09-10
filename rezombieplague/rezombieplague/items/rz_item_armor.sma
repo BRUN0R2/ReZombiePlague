@@ -2,7 +2,7 @@
 
 #include <amxmodx>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 const GIVE_ARMOR = 100;
 

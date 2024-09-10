@@ -2,7 +2,7 @@
 
 #include <amxmodx>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 new const BLOCKED_TEXTMSG[][] = { "#Cstrike_Tutor_Round_Over", "#Round_Draw", "#Terrorists_Win", "#CTs_Win", "#Game_Commencing" };
 new const BLOCKED_SENDAUDIO[][] = { "%!MRAD_rounddraw", "%!MRAD_terwin", "%!MRAD_ctwin" };

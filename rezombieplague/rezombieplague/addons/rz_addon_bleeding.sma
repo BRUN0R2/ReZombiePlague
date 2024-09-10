@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <fakemeta>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 #include <util_tempentities>
 
 new const BLEEDING_DECALS[] = { 99 , 107 , 108 , 184 , 185 , 186 , 187 , 188 , 189 };

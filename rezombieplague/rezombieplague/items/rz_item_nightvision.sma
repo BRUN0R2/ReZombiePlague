@@ -2,7 +2,7 @@
 
 #include <amxmodx>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 new const EQUIP_NVG_SOUND[] = "items/equip_nvg.wav";
 

@@ -4,7 +4,7 @@
 #include <hamsandwich>
 #include <fakemeta>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 const SECTION_MAX_PAGE_ITEMS = 7;
 

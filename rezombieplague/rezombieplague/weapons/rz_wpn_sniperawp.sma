@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <hamsandwich>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 #include <util_tempentities>
 
 new const SNIPER_AWP_REFERENCE[] = "weapon_awp";

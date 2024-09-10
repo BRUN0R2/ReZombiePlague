@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <fakemeta>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 #include <json>
 
 new const MAIN_CONFIG_FILE_NAME[] = "main";

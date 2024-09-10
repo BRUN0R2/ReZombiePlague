@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <json>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 new const DEFAULT_WEAPONS_FILE[] = "default_weapons.json";
 new const WEAPONS_DIRECTORY[] = "weapons";

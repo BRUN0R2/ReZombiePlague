@@ -4,7 +4,7 @@
 #include <hamsandwich>
 #include <fakemeta>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 #include <util_tempentities>
 
 new const FIRE_VIEW_MODEL[] = "models/zombie_plague/v_grenade_fire.mdl";

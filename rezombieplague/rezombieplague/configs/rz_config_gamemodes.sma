@@ -2,7 +2,7 @@
 
 #include <amxmodx>
 #include <json>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 new const GAMEMODES_DIRECTORY[] = "gamemodes";
 

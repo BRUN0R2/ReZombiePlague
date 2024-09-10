@@ -2,7 +2,7 @@
 
 #include <amxmodx>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 new const ARMOR_HIT_SOUND[] = "player/bhit_helmet-1.wav";
 

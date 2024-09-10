@@ -2,7 +2,7 @@
 
 #include <amxmodx>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 const SUBCLASS_MAX_PAGE_ITEMS = 7;
 

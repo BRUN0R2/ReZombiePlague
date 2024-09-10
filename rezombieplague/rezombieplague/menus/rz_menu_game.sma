@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <hamsandwich>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 const ADMINMENU_FLAGS = ADMIN_MENU;
 

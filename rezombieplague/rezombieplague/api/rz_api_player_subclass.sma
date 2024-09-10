@@ -1,7 +1,7 @@
 #pragma semicolon 1
 
 #include <amxmodx>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 enum _:SubclassData
 {

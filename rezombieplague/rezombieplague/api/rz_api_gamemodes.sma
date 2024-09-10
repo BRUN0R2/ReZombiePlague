@@ -1,7 +1,7 @@
 #pragma semicolon 1
 
 #include <amxmodx>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 /*
 	if (!get_member_game(m_bGameStarted))
 		return false;

@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <hamsandwich>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 new mp_infinite_ammo;
 

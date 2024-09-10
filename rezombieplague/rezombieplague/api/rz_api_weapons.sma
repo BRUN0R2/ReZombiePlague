@@ -4,7 +4,7 @@
 #include <hamsandwich>
 #include <fakemeta>
 #include <reapi>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 enum _:DefaultWeaponData
 {

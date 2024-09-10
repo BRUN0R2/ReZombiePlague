@@ -1,7 +1,7 @@
 #pragma semicolon 1
 
 #include <amxmodx>
-#include <rezp>
+#include <rezp_inc/rezp_main>
 
 new gPlayer[MAX_PLAYERS + 1][RZPlayerProp];
 
