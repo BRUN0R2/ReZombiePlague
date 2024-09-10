@@ -5,7 +5,7 @@
 #include <reapi>
 #include <rezp_inc/rezp_main>
 
-new const MOD_DIRECTORY[] = "rezombieplague";
+new const MOD_DIRECTORY[] = "rezombie";
 
 enum MainData
 {
