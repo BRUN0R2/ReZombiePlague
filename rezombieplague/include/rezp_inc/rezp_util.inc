@@ -77,3 +77,19 @@ stock rz_util_te_worlddecal(Float:position[3], textureIndex)
 	write_byte(textureIndex); // texture index of precached decal texture name
 	message_end();
 }
+
+stock rz_util_te_dlight(Float:position[3], radius, color[3], life, decayRate)
+{
+	message_begin_f(MSG_PVS, SVC_TEMPENTITY, position);
+	write_byte(TE_DLIGHT);
+	write_coord_f(position[0]); // position.x
+	write_coord_f(position[1]); // position.y
+	write_coord_f(position[2]); // position.z
+	write_byte(radius); // radius in 10's
+	write_byte(color[0]); // red
+	write_byte(color[1]); // green
+	write_byte(color[2]); // blue
+	write_byte(life); // life in 10's
+	write_byte(decayRate); // decay rate in 10's
+	message_end();
+}

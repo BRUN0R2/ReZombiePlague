@@ -5,29 +5,16 @@
 #include <fakemeta>
 #include <reapi>
 #include <rezp_inc/rezp_main>
-#include <util_messages>
-#include <util_tempentities>
+#include <rezp_inc/util_messages>
 
 new const SOUND_FLASHLIGHT_ON[] = "items/flashlight1.wav";
 new const SOUND_FLASHLIGHT_OFF[] = "items/flashlight1.wav";
 
-/*enum _:FlashLightData
-{
-	FlashLight_Color[3],
-	FlashLight_Radius,
-	FlashLight_DrainTime,
-	FlashLight_ChargeTime,
-
-}; new Array:g_aFlashLights;*/
-
-//new g_iFlashLight[MAX_PLAYERS + 1];
 new bool:g_bHasFlashLight[MAX_PLAYERS + 1];
 new bool:g_bFlashLightOn[MAX_PLAYERS + 1];
 new Float:g_flNextFlashLightTime[MAX_PLAYERS + 1];
 
 new g_iClass_Human;
-
-//new mp_flashlight;
 
 new Float:rz_flashlight_drain_time;
 new Float:rz_flashlight_charge_time;
@@ -47,17 +34,17 @@ public plugin_precache()
 	bind_pcvar_float(create_cvar("rz_flashlight_drain_time", "1.2", FCVAR_NONE, "", true, 0.0, false), rz_flashlight_drain_time);
 	bind_pcvar_float(create_cvar("rz_flashlight_charge_time", "0.2", FCVAR_NONE, "", true, 0.0, false), rz_flashlight_charge_time);
 	bind_pcvar_float(create_cvar("rz_flashlight_distance", "1024", FCVAR_NONE, "", true, 0.0, false), rz_flashlight_distance);
-	bind_pcvar_num(create_cvar("rz_flashlight_radius", "10", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_radius);
-	bind_pcvar_num(create_cvar("rz_flashlight_color_red", "100", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_color[0]);
-	bind_pcvar_num(create_cvar("rz_flashlight_color_green", "100", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_color[1]);
-	bind_pcvar_num(create_cvar("rz_flashlight_color_blue", "100", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_color[2]);
+	bind_pcvar_num(create_cvar("rz_flashlight_radius", "7", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_radius);
+	bind_pcvar_num(create_cvar("rz_flashlight_color_red", "255", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_color[0]);
+	bind_pcvar_num(create_cvar("rz_flashlight_color_green", "255", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_color[1]);
+	bind_pcvar_num(create_cvar("rz_flashlight_color_blue", "255", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_color[2]);
 }
 
 public plugin_init()
 {
-	RegisterHookChain(RG_CBasePlayer_UpdateClientData, "@CBasePlayer_UpdateClientData_Pre", false);
-	RegisterHookChain(RG_CBasePlayer_UpdateClientData, "@CBasePlayer_UpdateClientData_Post", true);
-	RegisterHookChain(RG_CBasePlayer_ImpulseCommands, "@CBasePlayer_ImpulseCommands_Pre", false);
+	RegisterHookChain(RG_CBasePlayer_UpdateClientData, "@CBasePlayer_UpdateClientData_Pre", .post = false);
+	RegisterHookChain(RG_CBasePlayer_UpdateClientData, "@CBasePlayer_UpdateClientData_Post", .post = true);
+	RegisterHookChain(RG_CBasePlayer_ImpulseCommands, "@CBasePlayer_ImpulseCommands_Pre", .post = false);
 }
 
 public client_putinserver(id)
@@ -67,16 +54,14 @@ public client_putinserver(id)
 
 public rz_class_change_post(id, attacker, class)
 {
-	if (class == g_iClass_Human)
-	{
+	if (class == g_iClass_Human) {
 		g_bHasFlashLight[id] = true;
-
 		set_member(id, m_iFlashBattery, 100);
-	}
-	else
+	} else {
 		g_bHasFlashLight[id] = false;
+	}
 
-	SetFlashlightEnabled(id, false);
+	SetFlashlightEnabled(id, .enabled = false);
 }
 
 @CBasePlayer_UpdateClientData_Pre(id)
@@ -98,7 +83,7 @@ public rz_class_change_post(id, attacker, class)
 			set_member(id, m_flFlashLightTime, time + rz_flashlight_drain_time);
 
 			if (--flashBattery <= 0)
-				SetFlashlightEnabled(id, false);
+				SetFlashlightEnabled(id, .enabled = false);
 		}
 	}
 	else
@@ -152,8 +137,7 @@ public rz_class_change_post(id, attacker, class)
 
 	get_tr2(0, TR_vecEndPos, vecEnd);
 
-	message_begin_f(MSG_PVS, SVC_TEMPENTITY, vecEnd);
-	TE_DLight(vecEnd, rz_flashlight_radius, rz_flashlight_color, 3, 0);
+	rz_util_te_dlight(vecEnd, rz_flashlight_radius, rz_flashlight_color, 3, 0);
 }
 
 @CBasePlayer_ImpulseCommands_Pre(id)
@@ -170,33 +154,19 @@ public rz_class_change_post(id, attacker, class)
 	return HC_CONTINUE;
 }
 
-/*FlashlightEffects()
+SetFlashlightEnabled(id, bool:enabled = false)
 {
-	return (EF_DIMLIGHT);
-}*/
-
-SetFlashlightEnabled(id, bool:enabled)
-{
-	new Float:time = get_gametime();
+	new Float:GameTime = get_gametime();
 
 	g_bFlashLightOn[id] = enabled;
 
-	if (enabled)
-	{
+	if (enabled) {
 		rh_emit_sound2(id, 0, CHAN_ITEM, SOUND_FLASHLIGHT_ON, VOL_NORM, ATTN_NORM);
-
-		//set_entvar(id, var_effects, get_entvar(id, var_effects) | FlashlightEffects());
-		set_member(id, m_flFlashLightTime, time + rz_flashlight_drain_time);
-
-		g_flNextFlashLightTime[id] = time + 0.1;
-	}
-	else
-	{
+		set_member(id, m_flFlashLightTime, GameTime + rz_flashlight_drain_time);
+		g_flNextFlashLightTime[id] = GameTime;
+	} else {
 		rh_emit_sound2(id, 0, CHAN_ITEM, SOUND_FLASHLIGHT_OFF, VOL_NORM, ATTN_NORM);
-
-		//set_entvar(id, var_effects, get_entvar(id, var_effects) & ~FlashlightEffects());
-		set_member(id, m_flFlashLightTime, time + rz_flashlight_charge_time);
-
+		set_member(id, m_flFlashLightTime, GameTime + rz_flashlight_charge_time);
 		g_flNextFlashLightTime[id] = 0.0;
 	}
 
