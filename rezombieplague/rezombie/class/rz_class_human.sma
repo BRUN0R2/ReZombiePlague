@@ -21,10 +21,10 @@ public plugin_precache()
 	rz_class_set(class, RZ_CLASS_NAME, "RZ_HUMAN");
 	rz_class_set(class, RZ_CLASS_HUD_COLOR, { 0, 180, 225 });
 
-	rz_playermodel_add(model, "urban");
-	rz_playermodel_add(model, "gsg9");
-	rz_playermodel_add(model, "sas");
-	rz_playermodel_add(model, "gign");
+	rz_playermodel_add(model, "urban", .defaultHitboxes = false);
+	rz_playermodel_add(model, "gsg9", .defaultHitboxes = false);
+	rz_playermodel_add(model, "sas", .defaultHitboxes = false);
+	rz_playermodel_add(model, "gign", .defaultHitboxes = false);
 
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 100, 100, 100 });
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 63);

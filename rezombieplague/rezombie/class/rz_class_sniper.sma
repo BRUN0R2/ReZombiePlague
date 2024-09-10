@@ -22,8 +22,8 @@ public plugin_precache()
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_BASE_HEALTH, 50.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_GRAVITY, 0.75);
 
-	rz_playermodel_add(model, "gign");
-	rz_playermodel_add(model, "leet");
+	rz_playermodel_add(model, "gign", .defaultHitboxes = false);
+	rz_playermodel_add(model, "leet", .defaultHitboxes = false);
 
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 100, 100, 100 });
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 63);

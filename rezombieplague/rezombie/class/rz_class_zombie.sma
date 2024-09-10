@@ -104,8 +104,7 @@ public plugin_init()
 	if (armorValue > 0.0 || (get_member(id, m_iKevlar) == ARMOR_VESTHELM && get_member(id, m_LastHitGroup) == HITGROUP_HEAD))
 		return;
 
-	new numAliveCT;
-	rg_initialize_player_counts(_, numAliveCT);
+	new numAliveCT; rg_initialize_player_counts(_, numAliveCT);
 
 	if (numAliveCT == 1)
 		return;
