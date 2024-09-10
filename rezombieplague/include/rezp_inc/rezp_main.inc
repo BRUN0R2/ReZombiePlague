@@ -63,7 +63,7 @@ native rz_print(text[], any:...);
 native rz_log(bool:isError, text[], any:...);
 native rz_sys_error(const error[], any:...);
 
-native rz_print_chat(id, sender = print_team_default, text[], any:...);
+native rz_print_chat(id, sender = print_team_grey, text[], any:...);
 native rz_give_bonus(id, amount, text[] = "", any:...);
 
 native any:rz_main_get(RZMainProp:prop, any:...);
