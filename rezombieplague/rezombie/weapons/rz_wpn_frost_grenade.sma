@@ -5,8 +5,8 @@
 #include <fakemeta>
 #include <reapi>
 #include <rezp_inc/rezp_main>
-#include <util_messages>
-#include <util_tempentities>
+#include <rezp_inc/util_messages>
+#include <rezp_inc/util_tempentities>
 
 new const FROST_VIEW_MODEL[] = "models/zombie_plague/v_grenade_frost.mdl";
 new const FROST_EXPLODE_SOUND[]= "warcraft3/frostnova.wav";

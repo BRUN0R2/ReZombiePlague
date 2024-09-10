@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <reapi>
 #include <rezp_inc/rezp_main>
-#include <util_tempentities>
+#include <rezp_inc/util_tempentities>
 
 new const MADNESS_SOUND[] = "zombie_plague/zombie_madness1.wav";
 

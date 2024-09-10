@@ -38,7 +38,7 @@ public plugin_init()
 	if (menu != g_iMenu_Game)
 		GameMenu_Show(id);
 	else
-		MENU_CLOSE(id);
+		MENU_CLOSER(id);
 
 	return PLUGIN_HANDLED;
 }
@@ -53,50 +53,50 @@ GameMenu_Show(id)
 
 	SetGlobalTransTarget(id);
 
-	add_formatex("\yRe Zombie Plague^n");
-	add_formatex("\y%l^n^n", "RZ_MENU_GAME_TITLE");
+	ADD_FORMATEX("\yRe Zombie Plague^n");
+	ADD_FORMATEX("\y%l^n^n", "RZ_MENU_GAME_TITLE");
 
-	add_formatex("\r1. \w%l^n", "RZ_MENU_GAME_SELECT_WPNS");
+	ADD_FORMATEX("\r1. \w%l^n", "RZ_MENU_GAME_SELECT_WPNS");
 	keys |= MENU_KEY_1;
 
 	if (!warmup && isAlive)
 	{
-		add_formatex("\r2. \w%l^n", "RZ_MENU_GAME_BUY_EXTRA");
+		ADD_FORMATEX("\r2. \w%l^n", "RZ_MENU_GAME_BUY_EXTRA");
 		keys |= MENU_KEY_2;
 	}
 	else
-		add_formatex("\d2. %l^n", "RZ_MENU_GAME_BUY_EXTRA");
+		ADD_FORMATEX("\d2. %l^n", "RZ_MENU_GAME_BUY_EXTRA");
 
 	new defaultTrClass = rz_class_get_default(TEAM_TERRORIST, false);
 	new name[32];
 
 	rz_class_get(defaultTrClass, RZ_CLASS_NAME, name, charsmax(name));
 
-	add_formatex("\r3. \w%l^n", "RZ_MENU_GAME_CHOOSE_SUBCLASS", name);
+	ADD_FORMATEX("\r3. \w%l^n", "RZ_MENU_GAME_CHOOSE_SUBCLASS", name);
 	keys |= MENU_KEY_3;
 
 	// check last
 	if (get_member(id, m_iTeam) == TEAM_SPECTATOR)
-		add_formatex("\r4. \w%l^n", "RZ_MENU_GAME_JOIN_GAME");
+		ADD_FORMATEX("\r4. \w%l^n", "RZ_MENU_GAME_JOIN_GAME");
 	else
-		add_formatex("\r4. \w%l^n", "RZ_MENU_GAME_JOIN_SPECS");
+		ADD_FORMATEX("\r4. \w%l^n", "RZ_MENU_GAME_JOIN_SPECS");
 
 	keys |= MENU_KEY_4;
 
-	add_formatex("^n");
-	add_formatex("^n");
-	add_formatex("^n");
-	add_formatex("^n");
+	ADD_FORMATEX("^n");
+	ADD_FORMATEX("^n");
+	ADD_FORMATEX("^n");
+	ADD_FORMATEX("^n");
 
 	if (get_user_flags(id) & ADMINMENU_FLAGS)
 	{
-		add_formatex("\r9. \w%l^n", "RZ_MENU_GAME_ADMIN");
+		ADD_FORMATEX("\r9. \w%l^n", "RZ_MENU_GAME_ADMIN");
 		keys |= MENU_KEY_9;
 	}
 	else
-		add_formatex("\d9. %l^n", "RZ_MENU_GAME_ADMIN");
+		ADD_FORMATEX("\d9. %l^n", "RZ_MENU_GAME_ADMIN");
 
-	add_formatex("\r0. \w%l", "RZ_CLOSE");
+	ADD_FORMATEX("\r0. \w%l", "RZ_CLOSE");
 	keys |= MENU_KEY_0;
 
 	show_menu(id, keys, text, -1, GAME_MENU_ID);

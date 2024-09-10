@@ -76,44 +76,44 @@ RespawnMenu_Show(id, page = 0)
 
 	SetGlobalTransTarget(id);
 
-	add_formatex("\yRespawn Menu");
+	ADD_FORMATEX("\yRespawn Menu");
 
 	if (!playersNum)
 	{
-		add_formatex("^n^n\r%d. \d%l^n", ++item, "RZ_EMPTY");
+		ADD_FORMATEX("^n^n\r%d. \d%l^n", ++item, "RZ_EMPTY");
 	}
 	else
 	{
 		if (playersNum > RESPAWN_MAX_PAGE_ITEMS)
-			add_formatex(" \r%d/%d", g_iMenuPage[id] + 1, ((playersNum - 1) / RESPAWN_MAX_PAGE_ITEMS) + 1);
+			ADD_FORMATEX(" \r%d/%d", g_iMenuPage[id] + 1, ((playersNum - 1) / RESPAWN_MAX_PAGE_ITEMS) + 1);
 
-		add_formatex("^n^n");
+		ADD_FORMATEX("^n^n");
 
 		for (i = start; i < end; i++)
 		{
 			target = playersArray[i];
 
 			keys |= (1<<item);
-			add_formatex("\r%d. \w%n^n", item + 1, target);
+			ADD_FORMATEX("\r%d. \w%n^n", item + 1, target);
 			item++;
 		}
 	}
 
 	for (i = item; i < RESPAWN_MAX_PAGE_ITEMS; i++)
-		add_formatex("^n");
+		ADD_FORMATEX("^n");
 
 	if (end < playersNum)
 	{
-		add_formatex("^n\r8. \w%l", "RZ_NEXT");
+		ADD_FORMATEX("^n\r8. \w%l", "RZ_NEXT");
 		keys |= MENU_KEY_8;
 	}
 	else if (g_iMenuPage[id])
-		add_formatex("^n\d8. %l", "RZ_NEXT");
+		ADD_FORMATEX("^n\d8. %l", "RZ_NEXT");
 
-	add_formatex("^n\r9. \w%l", "RZ_BACK");
+	ADD_FORMATEX("^n\r9. \w%l", "RZ_BACK");
 	keys |= MENU_KEY_9;
 
-	add_formatex("^n\r0. \w%l", "RZ_CLOSE");
+	ADD_FORMATEX("^n\r0. \w%l", "RZ_CLOSE");
 	keys |= MENU_KEY_0;
 
 	show_menu(id, keys, text, -1, RESPAWN_MENU_ID);

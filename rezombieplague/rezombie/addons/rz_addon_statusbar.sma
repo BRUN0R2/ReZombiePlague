@@ -142,26 +142,26 @@ UpdateStatusBar(id)
 
 					SetGlobalTransTarget(id);
 
-					add_formatex("[%l: %n]", "RZ_FRIEND", hit);
+					ADD_FORMATEX("[%l: %n]", "RZ_FRIEND", hit);
 
 					if (subclass)
 					{
 						new subclassName[RZ_MAX_LANGKEY_LENGTH];
 						rz_subclass_get(subclass, RZ_SUBCLASS_NAME, subclassName, charsmax(subclassName));
 
-						add_formatex("^n[%l: %l]", name, subclassName);
+						ADD_FORMATEX("^n[%l: %l]", name, subclassName);
 					}
 					else
-						add_formatex("^n[%l: %l]", "RZ_CLASS", name);
+						ADD_FORMATEX("^n[%l: %l]", "RZ_CLASS", name);
 
-					add_formatex("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(hit, var_health)));
+					ADD_FORMATEX("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(hit, var_health)));
 
 					if (rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
-						add_formatex("^n[%l: %d]", "RZ_AMMOPACKS", get_member(hit, m_iAccount));
+						ADD_FORMATEX("^n[%l: %d]", "RZ_AMMOPACKS", get_member(hit, m_iAccount));
 				}
 				else if (mp_playerid != PLAYERID_MODE_TEAMONLY)
 				{
-					add_formatex("[%l: %n]", "RZ_ENEMY", hit);
+					ADD_FORMATEX("[%l: %n]", "RZ_ENEMY", hit);
 				}
 				else
 				{
@@ -188,22 +188,22 @@ UpdateStatusBar(id)
 
 				SetGlobalTransTarget(id);
 
-				add_formatex("[%l: %n]", "RZ_SPECTATING", hit);
+				ADD_FORMATEX("[%l: %n]", "RZ_SPECTATING", hit);
 
 				if (subclass)
 				{
 					new subclassName[RZ_MAX_LANGKEY_LENGTH];
 					rz_subclass_get(subclass, RZ_SUBCLASS_NAME, subclassName, charsmax(subclassName));
 
-					add_formatex("^n[%l: %l]", name, subclassName);
+					ADD_FORMATEX("^n[%l: %l]", name, subclassName);
 				}
 				else
-					add_formatex("^n[%l: %l]", "RZ_CLASS", name);
+					ADD_FORMATEX("^n[%l: %l]", "RZ_CLASS", name);
 				
-				add_formatex("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(hit, var_health)));
+				ADD_FORMATEX("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(hit, var_health)));
 
 				if (rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
-					add_formatex("^n[%l: %d]", "RZ_AMMOPACKS", get_member(hit, m_iAccount));
+					ADD_FORMATEX("^n[%l: %d]", "RZ_AMMOPACKS", get_member(hit, m_iAccount));
 			}
 			else
 			{
@@ -285,26 +285,26 @@ UpdateStatusBar(id)
 		{
 			rz_class_get_name_langkey(class, name, charsmax(name));
 
-			add_formatex("[%l: %n]", "RZ_FRIEND", target);
+			ADD_FORMATEX("[%l: %n]", "RZ_FRIEND", target);
 
 			if (subclass)
 			{
 				new subclassName[32];
 				rz_subclass_get_name_langkey(subclass, subclassName, charsmax(subclassName));
 
-				add_formatex("^n[%l: %l]", name, subclassName);
+				ADD_FORMATEX("^n[%l: %l]", name, subclassName);
 			}
 			else
-				add_formatex("^n[%l: %l]", "RZ_CLASS", name);
+				ADD_FORMATEX("^n[%l: %l]", "RZ_CLASS", name);
 
-			add_formatex("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(target, var_health)));
+			ADD_FORMATEX("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(target, var_health)));
 
 			if (rz_main_ammopacks_enabled())
-				add_formatex("^n[%l: %d]", "RZ_AMMOPACKS", get_member(target, m_iAccount));
+				ADD_FORMATEX("^n[%l: %d]", "RZ_AMMOPACKS", get_member(target, m_iAccount));
 		}
 		else if (mp_playerid != PLAYERID_MODE_TEAMONLY)
 		{
-			add_formatex("[%l: %n]", "RZ_ENEMY", target);
+			ADD_FORMATEX("[%l: %n]", "RZ_ENEMY", target);
 		}
 		else
 			return PLUGIN_HANDLED;
@@ -318,22 +318,22 @@ UpdateStatusBar(id)
 		rz_class_get_hudcolor(class, color);
 		rz_class_get_name_langkey(class, name, charsmax(name));
 
-		add_formatex("[%l: %n]", "RZ_SPECTATING", target);
+		ADD_FORMATEX("[%l: %n]", "RZ_SPECTATING", target);
 
 		if (subclass)
 		{
 			new subclassName[32];
 			rz_subclass_get_name_langkey(subclass, subclassName, charsmax(subclassName));
 
-			add_formatex("^n[%l: %l]", name, subclassName);
+			ADD_FORMATEX("^n[%l: %l]", name, subclassName);
 		}
 		else
-			add_formatex("^n[%l: %l]", "RZ_CLASS", name);
+			ADD_FORMATEX("^n[%l: %l]", "RZ_CLASS", name);
 		
-		add_formatex("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(target, var_health)));
+		ADD_FORMATEX("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(target, var_health)));
 
 		if (rz_main_ammopacks_enabled())
-			add_formatex("^n[%l: %d]", "RZ_AMMOPACKS", get_member(target, m_iAccount));
+			ADD_FORMATEX("^n[%l: %d]", "RZ_AMMOPACKS", get_member(target, m_iAccount));
 	}
 	else
 		return PLUGIN_HANDLED;

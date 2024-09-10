@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <reapi>
 #include <rezp_inc/rezp_main>
-#include <util_messages>
+#include <rezp_inc/util_messages>
 
 new const MOTHER_ICON_SPRITE[] = "dmg_bio";
 

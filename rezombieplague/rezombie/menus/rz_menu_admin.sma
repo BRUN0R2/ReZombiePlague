@@ -40,44 +40,44 @@ MainMenu_Show(id)
 
 	SetGlobalTransTarget(id);
 
-	add_formatex("\yAdmin Menu^n^n");
+	ADD_FORMATEX("\yAdmin Menu^n^n");
 
-	add_formatex("\r1. \wRespawn Player^n");
+	ADD_FORMATEX("\r1. \wRespawn Player^n");
 	keys |= MENU_KEY_1;
 
 	if (!warmup && gameStarted && freezePeriod)
 	{
-		add_formatex("\r2. \wStart Game Mode^n");
+		ADD_FORMATEX("\r2. \wStart Game Mode^n");
 		keys |= MENU_KEY_2;
 	}
 	else
-		add_formatex("\d2. Start Game Mode^n");
+		ADD_FORMATEX("\d2. Start Game Mode^n");
 
 	if (!warmup && gameStarted && !freezePeriod)
 	{
-		add_formatex("\r3. \wChange Player Class^n");
+		ADD_FORMATEX("\r3. \wChange Player Class^n");
 		keys |= MENU_KEY_3;
 	}
 	else
-		add_formatex("\d3. Change Player Class^n");
+		ADD_FORMATEX("\d3. Change Player Class^n");
 
 	if (warmup && !get_member_game(m_bRoundTerminating))
 	{
-		add_formatex("\r4. \wFinish Warmup^n");
+		ADD_FORMATEX("\r4. \wFinish Warmup^n");
 		keys |= MENU_KEY_4;
 	}
 	else
-		add_formatex("\d4. Finish Warmup^n");
+		ADD_FORMATEX("\d4. Finish Warmup^n");
 
-	add_formatex("^n");
-	add_formatex("^n");
-	add_formatex("^n");
-	add_formatex("^n");
+	ADD_FORMATEX("^n");
+	ADD_FORMATEX("^n");
+	ADD_FORMATEX("^n");
+	ADD_FORMATEX("^n");
 
-	add_formatex("^n\r9. \w%l", "RZ_BACK");
+	ADD_FORMATEX("^n\r9. \w%l", "RZ_BACK");
 	keys |= MENU_KEY_9;
 
-	add_formatex("^n\r0. \w%l", "RZ_CLOSE");
+	ADD_FORMATEX("^n\r0. \w%l", "RZ_CLOSE");
 	keys |= MENU_KEY_0;
 
 	show_menu(id, keys, text, -1, MAIN_MENU_ID);

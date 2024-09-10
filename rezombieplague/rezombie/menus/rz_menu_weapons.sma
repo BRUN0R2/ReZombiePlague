@@ -163,12 +163,12 @@ MainMenu_Show(id)
 
 	SetGlobalTransTarget(id);
 
-	add_formatex("\y%l", "RZ_MENU_WPN_TITLE");
+	ADD_FORMATEX("\y%l", "RZ_MENU_WPN_TITLE");
 
 	if (!isWarmup)
-		add_formatex("^n\w%l: %d", "RZ_MENU_WPN_TIMER", g_iMenuTimer[id]);
+		ADD_FORMATEX("^n\w%l: %d", "RZ_MENU_WPN_TIMER", g_iMenuTimer[id]);
 
-	add_formatex("^n^n");
+	ADD_FORMATEX("^n^n");
 
 	new bool:empty = true;
 	new weaponPack[] = { SLOT_PRIMARY, SLOT_SECONDARY };
@@ -179,43 +179,43 @@ MainMenu_Show(id)
 	if (FillField(id, "RZ_MENU_WPN_FIELD_WPN", weaponText, weaponPack, sizeof(weaponPack)))
 	{
 		empty = false;
-		add_formatex("%s^n", weaponText);
+		ADD_FORMATEX("%s^n", weaponText);
 	}
 
 	if (FillField(id, "RZ_MENU_WPN_FIELD_EQUIP", equipText, equipPack, sizeof(equipPack)))
 	{
 		empty = false;
-		add_formatex("%s^n", equipText);
+		ADD_FORMATEX("%s^n", equipText);
 	}
 
 	if (!empty)
-		add_formatex("^n");
+		ADD_FORMATEX("^n");
 
 	for (new i = 0; i < sizeof(SECTION_NAMES); i++)
 	{
 		if (g_bSectionAvailable[i])
 		{
-			add_formatex("\r%d. \w%l^n", i + 1, SECTION_NAMES[i]);
+			ADD_FORMATEX("\r%d. \w%l^n", i + 1, SECTION_NAMES[i]);
 			keys |= (1<<i);
 		}
 		else
-			add_formatex("\d%d. %l^n", i + 1, SECTION_NAMES[i]);
+			ADD_FORMATEX("\d%d. %l^n", i + 1, SECTION_NAMES[i]);
 
 		if (i == SECTION_MACHINEGUN)
-			add_formatex("^n");
+			ADD_FORMATEX("^n");
 	}
 
-	add_formatex("^n");
+	ADD_FORMATEX("^n");
 
 	if (!empty)
 	{
-		add_formatex("\r9. \w%l^n", "RZ_MENU_WPN_BUY_SELECT");
+		ADD_FORMATEX("\r9. \w%l^n", "RZ_MENU_WPN_BUY_SELECT");
 		keys |= MENU_KEY_9;
 	}
 	else
-		add_formatex("\d9. %l^n", "RZ_MENU_WPN_BUY_SELECT");
+		ADD_FORMATEX("\d9. %l^n", "RZ_MENU_WPN_BUY_SELECT");
 
-	add_formatex("\r0. \w%l", "RZ_CLOSE");
+	ADD_FORMATEX("\r0. \w%l", "RZ_CLOSE");
 	keys |= MENU_KEY_0;
 
 	show_menu(id, keys, text, -1, MAIN_MENU_ID);
@@ -244,16 +244,16 @@ FillField(id, field[], textDest[128], selects[], selectsNum)
 		if (selectedNum == 0)
 		{
 			if (data[SelectWeapon_ShortName][0])
-				add_formatex("\w%l: \y%l", field, data[SelectWeapon_ShortName]);
+				ADD_FORMATEX("\w%l: \y%l", field, data[SelectWeapon_ShortName]);
 			else
-				add_formatex("\w%l: \y%l", field, data[SelectWeapon_Name]);
+				ADD_FORMATEX("\w%l: \y%l", field, data[SelectWeapon_Name]);
 		}
 		else
 		{
 			if (data[SelectWeapon_ShortName][0])
-				add_formatex(" \w+ \y%l", data[SelectWeapon_ShortName]);
+				ADD_FORMATEX(" \w+ \y%l", data[SelectWeapon_ShortName]);
 			else
-				add_formatex(" \w+ \y%l", data[SelectWeapon_Name]);
+				ADD_FORMATEX(" \w+ \y%l", data[SelectWeapon_Name]);
 		}
 
 		selectedNum++;
@@ -413,14 +413,14 @@ SectionMenu_Show(id, section, page = 0)
 	SetGlobalTransTarget(id);
 
 	if (singlePage)
-		add_formatex("\y%l %l", "RZ_MENU_WPN_SEC_TITLE", SECTION_NAMES[section]);
+		ADD_FORMATEX("\y%l %l", "RZ_MENU_WPN_SEC_TITLE", SECTION_NAMES[section]);
 	else
-		add_formatex("\y%l %l \r%d/%d", "RZ_MENU_WPN_SEC_TITLE", SECTION_NAMES[section], g_iMenuPage[id] + 1, ((itemNum - 1) / itemPerPage) + 1);
+		ADD_FORMATEX("\y%l %l \r%d/%d", "RZ_MENU_WPN_SEC_TITLE", SECTION_NAMES[section], g_iMenuPage[id] + 1, ((itemNum - 1) / itemPerPage) + 1);
 
 	if (!rz_game_is_warmup())
-		add_formatex("^n\w%l: %d", "RZ_MENU_WPN_TIMER", g_iMenuTimer[id]);
+		ADD_FORMATEX("^n\w%l: %d", "RZ_MENU_WPN_TIMER", g_iMenuTimer[id]);
 
-	add_formatex("^n^n");
+	ADD_FORMATEX("^n^n");
 
 	for (i = start; i < end; i++)
 	{
@@ -435,16 +435,16 @@ SectionMenu_Show(id, section, page = 0)
 			{
 				if (g_iSlotWeapon[id][select] != index)
 				{
-					add_formatex("\r%d. \w%l^n", item + 1, data[SelectWeapon_Name]);
+					ADD_FORMATEX("\r%d. \w%l^n", item + 1, data[SelectWeapon_Name]);
 					keys |= (1<<item);
 				}
 				else
-					add_formatex("\r%d. \d%l \y*^n", item + 1, data[SelectWeapon_Name]);
+					ADD_FORMATEX("\r%d. \d%l \y*^n", item + 1, data[SelectWeapon_Name]);
 			}
 			case SLOT_GRENADE1, SLOT_GRENADE2, SLOT_GRENADE3:
 			{
 				if (g_iSlotWeapon[id][select] != index)
-					add_formatex("\r%d. \w%l^n", item + 1, data[SelectWeapon_Name]);
+					ADD_FORMATEX("\r%d. \w%l^n", item + 1, data[SelectWeapon_Name]);
 				else
 				{
 					if (select == SLOT_GRENADE1)
@@ -454,7 +454,7 @@ SectionMenu_Show(id, section, page = 0)
 					else if (select == SLOT_GRENADE3)
 						grenadeNum = 3;
 
-					add_formatex("\r%d. \w%l \y(%d)^n", item + 1, data[SelectWeapon_Name], grenadeNum);
+					ADD_FORMATEX("\r%d. \w%l \y(%d)^n", item + 1, data[SelectWeapon_Name], grenadeNum);
 				}
 
 				keys |= (1<<item);
@@ -462,9 +462,9 @@ SectionMenu_Show(id, section, page = 0)
 			default:
 			{
 				if (g_iSlotWeapon[id][select] != index)
-					add_formatex("\r%d. \w%l^n", item + 1, data[SelectWeapon_Name]);
+					ADD_FORMATEX("\r%d. \w%l^n", item + 1, data[SelectWeapon_Name]);
 				else
-					add_formatex("\r%d. \w%l \y*^n", item + 1, data[SelectWeapon_Name]);
+					ADD_FORMATEX("\r%d. \w%l \y*^n", item + 1, data[SelectWeapon_Name]);
 
 				keys |= (1<<item);
 			}
@@ -476,21 +476,21 @@ SectionMenu_Show(id, section, page = 0)
 	if (!singlePage)
 	{
 		for (i = item; i < SECTION_MAX_PAGE_ITEMS; i++)
-			add_formatex("^n");
+			ADD_FORMATEX("^n");
 
 		if (end < itemNum)
 		{
-			add_formatex("^n\r8. \w%l", "RZ_NEXT");
+			ADD_FORMATEX("^n\r8. \w%l", "RZ_NEXT");
 			keys |= MENU_KEY_8;
 		}
 		else if (g_iMenuPage[id])
-			add_formatex("^n\d8. %l", "RZ_NEXT");
+			ADD_FORMATEX("^n\d8. %l", "RZ_NEXT");
 	}
 
-	add_formatex("^n\r9. \w%l", "RZ_BACK");
+	ADD_FORMATEX("^n\r9. \w%l", "RZ_BACK");
 	keys |= MENU_KEY_9;
 
-	add_formatex("^n\r0. \w%l", "RZ_CLOSE");
+	ADD_FORMATEX("^n\r0. \w%l", "RZ_CLOSE");
 	keys |= MENU_KEY_0;
 
 	show_menu(id, keys, text, -1, SECTION_MENU_ID);
@@ -565,7 +565,7 @@ SectionMenu_Show(id, section, page = 0)
 		remove_task(id);
 
 		if (menu == g_iMenu_Main || menu == g_iMenu_Section)
-			MENU_CLOSE(player);
+			MENU_CLOSER(player);
 
 		return;
 	}

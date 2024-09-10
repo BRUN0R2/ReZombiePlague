@@ -77,13 +77,13 @@ GameModesMenu_Show(id, page = 0)
 	SetGlobalTransTarget(id);
 
 	if (singlePage)
-		add_formatex("\yStart Game Mode^n^n");
+		ADD_FORMATEX("\yStart Game Mode^n^n");
 	else
-		add_formatex("\yStart Game Mode \r%d/%d^n^n", g_iMenuPage[id] + 1, ((itemNum - 1) / itemPerPage) + 1);
+		ADD_FORMATEX("\yStart Game Mode \r%d/%d^n^n", g_iMenuPage[id] + 1, ((itemNum - 1) / itemPerPage) + 1);
 
 	if (!itemNum)
 	{
-		add_formatex("\r%d. \d%l^n", ++item, "RZ_EMPTY");
+		ADD_FORMATEX("\r%d. \d%l^n", ++item, "RZ_EMPTY");
 	}
 	else
 	{
@@ -95,11 +95,11 @@ GameModesMenu_Show(id, page = 0)
 
 			if (rz_gamemodes_get_status(index, true) == RZ_CONTINUE)
 			{
-				add_formatex("\r%d. \w%l^n", item + 1, name);
+				ADD_FORMATEX("\r%d. \w%l^n", item + 1, name);
 				keys |= (1<<item);
 			}
 			else
-				add_formatex("\d%d. %l^n", item + 1, name);
+				ADD_FORMATEX("\d%d. %l^n", item + 1, name);
 			
 			item++;
 		}
@@ -108,21 +108,21 @@ GameModesMenu_Show(id, page = 0)
 	if (!singlePage)
 	{
 		for (i = item; i < GAMEMODES_MAX_PAGE_ITEMS; i++)
-			add_formatex("^n");
+			ADD_FORMATEX("^n");
 
 		if (end < itemNum)
 		{
-			add_formatex("^n\r8. \w%l", "RZ_NEXT");
+			ADD_FORMATEX("^n\r8. \w%l", "RZ_NEXT");
 			keys |= MENU_KEY_8;
 		}
 		else if (g_iMenuPage[id])
-			add_formatex("^n\d8. %l", "RZ_NEXT");
+			ADD_FORMATEX("^n\d8. %l", "RZ_NEXT");
 	}
 
-	add_formatex("^n\r9. \w%l", "RZ_BACK");
+	ADD_FORMATEX("^n\r9. \w%l", "RZ_BACK");
 	keys |= MENU_KEY_9;
 
-	add_formatex("^n\r0. \w%l", "RZ_CLOSE");
+	ADD_FORMATEX("^n\r0. \w%l", "RZ_CLOSE");
 	keys |= MENU_KEY_0;
 
 	show_menu(id, keys, text, -1, GAMEMODES_MENU_ID);

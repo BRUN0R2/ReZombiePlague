@@ -5,7 +5,7 @@
 #include <fakemeta>
 #include <reapi>
 #include <rezp_inc/rezp_main>
-#include <util_tempentities>
+#include <rezp_inc/util_tempentities>
 
 new const FIRE_VIEW_MODEL[] = "models/zombie_plague/v_grenade_fire.mdl";
 new const FIRE_EXPLODE_SOUND[] = "zombie_plague/grenade_explode.wav";

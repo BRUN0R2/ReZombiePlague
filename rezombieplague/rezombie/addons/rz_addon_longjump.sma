@@ -5,8 +5,8 @@
 #include <fakemeta>
 #include <reapi>
 #include <rezp_inc/rezp_main>
-#include <util_messages>
-#include <util_tempentities>
+#include <rezp_inc/util_messages>
+#include <rezp_inc/util_tempentities>
 
 new const LONGJUMP_ICON_SPRITE[] = "item_longjump";
 new const LONGJUMP_ACTIVATE_SOUND[] = "zombie_plague/boss_shokwave.wav";

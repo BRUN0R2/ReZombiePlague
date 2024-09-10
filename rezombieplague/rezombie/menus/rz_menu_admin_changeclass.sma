@@ -82,18 +82,18 @@ ChangeClassMenu_Show(id, page = 0, class = 0)
 
 	SetGlobalTransTarget(id);
 
-	add_formatex("\yChange Player Class");
+	ADD_FORMATEX("\yChange Player Class");
 
 	if (!playersNum)
 	{
-		add_formatex("^n^n\r%d. \d%l^n", ++item, "RZ_EMPTY");
+		ADD_FORMATEX("^n^n\r%d. \d%l^n", ++item, "RZ_EMPTY");
 	}
 	else
 	{
 		if (playersNum > CHANGE_CLASS_MAX_PAGE_ITEMS)
-			add_formatex(" \r%d/%d", g_iMenuPage[id] + 1, ((playersNum - 1) / CHANGE_CLASS_MAX_PAGE_ITEMS) + 1);
+			ADD_FORMATEX(" \r%d/%d", g_iMenuPage[id] + 1, ((playersNum - 1) / CHANGE_CLASS_MAX_PAGE_ITEMS) + 1);
 
-		add_formatex("^n^n");
+		ADD_FORMATEX("^n^n");
 
 		new playerClass;
 
@@ -101,17 +101,17 @@ ChangeClassMenu_Show(id, page = 0, class = 0)
 		{
 			target = playersArray[i];
 
-			add_formatex("\r%d. \w%n", item + 1, target);
+			ADD_FORMATEX("\r%d. \w%n", item + 1, target);
 
 			if (is_user_alive(target))
 			{
 				playerClass = rz_player_get(target, RZ_PLAYER_CLASS);
 
 				rz_class_get(playerClass, RZ_CLASS_NAME, name, charsmax(name));
-				add_formatex(" %s[%l]^n", rz_class_get(playerClass, RZ_CLASS_TEAM) == TEAM_CT ? "\y" : "\r", name);
+				ADD_FORMATEX(" %s[%l]^n", rz_class_get(playerClass, RZ_CLASS_TEAM) == TEAM_CT ? "\y" : "\r", name);
 			}
 			else
-				add_formatex(" \r%l^n", "RZ_DEAD");
+				ADD_FORMATEX(" \r%l^n", "RZ_DEAD");
 
 			keys |= (1<<item);
 			item++;
@@ -119,25 +119,25 @@ ChangeClassMenu_Show(id, page = 0, class = 0)
 	}
 
 	for (i = item; i < CHANGE_CLASS_MAX_PAGE_ITEMS; i++)
-		add_formatex("^n");
+		ADD_FORMATEX("^n");
 
 	rz_class_get(class, RZ_CLASS_NAME, name, charsmax(name));
 
-	add_formatex("^n\r7. \w%l (%d/%d): %s%l^n", "RZ_TURN_INTO", (g_iMenuClass[id] - rz_class_start()) + 1, rz_class_size(), rz_class_get(class, RZ_CLASS_TEAM) == TEAM_CT ? "\y" : "\r", name);
+	ADD_FORMATEX("^n\r7. \w%l (%d/%d): %s%l^n", "RZ_TURN_INTO", (g_iMenuClass[id] - rz_class_start()) + 1, rz_class_size(), rz_class_get(class, RZ_CLASS_TEAM) == TEAM_CT ? "\y" : "\r", name);
 	keys |= MENU_KEY_7;
 
 	if (end < playersNum)
 	{
-		add_formatex("^n\r8. \w%l", "RZ_NEXT");
+		ADD_FORMATEX("^n\r8. \w%l", "RZ_NEXT");
 		keys |= MENU_KEY_8;
 	}
 	else if (g_iMenuPage[id])
-		add_formatex("^n\d8. %l", "RZ_NEXT");
+		ADD_FORMATEX("^n\d8. %l", "RZ_NEXT");
 
-	add_formatex("^n\r9. \w%l", "RZ_BACK");
+	ADD_FORMATEX("^n\r9. \w%l", "RZ_BACK");
 	keys |= MENU_KEY_9;
 
-	add_formatex("^n\r0. \w%l", "RZ_CLOSE");
+	ADD_FORMATEX("^n\r0. \w%l", "RZ_CLOSE");
 	keys |= MENU_KEY_0;
 
 	show_menu(id, keys, text, -1, CHANGECLASS_MENU_ID);

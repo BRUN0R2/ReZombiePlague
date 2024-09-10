@@ -4,8 +4,8 @@
 #include <hamsandwich>
 #include <reapi>
 #include <rezp_inc/rezp_main>
-#include <util_messages>
-#include <util_tempentities>
+#include <rezp_inc/util_messages>
+#include <rezp_inc/util_tempentities>
 
 new const RESPAWN_TIME = 3;
 new const INFECTION_DEATHMSG[] = "teammate";

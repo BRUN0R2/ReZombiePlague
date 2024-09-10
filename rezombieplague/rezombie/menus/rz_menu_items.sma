@@ -84,13 +84,13 @@ Items_Show(id, page = 0)
 	SetGlobalTransTarget(id);
 
 	if (singlePage)
-		add_formatex("\y%l^n^n", "RZ_ITEMS_TITLE");
+		ADD_FORMATEX("\y%l^n^n", "RZ_ITEMS_TITLE");
 	else
-		add_formatex("\y%l \r%d/%d^n^n", "RZ_ITEMS_TITLE", g_iMenuPage[id] + 1, ((itemNum - 1) / itemPerPage) + 1);
+		ADD_FORMATEX("\y%l \r%d/%d^n^n", "RZ_ITEMS_TITLE", g_iMenuPage[id] + 1, ((itemNum - 1) / itemPerPage) + 1);
 
 	if (!itemNum)
 	{
-		add_formatex("\r%d. \d%l^n", ++item, "RZ_EMPTY");
+		ADD_FORMATEX("\r%d. \d%l^n", ++item, "RZ_EMPTY");
 	}
 	else
 	{
@@ -103,12 +103,12 @@ Items_Show(id, page = 0)
 
 			if (account >= cost && rz_items_player_get_status(id, index) == RZ_CONTINUE)
 			{
-				add_formatex("\r%d. \w%l \y%l^n", item + 1, name, ammoPacksEnabled ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
+				ADD_FORMATEX("\r%d. \w%l \y%l^n", item + 1, name, ammoPacksEnabled ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
 				keys |= (1<<item);
 			}
 			else
 			{
-				add_formatex("\r%d. \d%l \y%l^n", item + 1, name, ammoPacksEnabled ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
+				ADD_FORMATEX("\r%d. \d%l \y%l^n", item + 1, name, ammoPacksEnabled ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
 			}
 
 			item++;
@@ -118,21 +118,21 @@ Items_Show(id, page = 0)
 	if (!singlePage)
 	{
 		for (i = item; i < ITEMS_MAX_PAGE_ITEMS; i++)
-			add_formatex("^n");
+			ADD_FORMATEX("^n");
 
 		if (end < itemNum)
 		{
-			add_formatex("^n\r8. \w%l", "RZ_NEXT");
+			ADD_FORMATEX("^n\r8. \w%l", "RZ_NEXT");
 			keys |= MENU_KEY_8;
 		}
 		else if (g_iMenuPage[id])
-			add_formatex("^n\d8. %l", "RZ_NEXT");
+			ADD_FORMATEX("^n\d8. %l", "RZ_NEXT");
 	}
 
-	add_formatex("^n\r9. \w%l", "RZ_BACK");
+	ADD_FORMATEX("^n\r9. \w%l", "RZ_BACK");
 	keys |= MENU_KEY_9;
 
-	add_formatex("^n\r0. \w%l", "RZ_CLOSE");
+	ADD_FORMATEX("^n\r0. \w%l", "RZ_CLOSE");
 	keys |= MENU_KEY_0;
 
 	show_menu(id, keys, text, -1, ITEMS_MENU_ID);

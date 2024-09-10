@@ -207,9 +207,9 @@ SubclassSelectMenu_Show(id, page = 0)
 	rz_class_get(g_iClass_Human, RZ_CLASS_NAME, name, charsmax(name));
 
 	if (singlePage)
-		add_formatex("\y%l^n^n", "RZ_SELECT_SUBCLASS", name);
+		ADD_FORMATEX("\y%l^n^n", "RZ_SELECT_SUBCLASS", name);
 	else
-		add_formatex("\y%l \r%d/%d^n^n", "RZ_SELECT_SUBCLASS", name, g_iMenuPage[id] + 1, ((itemsNum - 1) / itemPerPage) + 1);
+		ADD_FORMATEX("\y%l \r%d/%d^n^n", "RZ_SELECT_SUBCLASS", name, g_iMenuPage[id] + 1, ((itemsNum - 1) / itemPerPage) + 1);
 
 	for (i = start; i < end; i++)
 	{
@@ -220,11 +220,11 @@ SubclassSelectMenu_Show(id, page = 0)
 
 		if (rz_subclass_player_get_status(id, index) == RZ_CONTINUE)
 		{
-			add_formatex("\r%d. \w%l \d%l^n", item + 1, name, desc);
+			ADD_FORMATEX("\r%d. \w%l \d%l^n", item + 1, name, desc);
 			keys |= (1<<item);
 		}
 		else
-			add_formatex("\d%d. %l %l^n", item + 1, name, desc);
+			ADD_FORMATEX("\d%d. %l %l^n", item + 1, name, desc);
 
 		item++;
 	}
@@ -232,26 +232,26 @@ SubclassSelectMenu_Show(id, page = 0)
 	if (!singlePage)
 	{
 		for (i = item; i < SUBCLASS_MAX_PAGE_ITEMS; i++)
-			add_formatex("^n");
+			ADD_FORMATEX("^n");
 
 		if (end < itemsNum)
 		{
-			add_formatex("^n\r8. \w%l", "RZ_NEXT");
+			ADD_FORMATEX("^n\r8. \w%l", "RZ_NEXT");
 			keys |= MENU_KEY_8;
 		}
 		else
-			add_formatex("^n\d8. %l", "RZ_NEXT");
+			ADD_FORMATEX("^n\d8. %l", "RZ_NEXT");
 
 		if (g_iMenuPage[id])
 		{
-			add_formatex("^n\r9. \w%l", "RZ_BACK");
+			ADD_FORMATEX("^n\r9. \w%l", "RZ_BACK");
 			keys |= MENU_KEY_9;
 		}
 		else
-			add_formatex("^n\d9. %l", "RZ_BACK");
+			ADD_FORMATEX("^n\d9. %l", "RZ_BACK");
 	}
 
-	add_formatex("^n\r0. \w%l^n", "RZ_AUTOSELECT");
+	ADD_FORMATEX("^n\r0. \w%l^n", "RZ_AUTOSELECT");
 	keys |= MENU_KEY_0;
 
 	show_menu(id, keys, text);

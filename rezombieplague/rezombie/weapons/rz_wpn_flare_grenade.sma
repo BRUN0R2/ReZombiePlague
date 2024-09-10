@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <reapi>
 #include <rezp_inc/rezp_main>
-#include <util_tempentities>
+#include <rezp_inc/util_tempentities>
 
 new const FLARE_VIEW_MODEL[] = "models/zombie_plague/v_grenade_flare.mdl";
 new const FLARE_EXPLODE_SOUND[] = "items/nvg_on.wav";

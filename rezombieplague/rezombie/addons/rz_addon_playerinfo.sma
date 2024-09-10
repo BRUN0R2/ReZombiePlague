@@ -3,7 +3,7 @@
 #include <amxmodx>
 #include <reapi>
 #include <rezp_inc/rezp_main>
-#include <util_messages>
+#include <rezp_inc/util_messages>
 
 new Float:g_flNextHudInfoTime[MAX_PLAYERS + 1];
 
@@ -144,20 +144,20 @@ PlayerInfoHud_Show(id)
 
 	SetGlobalTransTarget(id);
 	
-	add_formatex("[%l: %d]", "RZ_HEALTH", floatround(get_entvar(id, var_health)));
+	ADD_FORMATEX("[%l: %d]", "RZ_HEALTH", floatround(get_entvar(id, var_health)));
 
 	if (rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
-		add_formatex("^n[%l: %d]", "RZ_AMMOPACKS", get_member(id, m_iAccount));
+		ADD_FORMATEX("^n[%l: %d]", "RZ_AMMOPACKS", get_member(id, m_iAccount));
 
 	if (subclass)
 	{
 		new subclassName[RZ_MAX_LANGKEY_LENGTH];
 		rz_subclass_get(subclass, RZ_SUBCLASS_NAME, subclassName, charsmax(subclassName));
 
-		add_formatex("^n[%l: %l]", name, subclassName);
+		ADD_FORMATEX("^n[%l: %l]", name, subclassName);
 	}
 	else
-		add_formatex("^n[%l: %l]", "RZ_CLASS", name);
+		ADD_FORMATEX("^n[%l: %l]", "RZ_CLASS", name);
 
 	set_hudmessage(color[0], color[1], color[2], rz_playerinfo_hud_pos[0], rz_playerinfo_hud_pos[1], 0, 0.0, 2.0, 0.0, 0.0);
 	ShowSyncHudMsg(id, g_iHudSync_Info, text);
