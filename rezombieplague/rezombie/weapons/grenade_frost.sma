@@ -9,9 +9,9 @@
 #include <rezp_inc/util_tempentities>
 
 new const FROST_VIEW_MODEL[] = "models/rezombie/weapons/grenades/frost_v.mdl";
-new const FROST_EXPLODE_SOUND[]= "warcraft3/frostnova.wav";
-new const FROST_FREEZE_SOUND[] = "warcraft3/impalehit.wav";
-new const FROST_BREAK_SOUND[] = "warcraft3/impalelaunch1.wav";
+new const FROST_EXPLODE_SOUND[]= "rezombie/weapons/grenades/frostnova.wav";
+new const FROST_FREEZE_SOUND[] = "rezombie/weapons/grenades/impalehit.wav";
+new const FROST_BREAK_SOUND[] = "rezombie/weapons/grenades/impalelaunch1.wav";
 
 new const ICECUBE_MODEL[] = "models/w_hegrenade.mdl";
 new const ICECUBE_CLASSNAME[] = "ent_icecube";
@@ -151,7 +151,7 @@ public client_disconnected(id)
 		return;
 
 	get_entvar(id, var_velocity, g_vecOldVelocity);
-	SetHookChainArg(4, ATYPE_FLOAT, damage * 0.5);
+	SetHookChainArg(4, ATYPE_FLOAT, damage * 0.7);
 }
 
 @CBasePlayer_TakeDamage_Post(id, inflictor, attacker, Float:damage, bitsDamageType)

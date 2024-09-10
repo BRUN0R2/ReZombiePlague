@@ -28,9 +28,9 @@ public plugin_precache()
 
 	rz_playermodel_add(model, "rz_source", .defaultHitboxes = true);
 
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/nemesis_pain1.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/nemesis_pain2.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/nemesis_pain3.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/nemesis/pain1.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/nemesis/pain2.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/nemesis/pain3.wav");
 	
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 150, 0, 0 });

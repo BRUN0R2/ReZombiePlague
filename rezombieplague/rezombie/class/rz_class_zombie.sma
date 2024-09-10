@@ -31,17 +31,17 @@ public plugin_precache()
 
 	rz_playermodel_add(model, "rz_source", .defaultHitboxes = true);
 
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/zombie_pain1.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/zombie_pain2.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/zombie_pain3.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/zombie_pain4.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/zombie_pain5.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/pain1.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/pain2.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/pain3.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/pain4.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_BHIT_FLESH, "rezombie/pain5.wav");
 
-	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie_die1.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie_die2.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie_die3.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie_die4.wav");
-	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie_die5.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/die1.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/die2.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/die3.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/die4.wav");
+	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/die5.wav");
 
 	rz_knife_sound_add(knife, RZ_KNIFE_SOUND_HIT, "weapons/knife_hit1.wav");
 	rz_knife_sound_add(knife, RZ_KNIFE_SOUND_HIT, "weapons/knife_hit2.wav");
