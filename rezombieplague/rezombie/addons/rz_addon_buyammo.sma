@@ -34,7 +34,7 @@ public plugin_cfg()
 		return PLUGIN_CONTINUE;
 
 	if (get_member(id, m_iAccount) < 1) {
-		rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_AMMO_NO_FOUNDS");
+		rz_print_chat(id, print_team_grey, "%L", id, "RZ_AMMO_NO_FOUNDS");
 		return PLUGIN_HANDLED;
 	}
 
@@ -70,7 +70,7 @@ public plugin_cfg()
 
 	rg_add_account(id, -1);
 	rh_emit_sound2(id, 0, CHAN_ITEM, "items/9mmclip1.wav", VOL_NORM, ATTN_NORM);
-	rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_BUY_AMMO_MESSAGE");
+	rz_print_chat(id, print_team_grey, "%L", id, "RZ_BUY_AMMO_MESSAGE");
 
 	return PLUGIN_HANDLED;
 }
@@ -89,5 +89,5 @@ public plugin_cfg()
 	if (get_member(id, m_iNumSpawns) != 1)
 		return;
 
-	rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_PRESS_BUY_AMMO");
+	rz_print_chat(id, print_team_grey, "%L", id, "RZ_PRESS_BUY_AMMO");
 }
