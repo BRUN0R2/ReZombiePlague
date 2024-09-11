@@ -147,7 +147,8 @@ GameModesMenu_Show(id, page = 0)
 			if (rz_gamemodes_get_status(gameMode, true) != RZ_CONTINUE)
 				return PLUGIN_HANDLED;
 
-			//rz_gamemodes_set(gameMode, RZ_true);
+			rz_gamemodes_change(gameMode);
+			set_member_game(m_iRoundTimeSecs, 0.0);
 		}
 	}
 
