@@ -7,8 +7,7 @@ public plugin_precache()
 {
 	register_plugin("[ReZP] Human Sub-class: Techno Dancer", REZP_VERSION_STR, "fl0wer");
 
-	new class;
-	RZ_CHECK_CLASS_EXISTS(class, "class_human");
+	new class; RZ_CHECK_CLASS_EXISTS(class, "class_human");
 
 	new const handle[] = "subclass_human_technodancer";
 

@@ -42,7 +42,7 @@ public rz_class_change_post(id, attacker, class)
 		return;
 
 	g_flMenuTimer[id] = get_gametime() + 9.0;
-	
+
 	SubclassSelectMenu_Show(id);
 }
 
@@ -213,7 +213,8 @@ SubclassSelectMenu_Show(id, page = 0)
 		rz_player_set(id, RZ_PLAYER_SUBCLASS_CHOSEN, subclass, g_iClass_Zombie);
 
 		rg_give_default_items(id);
-		rz_playerprops_player_change(id, rz_player_get(id, RZ_PLAYER_SUBCLASS));
+
+		rz_playerprops_player_change(id, rz_subclass_get(subclass, RZ_SUBCLASS_PROPS));
 		rz_playermodel_player_change(id, rz_player_get(id, RZ_PLAYER_MODEL));
 		//rz_nightvision_player_change(id);
 	}

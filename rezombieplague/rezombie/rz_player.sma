@@ -8,7 +8,7 @@
 #include <rezp_inc/util_tempentities>
 
 new const RESPAWN_TIME = 3;
-new const INFECTION_DEATHMSG[] = "teammate";
+new const INFECTION_DEATHMSG[] = "infection"; //teammate
 
 new const Float:HITGROUP_KNOCBACK_MULTIPLIER[MAX_BODYHITS] =
 {
@@ -151,14 +151,13 @@ public rz_class_change_post(id, attacker, class, bool:preSpawn)
 			rg_set_user_team(id, rz_class_get(class, RZ_CLASS_TEAM), MODEL_UNASSIGNED);
 
 			message_begin(MSG_ALL, gmsgDeathMsg);
-			SendDeathMsg(id, id, 0, INFECTION_DEATHMSG);
+			SendDeathMsg(0, id, 0, INFECTION_DEATHMSG);
 
 			message_begin(MSG_ALL, gmsgScoreAttrib);
 			SendScoreAttrib(id, 0);
 		}
 
-		if (rz_class_get(class, RZ_CLASS_TEAM) == TEAM_TERRORIST)
-		{
+		if (rz_class_get(class, RZ_CLASS_TEAM) == TEAM_TERRORIST) {
 			InfectionEffects(id);
 		}
 
@@ -184,11 +183,10 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 
 	if (enabled)
 	{
-		new color[3];
-		rz_nightvision_get(id, RZ_NIGHTVISION_COLOR, color);
+		new color[3]; rz_nightvision_get(id, RZ_NIGHTVISION_COLOR, color);
 
 		rz_util_send_lightstyle(player, 0, fmt("%c", rz_main_lighting_nvg_get()));
-		rz_util_send_screenfade(player, color, 0.0, 0.001, rz_nightvision_get(id, RZ_NIGHTVISION_ALPHA), (FFADE_OUT | FFADE_STAYOUT));
+		rz_util_send_screenfade(player, color, 0.0, 0.001, rz_nightvision_get(id, RZ_NIGHTVISION_ALPHA), (FFADE_IN | FFADE_STAYOUT | FFADE_MODULATE));
 	}
 	else
 	{

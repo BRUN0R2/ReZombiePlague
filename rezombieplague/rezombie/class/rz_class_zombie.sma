@@ -7,12 +7,15 @@
 new const ARMOR_HIT_SOUND[] = "player/bhit_helmet-1.wav";
 
 new g_iClass_Zombie;
+new g_iSubClass_Swarm;
 
 public plugin_precache()
 {
 	register_plugin("[ReZP] Class: Zombie", REZP_VERSION_STR, "fl0wer");
 
 	precache_sound(ARMOR_HIT_SOUND);
+
+	g_iSubClass_Swarm = rz_subclass_find("subclass_zombie_swarm");
 
 	new class = g_iClass_Zombie = rz_class_create("class_zombie", TEAM_TERRORIST);
 	new props = rz_class_get(class, RZ_CLASS_PROPS);
@@ -60,57 +63,71 @@ public plugin_precache()
 	rz_knife_set(knife, RZ_KNIFE_PLAYER_MODEL, "hide");
 }
 
-public plugin_init()
-{
+public plugin_init() {
 	RegisterHookChain(RG_CBasePlayer_TakeDamage, "@CBasePlayer_TakeDamage_Pre", false);
 }
 
-@CBasePlayer_TakeDamage_Pre(id, inflictor, attacker, Float:damage, bitsDamageType)
+@CBasePlayer_TakeDamage_Pre(pVictim, inflictor, pAttacker, Float:damage, bitsDamageType)
 {	
-	if (id == attacker || !is_user_connected(attacker))
-		return;
-	
-	if (!rg_is_player_can_takedamage(id, attacker))
-		return;
+	if (pVictim == pAttacker || !is_user_connected(pAttacker)) {
+		return HC_CONTINUE;
+	}
 
-	if (rz_player_get(attacker, RZ_PLAYER_CLASS) != g_iClass_Zombie)
-		return;
+	if (rz_player_get(pAttacker, RZ_PLAYER_SUBCLASS) == g_iSubClass_Swarm) {
+		return HC_CONTINUE;
+	}
+
+	if (!rg_is_player_can_takedamage(pVictim, pAttacker)) {
+		return HC_CONTINUE;
+	}
+
+	if (rz_player_get(pAttacker, RZ_PLAYER_CLASS) != g_iClass_Zombie) {
+		return HC_CONTINUE;
+	}
 
 	new gameMode = rz_gamemodes_get(RZ_GAMEMODES_CURRENT);
 
-	if (!gameMode)
-		return;
+	if (!gameMode) {
+		return HC_CONTINUE;
+	}
 
-	if (!rz_gamemode_get(gameMode, RZ_GAMEMODE_CHANGE_CLASS))
-		return;
+	if (!rz_gamemode_get(gameMode, RZ_GAMEMODE_CHANGE_CLASS)) {
+		return HC_CONTINUE;
+	}
 
-	new activeItem = get_member(attacker, m_pActiveItem);
+	new activeItem = get_member(pAttacker, m_pActiveItem);
 
-	if (is_nullent(activeItem) || get_member(activeItem, m_iId) != WEAPON_KNIFE)
-		return;
+	if (is_nullent(activeItem) || get_member(activeItem, m_iId) != WEAPON_KNIFE) {
+		return HC_CONTINUE;
+	}
 	
-	new Float:armorValue = get_entvar(id, var_armorvalue);
+	new Float:armorValue = get_entvar(pVictim, var_armorvalue);
 
 	if (armorValue > 0.0)
 	{
 		armorValue = floatmax(armorValue - damage, 0.0);
 
-		set_entvar(id, var_armorvalue, armorValue);
+		set_entvar(pVictim, var_armorvalue, armorValue);
 		SetHookChainArg(4, ATYPE_FLOAT, 0.0);
 		
-		rh_emit_sound2(id, 0, CHAN_BODY, ARMOR_HIT_SOUND);
+		rh_emit_sound2(pVictim, 0, CHAN_BODY, ARMOR_HIT_SOUND);
 	}
 
-	if (armorValue > 0.0 || (get_member(id, m_iKevlar) == ARMOR_VESTHELM && get_member(id, m_LastHitGroup) == HITGROUP_HEAD))
-		return;
+	if (armorValue > 0.0 || (get_member(pVictim, m_iKevlar) == ARMOR_VESTHELM && get_member(pVictim, m_LastHitGroup) == HITGROUP_HEAD)) {
+		return HC_CONTINUE;
+	}
 
 	new numAliveCT; rg_initialize_player_counts(_, numAliveCT);
 
-	if (numAliveCT == 1)
-		return;
+	if (numAliveCT == 1) {
+		return HC_CONTINUE;
+	}
 
-	if (!rz_class_player_change(id, attacker, g_iClass_Zombie))
-		return;
+	if (!rz_class_player_change(pVictim, pAttacker, g_iClass_Zombie)) {
+		return HC_CONTINUE;
+	}
 
 	SetHookChainArg(4, ATYPE_FLOAT, 0.0);
+
+	return HC_CONTINUE;
 }
