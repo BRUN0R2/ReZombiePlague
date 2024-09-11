@@ -194,7 +194,7 @@ public plugin_natives()
 	if (!buffer[0])
 		return;
 
-	new sender = print_team_default;
+	new sender = print_team_grey;
 
 	if (amount < 0)
 		sender = print_team_red;
