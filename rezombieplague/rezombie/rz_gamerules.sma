@@ -156,7 +156,6 @@ public plugin_init()
 		engfunc(EngFunc_AlertMessage, at_logged, "World triggered ^"Game_Commencing^"^n");
 
 		set_member_game(m_bFreezePeriod, false);
-		set_member_game(m_bCompleteReset, true);
 		set_member_game(m_bGameStarted, true);
 	}
 }

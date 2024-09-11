@@ -144,11 +144,13 @@ GameModesMenu_Show(id, page = 0)
 		{
 			new gameMode = ArrayGetCell(g_aMenuItems[id], g_iMenuPage[id] * GAMEMODES_MAX_PAGE_ITEMS + key);
 
-			if (rz_gamemodes_get_status(gameMode, true) != RZ_CONTINUE)
+			if (rz_gamemodes_get_status(gameMode, true) != RZ_CONTINUE) {
 				return PLUGIN_HANDLED;
+			}
 
-			rz_gamemodes_change(gameMode);
+			set_member_game(m_bCompleteReset, true);
 			set_member_game(m_iRoundTimeSecs, 0.0);
+			rz_gamemodes_change(gameMode);
 		}
 	}
 

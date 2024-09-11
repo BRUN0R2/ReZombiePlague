@@ -78,7 +78,7 @@ public rz_gamemodes_change_post(gameMode) {
 new lastChanceMod = 0;
 
 @CSGameRules_OnRoundFreezeEnd_Pre() {
-    if (!get_member_game(m_bGameStarted)) {
+    if (get_member_game(m_bGameStarted)) {
         return;
     }
 
