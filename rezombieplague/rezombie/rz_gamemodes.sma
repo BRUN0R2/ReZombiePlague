@@ -69,6 +69,7 @@ public rz_gamemodes_change_post(gameMode) {
     rz_main_lighting_global_reset();
     rz_main_lighting_nvg_reset();
 
+    set_member_game(m_bCompleteReset, false);
     rz_gamemodes_set(RZ_GAMEMODES_CURRENT, 0);
 
     rz_class_override_default(TEAM_TERRORIST, 0);
@@ -78,7 +79,7 @@ public rz_gamemodes_change_post(gameMode) {
 new lastChanceMod = 0;
 
 @CSGameRules_OnRoundFreezeEnd_Pre() {
-    if (get_member_game(m_bGameStarted)) {
+    if (!get_member_game(m_bGameStarted) || get_member_game(m_bCompleteReset)) {
         return;
     }
 
