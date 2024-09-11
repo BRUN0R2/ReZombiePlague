@@ -25,8 +25,9 @@ public plugin_precache()
 	rz_playermodel_add(model, "gign", .defaultHitboxes = false);
 	rz_playermodel_add(model, "leet", .defaultHitboxes = false);
 
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 100, 100, 100 });
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 63);
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 25, 255, 70 });
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 180);
 }
 
 public plugin_init()

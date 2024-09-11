@@ -74,11 +74,11 @@ native rz_subclass_size();
 native rz_subclass_get_default(class);
 native rz_subclass_set_default(class, subclass);
 
-native rz_subclass_player_change(id, subclass);
+native rz_subclass_player_change(id, subclass, attacker = 0);
 native rz_subclass_player_get_status(id, subclass);
 
-forward rz_subclass_change_pre(id, subclass);
-forward rz_subclass_change_post(id, subclass);
+forward rz_subclass_change_pre(id, subclass, attacker);
+forward rz_subclass_change_post(id, subclass, attacker);
 
 enum RZPlayerPropsProp
 {

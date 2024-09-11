@@ -16,7 +16,7 @@ public plugin_precache()
 
 	new class; RZ_CHECK_CLASS_EXISTS(class, "class_zombie");
 	new SubClass = g_SubClass_Hector = rz_subclass_create(handle, class);
-	new nvg = rz_subclass_get(SubClass, RZ_SUBCLASS_NIGHTVISION);
+	new nightVision = rz_subclass_get(SubClass, RZ_SUBCLASS_NIGHTVISION);
 
 	new props = rz_playerprops_create(handle);
 	new model = rz_subclass_get(SubClass, RZ_SUBCLASS_MODEL);
@@ -46,9 +46,9 @@ public plugin_precache()
 	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie/die4.wav");
 	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie/die5.wav");
 
-	rz_nightvision_set(nvg, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
-	rz_nightvision_set(nvg, RZ_NIGHTVISION_COLOR, { 0, 220, 80 });
-	rz_nightvision_set(nvg, RZ_NIGHTVISION_ALPHA, 120);
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 0, 220, 80 });
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 180);
 
 	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
 	rz_knife_set(knife, RZ_KNIFE_PLAYER_MODEL, "hide");

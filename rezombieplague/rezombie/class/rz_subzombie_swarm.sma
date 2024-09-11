@@ -4,6 +4,8 @@
 #include <reapi>
 #include <rezp_inc/rezp_main>
 
+new g_iSubClass_Swarm;
+
 public plugin_precache()
 {
 	register_plugin("[ReZP] Zombie Sub-class: Swarm", REZP_VERSION_STR, "fl0wer");
@@ -11,8 +13,8 @@ public plugin_precache()
 	new const handle[] = "subclass_zombie_swarm";
 
 	new class; RZ_CHECK_CLASS_EXISTS(class, "class_zombie");
-	new pSubclass = rz_subclass_create(handle, class);
-	new nvg = rz_subclass_get(pSubclass, RZ_SUBCLASS_NIGHTVISION);
+	new pSubclass = g_iSubClass_Swarm = rz_subclass_create(handle, class);
+	new nightVision = rz_subclass_get(pSubclass, RZ_SUBCLASS_NIGHTVISION);
 
 	new props = rz_playerprops_create(handle);
 	new model = rz_subclass_get(pSubclass, RZ_SUBCLASS_MODEL);
@@ -42,9 +44,9 @@ public plugin_precache()
 	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie/die4.wav");
 	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie/die5.wav");
 
-	rz_nightvision_set(nvg, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
-	rz_nightvision_set(nvg, RZ_NIGHTVISION_COLOR, { 0, 220, 80 });
-	rz_nightvision_set(nvg, RZ_NIGHTVISION_ALPHA, 120);
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 0, 220, 80 });
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 180);
 
 	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
 	rz_knife_set(knife, RZ_KNIFE_PLAYER_MODEL, "hide");
@@ -53,4 +55,11 @@ public plugin_precache()
 	rz_knife_set(knife, RZ_KNIFE_STAB_DISTANCE, 45.0);
 	rz_knife_set(knife, RZ_KNIFE_SWING_DISTANCE, 60.0);
 	rz_knife_set(knife, RZ_KNIFE_KNOCKBACK_POWER, 60.0);
+}
+
+public rz_subclass_change_pre(id, subclass, pAttacker) {
+	if (pAttacker && rz_player_get(pAttacker, RZ_PLAYER_SUBCLASS) == g_iSubClass_Swarm) {
+		return RZ_SUPERCEDE;
+	}
+	return RZ_CONTINUE;
 }

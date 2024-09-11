@@ -43,23 +43,23 @@ public plugin_precache()
 
 public plugin_init()
 {
-	gForwards[Fw_Subclass_Change_Pre] = CreateMultiForward("rz_subclass_change_pre", ET_CONTINUE, FP_CELL, FP_CELL, FP_CELL);
-	gForwards[Fw_Subclass_Change_Post] = CreateMultiForward("rz_subclass_change_post", ET_IGNORE, FP_CELL, FP_CELL, FP_CELL);
+	gForwards[Fw_Subclass_Change_Pre] = CreateMultiForward("rz_subclass_change_pre", ET_CONTINUE, FP_CELL, FP_CELL, FP_CELL, FP_CELL);
+	gForwards[Fw_Subclass_Change_Post] = CreateMultiForward("rz_subclass_change_post", ET_IGNORE, FP_CELL, FP_CELL, FP_CELL, FP_CELL);
 }
 
-ChangeSubclass(id, subclass, bool:instant = false)
+ChangeSubclass(id, subclass, attacker, bool:instant = false)
 {
 	new index = rz_module_get_valid_index(g_iModule, subclass);
 
 	if (index == -1)
 		return false;
 
-	ExecuteForward(gForwards[Fw_Subclass_Change_Pre], gForwards[Fw_Return], id, subclass, instant);
+	ExecuteForward(gForwards[Fw_Subclass_Change_Pre], gForwards[Fw_Return], id, subclass, attacker, instant);
 
 	if (gForwards[Fw_Return] >= RZ_SUPERCEDE)
 		return false;
 
-	ExecuteForward(gForwards[Fw_Subclass_Change_Post], gForwards[Fw_Return], id, subclass, instant);
+	ExecuteForward(gForwards[Fw_Subclass_Change_Post], gForwards[Fw_Return], id, subclass, attacker, instant);
 	return true;
 }
 
@@ -280,12 +280,13 @@ public plugin_natives()
 
 @native_subclass_player_change(plugin, argc)
 {
-	enum { arg_player = 1, arg_subclass, arg_instant };
+	enum { arg_player = 1, arg_subclass, arg_attacker, arg_instant };
 
 	new player = get_param(arg_player);
 	new subclass = get_param(arg_subclass);
+	new attacker = get_param(arg_attacker);
 
-	return ChangeSubclass(player, subclass, any:get_param(arg_instant));
+	return ChangeSubclass(player, subclass, attacker, any:get_param(arg_instant));
 }
 
 @native_subclass_player_get_status(plugin, argc)
@@ -301,6 +302,6 @@ public plugin_natives()
 
 	RZ_CHECK_MODULE_VALID_INDEX(index, RZ_BREAK)
 
-	ExecuteForward(gForwards[Fw_Subclass_Change_Pre], gForwards[Fw_Return], player, subclass, false);
+	ExecuteForward(gForwards[Fw_Subclass_Change_Pre], gForwards[Fw_Return], player, subclass, 0, false);
 	return gForwards[Fw_Return];
 }

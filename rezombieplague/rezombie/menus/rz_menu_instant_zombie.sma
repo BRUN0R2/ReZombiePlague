@@ -211,9 +211,9 @@ SubclassSelectMenu_Show(id, page = 0)
 	if (rz_subclass_player_change(id, subclass))
 	{
 		rz_player_set(id, RZ_PLAYER_SUBCLASS_CHOSEN, subclass, g_iClass_Zombie);
+		rz_player_set(id, RZ_PLAYER_SUBCLASS) != g_iClass_Zombie;
 
 		rg_give_default_items(id);
-
 		rz_playerprops_player_change(id, rz_subclass_get(subclass, RZ_SUBCLASS_PROPS));
 		rz_playermodel_player_change(id, rz_player_get(id, RZ_PLAYER_MODEL));
 		//rz_nightvision_player_change(id);

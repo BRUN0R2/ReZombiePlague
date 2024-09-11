@@ -30,7 +30,7 @@ public plugin_precache()
 
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 150, 150, 0 });
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 63);
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 180);
 
 	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
 	rz_knife_set(knife, RZ_KNIFE_PLAYER_MODEL, "hide");

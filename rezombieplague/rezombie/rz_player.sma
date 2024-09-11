@@ -33,9 +33,12 @@ new g_iSettedBody[MAX_PLAYERS + 1];
 
 new Float:mp_round_restart_delay;
 
+new g_iSubClass_Swarm;
+
 public plugin_precache()
 {
 	register_plugin("[ReZP] Player", REZP_VERSION_STR, "fl0wer");
+	g_iSubClass_Swarm = rz_subclass_find("subclass_zombie_swarm");
 }
 
 public plugin_init()
@@ -103,7 +106,7 @@ public rz_class_change_post(id, attacker, class, bool:preSpawn)
 		if (chosen)
 			subclass = chosen;
 
-		if (!rz_subclass_player_change(id, subclass))
+		if (!rz_subclass_player_change(id, subclass, attacker))
 			subclass = 0;
 	}
 
@@ -122,7 +125,6 @@ public rz_class_change_post(id, attacker, class, bool:preSpawn)
 	if (preSpawn)
 	{
 		set_member(id, m_iTeam, rz_class_get(class, RZ_CLASS_TEAM));
-
 		rz_playermodel_player_change(id, rz_player_get(id, RZ_PLAYER_MODEL), true);
 	}
 	else
@@ -186,7 +188,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 		new color[3]; rz_nightvision_get(id, RZ_NIGHTVISION_COLOR, color);
 
 		rz_util_send_lightstyle(player, 0, fmt("%c", rz_main_lighting_nvg_get()));
-		rz_util_send_screenfade(player, color, 0.0, 0.001, rz_nightvision_get(id, RZ_NIGHTVISION_ALPHA), (FFADE_IN | FFADE_STAYOUT | FFADE_MODULATE));
+		rz_util_send_screenfade(player, color, 0.0, 0.001, rz_nightvision_get(id, RZ_NIGHTVISION_ALPHA), (FFADE_OUT| FFADE_STAYOUT | FFADE_MODULATE));
 	}
 	else
 	{
@@ -201,10 +203,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 
 @Command_NightVision(id)
 {
-	if (!is_user_connected(id))
-		return PLUGIN_HANDLED;
-
-	if (!rz_player_get(id, RZ_PLAYER_HAS_NIGHTVISION))
+	if (!is_user_connected(id) && !rz_player_get(id, RZ_PLAYER_HAS_NIGHTVISION))
 		return PLUGIN_HANDLED;
 
 	new Float:time = get_gametime();
