@@ -44,7 +44,7 @@ public plugin_precache()
 public plugin_init()
 {
 	register_message(get_user_msgid("ScreenFade"), "@MSG_ScreenFade");
-	//register_message(get_user_msgid("Message_Fog"), "@MSG_PlayerFog");
+	register_message(get_user_msgid("Message_Fog"), "@MSG_PlayerFog");
 
 	register_clcmd("nightvision", "@Command_NightVision");
 
@@ -190,7 +190,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 
 		rz_util_send_lightstyle(player, 0, fmt("%c", rz_main_lighting_nvg_get()));
 		rz_util_send_screenfade(player, color, 0.0, 0.001, rz_nightvision_get(id, RZ_NIGHTVISION_ALPHA), (FFADE_OUT| FFADE_STAYOUT | FFADE_MODULATE));
-		rz_util_send_player_fog(player, color, 2000.0);
+		rz_util_send_player_fog(player, color, 1700.0);
 	}
 	else
 	{
