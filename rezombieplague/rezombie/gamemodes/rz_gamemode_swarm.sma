@@ -21,9 +21,9 @@ public plugin_precache()
 	rz_gamemode_set(gameMode, RZ_GAMEMODE_CHANCE, 20);
 }
 
-public rz_gamemodes_change_post(mode, Array:alivesArray)
+public rz_gamemodes_change_post(gamemode, Array:alivesArray)
 {
-	if (mode != g_iGameMode_Swarm)
+	if (gamemode != g_iGameMode_Swarm)
 		return;
 
 	new alivesNum = ArraySize(alivesArray);
@@ -31,7 +31,7 @@ public rz_gamemodes_change_post(mode, Array:alivesArray)
 
 	new item;
 	new player;
-	
+
 	for (new i = 0; i < maxZombies; i++)
 	{
 		item = random_num(0, ArraySize(alivesArray) - 1);
