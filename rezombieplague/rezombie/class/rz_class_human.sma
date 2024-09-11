@@ -26,8 +26,8 @@ public plugin_precache()
 	rz_playermodel_add(model, "sas", .defaultHitboxes = false);
 	rz_playermodel_add(model, "gign", .defaultHitboxes = false);
 
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 100, 100, 100 });
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 63);
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 50, 120, 220 });
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 180);
 }
 
 public plugin_init()
