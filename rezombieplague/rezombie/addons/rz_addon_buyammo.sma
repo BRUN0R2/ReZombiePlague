@@ -13,6 +13,8 @@ public plugin_init()
 
 	register_clcmd("buyammo1", "@Command_BuyAmmo", any:PRIMARY_WEAPON_SLOT);
 	register_clcmd("buyammo2", "@Command_BuyAmmo", any:PISTOL_SLOT);
+
+	RegisterHookChain(RG_CBasePlayer_Spawn, "@CBasePlayer_Spawn_Post", .post = true);
 }
 
 public plugin_cfg()
@@ -31,9 +33,8 @@ public plugin_cfg()
 	if (!is_user_alive(id))
 		return PLUGIN_CONTINUE;
 
-	if (get_member(id, m_iAccount) < 1)
-	{
-		rz_print_chat(id, print_team_grey, "You don't have enough ammo packs.");
+	if (get_member(id, m_iAccount) < 1) {
+		rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_AMMO_NO_FOUNDS");
 		return PLUGIN_HANDLED;
 	}
 
@@ -69,7 +70,7 @@ public plugin_cfg()
 
 	rg_add_account(id, -1);
 	rh_emit_sound2(id, 0, CHAN_ITEM, "items/9mmclip1.wav", VOL_NORM, ATTN_NORM);
-	rz_print_chat(id, print_team_grey, "You purchased extra ammo for your guns.");
+	rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_BUY_AMMO_MESSAGE");
 
 	return PLUGIN_HANDLED;
 }

@@ -64,6 +64,29 @@ stock rz_util_send_screenfade(id, color[3], Float:fadeTime, Float:fadeHold = 0.0
 	message_end();
 }
 
+stock rz_util_send_player_fog(id, color[3], Float:pRange = 0.0)
+{
+	if (pRange >= 0.0)
+	{
+		new Float:flDensity = pRange < 0 ? 0.0 : (1.0 / pRange);
+
+		message_begin(MSG_ONE, get_user_msgid("Fog"), {0, 0, 0}, id);
+		write_byte(clamp(color[0], 0, 255));
+		write_byte(clamp(color[1], 0, 255));
+		write_byte(clamp(color[2], 0, 255));
+		write_long(_:flDensity);
+		message_end();
+	} else {
+		new Float:flDensity = 0.0;
+		message_begin(MSG_ONE, get_user_msgid("Fog"), {0, 0, 0}, id);
+		write_byte(color[0]);
+		write_byte(color[1]);
+		write_byte(color[2]);
+		write_long(_:flDensity);
+		message_end();
+	}
+}
+
 // All stocks are from tempentities.inc and messages.inc
 // I just did it to make things easier
 

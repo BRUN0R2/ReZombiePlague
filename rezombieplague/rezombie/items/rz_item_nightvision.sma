@@ -21,12 +21,17 @@ public plugin_precache()
 	new item = g_iItem_NightVision = rz_item_create("human_nvg");
 
 	rz_item_set(item, RZ_ITEM_NAME, "RZ_ITEM_NIGHTVISION");
-	rz_item_set(item, RZ_ITEM_COST, 15);
+	rz_item_set(item, RZ_ITEM_COST, 20);
 
 	new nightVision = g_iHumanNVG = rz_nightvision_create("item_nvg");
 
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 63);
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 35, 100, 255 });
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 180);
+}
+
+public plugin_init() {
+	RegisterHookChain(RG_CBasePlayer_Spawn, "@CBasePlayer_Spawn_Post", .post = true);
 }
 
 public rz_items_select_pre(id, item)
@@ -50,6 +55,20 @@ public rz_items_select_post(id, item)
 
 	rz_player_set(id, RZ_PLAYER_HAS_NIGHTVISION, true);
 	rz_nightvisions_player_change(id, g_iHumanNVG, true);
-	
+
 	rh_emit_sound2(id, 0, CHAN_ITEM, EQUIP_NVG_SOUND, VOL_NORM, ATTN_NORM);
+}
+
+@CBasePlayer_Spawn_Post(const id)
+{
+	if (!is_user_alive(id))
+		return;
+
+	if (get_member(id, m_iNumSpawns) != 1)
+		return;
+
+	if (rz_player_get(id, RZ_PLAYER_CLASS) != g_iClass_Human)
+		return;
+
+	rz_player_set(id, RZ_PLAYER_HAS_NIGHTVISION, true);
 }

@@ -316,7 +316,7 @@ ConfigField_AmmoPacks(creating, JSON:configJson, value[] = "ammopacks")
 	new const enabledField[] = "enabled";
 	new const joinAmountField[] = "join_amount";
 
-	new joinAmount = 100;
+	new joinAmount = 1800;
 	new bool:enabled = true;
 	new JSON:jsonHandle;
 

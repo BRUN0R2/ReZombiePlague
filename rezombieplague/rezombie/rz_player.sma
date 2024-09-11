@@ -44,6 +44,7 @@ public plugin_precache()
 public plugin_init()
 {
 	register_message(get_user_msgid("ScreenFade"), "@MSG_ScreenFade");
+	//register_message(get_user_msgid("Message_Fog"), "@MSG_PlayerFog");
 
 	register_clcmd("nightvision", "@Command_NightVision");
 
@@ -189,15 +190,21 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 
 		rz_util_send_lightstyle(player, 0, fmt("%c", rz_main_lighting_nvg_get()));
 		rz_util_send_screenfade(player, color, 0.0, 0.001, rz_nightvision_get(id, RZ_NIGHTVISION_ALPHA), (FFADE_OUT| FFADE_STAYOUT | FFADE_MODULATE));
+		rz_util_send_player_fog(player, color, 2000.0);
 	}
 	else
 	{
 		rz_util_send_lightstyle(player, 0, fmt("%c", rz_main_lighting_global_get()));
-		rz_util_send_screenfade(player, { 0, 0, 0 }, 0.001);
+		rz_util_send_screenfade(player, {0, 0, 0}, 0.001);
+		rz_util_send_player_fog(player, {0, 0, 0}, -1.0);
 	}
 }
 
 @MSG_ScreenFade(id, dest, player) {
+	return PLUGIN_HANDLED;
+}
+
+@MSG_PlayerFog(id, dest, player) {
 	return PLUGIN_HANDLED;
 }
 
@@ -550,8 +557,8 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 
 @CBasePlayer_StartObserver_Post(id, Float:vecPosition[3], Float:vecViewAngle[3])
 {
-	/*g_bNightVision[id] = true;
-	g_bHasNightVision[id] = true;*/
+	g_bNightVision[id] = true;
+	set_member(id, m_bHasNightVision, true);
 }
 
 @CBasePlayer_Observer_IsValidTarget_Post(id, player, bool:sameTeam)
