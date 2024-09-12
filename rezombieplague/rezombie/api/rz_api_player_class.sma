@@ -15,6 +15,8 @@ enum _:ClassData
 	Class_PlayerSound,
 	Class_Knife,
 	Class_NightVision,
+	Class_PlayerFog_Color[3],
+	Float:Class_PlayerFog_Distance,
 
 }; new Array:g_aClasses;
 
@@ -99,6 +101,9 @@ ClassNatives()
 	data[Class_PlayerSound] = rz_playersound_create(fmt("%s_playersounds", data[Class_Handle]));
 	data[Class_NightVision] = rz_nightvision_create(fmt("%s_nightvision", data[Class_Handle]));
 
+	data[Class_PlayerFog_Color] = { 0, 0, 0 };
+	data[Class_PlayerFog_Distance] = 1200.0;
+
 	new TeamName:team = data[Class_Team];
 
 	RZ_CHECK_PLAYABLE_TEAM(team, 0)
@@ -162,6 +167,14 @@ ClassNatives()
 		{
 			return gClassData[Class_NightVision];
 		}
+		case RZ_CLASS_FOG_COLOR:
+		{
+			set_array(arg_3, gClassData[Class_PlayerFog_Color], sizeof(gClassData[Class_PlayerFog_Color]));
+		}
+		case RZ_CLASS_FOG_DISTANCE:
+		{
+			return any:gClassData[Class_PlayerFog_Distance];
+		}
 		default:
 		{
 			rz_log(true, "Player class property '%d' not found for '%s'", prop, gClassData[Class_Handle]);
@@ -222,6 +235,14 @@ ClassNatives()
 		case RZ_CLASS_NIGHTVISION:
 		{
 			gClassData[Class_NightVision] = get_param_byref(arg_3);
+		}
+		case RZ_CLASS_FOG_COLOR:
+		{
+			get_array(arg_3, gClassData[Class_PlayerFog_Color], sizeof(gClassData[Class_PlayerFog_Color]));
+		}
+		case RZ_CLASS_FOG_DISTANCE:
+		{
+			gClassData[Class_PlayerFog_Distance] = get_float_byref(arg_3);
 		}
 		default:
 		{

@@ -28,9 +28,13 @@ public plugin_precache()
 	rz_subclass_set(pSubclass, RZ_SUBCLASS_PROPS, props);
 	rz_subclass_set(pSubclass, RZ_SUBCLASS_KNIFE, knife);
 
+	rz_subclass_set(pSubclass, RZ_SUBCLASS_FOG_COLOR, { 15, 20, 18 });
+	rz_subclass_set(pSubclass, RZ_SUBCLASS_FOG_DISTANCE, 800.0);
+
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_HEALTH, 2500.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_SPEED, 250.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_GRAVITY, 1.0);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_FOOTSTEPS, false);
 
 	rz_playermodel_add(model, "rz_source", .defaultHitboxes = true);
 

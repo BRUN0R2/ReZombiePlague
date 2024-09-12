@@ -23,15 +23,17 @@ native rz_player_set(id, RZPlayerProp:prop, any:...);
 
 enum RZClassProp
 {
-	RZ_CLASS_HANDLE, // [RZ_MAX_HANDLE_LENGTH]
-	RZ_CLASS_NAME, // [RZ_MAX_LANGKEY_LENGTH]
-	RZ_CLASS_TEAM, // enum TeamName
-	RZ_CLASS_HUD_COLOR, // [3]
-	RZ_CLASS_PROPS, // cell
-	RZ_CLASS_MODEL, // cell
-	RZ_CLASS_SOUND, // cell
-	RZ_CLASS_KNIFE, // cell
-	RZ_CLASS_NIGHTVISION, // cell
+	RZ_CLASS_HANDLE,		// [RZ_MAX_HANDLE_LENGTH]
+	RZ_CLASS_NAME,			// [RZ_MAX_LANGKEY_LENGTH]
+	RZ_CLASS_TEAM,			// enum TeamName
+	RZ_CLASS_HUD_COLOR,		// [3]
+	RZ_CLASS_PROPS,			// cell
+	RZ_CLASS_MODEL,			// cell
+	RZ_CLASS_SOUND,			// cell
+	RZ_CLASS_KNIFE,			// cell
+	RZ_CLASS_NIGHTVISION,	// cell
+	RZ_CLASS_FOG_COLOR,		// [3]
+	RZ_CLASS_FOG_DISTANCE,	// Float
 };
 
 native rz_class_create(const handle[], TeamName:team);
@@ -52,15 +54,17 @@ forward rz_class_change_post(id, attacker, class, bool:preSpawn);
 
 enum RZSubclassProp
 {
-	RZ_SUBCLASS_HANDLE, // [RZ_MAX_HANDLE_LENGTH]
-	RZ_SUBCLASS_CLASS, // cell
-	RZ_SUBCLASS_NAME, // [RZ_MAX_LANGKEY_LENGTH]
-	RZ_SUBCLASS_DESC, // [RZ_MAX_LANGKEY_LENGTH]
-	RZ_SUBCLASS_PROPS, // cell
-	RZ_SUBCLASS_MODEL, // cell
-	RZ_SUBCLASS_SOUND, // cell
-	RZ_SUBCLASS_KNIFE, // cell
-	RZ_SUBCLASS_NIGHTVISION, // cell
+	RZ_SUBCLASS_HANDLE,		// [RZ_MAX_HANDLE_LENGTH]
+	RZ_SUBCLASS_CLASS,		// cell
+	RZ_SUBCLASS_NAME,		// [RZ_MAX_LANGKEY_LENGTH]
+	RZ_SUBCLASS_DESC,		// [RZ_MAX_LANGKEY_LENGTH]
+	RZ_SUBCLASS_PROPS,		// cell
+	RZ_SUBCLASS_MODEL,		// cell
+	RZ_SUBCLASS_SOUND,		// cell
+	RZ_SUBCLASS_KNIFE,		// cell
+	RZ_SUBCLASS_NIGHTVISION,// cell
+	RZ_SUBCLASS_FOG_COLOR,	// [3]
+	RZ_SUBCLASS_FOG_DISTANCE// Float
 };
 
 native rz_subclass_create(const handle[], class);

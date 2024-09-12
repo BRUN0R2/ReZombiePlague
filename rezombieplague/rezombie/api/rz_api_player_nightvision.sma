@@ -39,14 +39,14 @@ public plugin_init()
 	gForwards[Fw_NightVisions_Change_Post] = CreateMultiForward("rz_nightvisions_change_post", ET_IGNORE, FP_CELL, FP_CELL, FP_CELL);
 }
 
-ChangeNightVision(id, player, bool:enabled = false)
+ChangeNightVision(nightvision, player, bool:enabled = false)
 {
-	ExecuteForward(gForwards[Fw_NightVisions_Change_Pre], gForwards[Fw_Return], id, player, enabled);
+	ExecuteForward(gForwards[Fw_NightVisions_Change_Pre], gForwards[Fw_Return], nightvision, player, enabled);
 
 	if (gForwards[Fw_Return] >= RZ_SUPERCEDE)
 		return false;
 
-	ExecuteForward(gForwards[Fw_NightVisions_Change_Post], gForwards[Fw_Return], id, player, enabled);
+	ExecuteForward(gForwards[Fw_NightVisions_Change_Post], gForwards[Fw_Return], nightvision, player, enabled);
 	return true;
 }
 

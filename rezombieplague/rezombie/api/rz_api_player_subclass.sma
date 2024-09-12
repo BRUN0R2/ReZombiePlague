@@ -14,7 +14,8 @@ enum _:SubclassData
 	Subclass_PlayerSound,
 	Subclass_Knife,
 	Subclass_NightVision,
-
+	Subclass_PlayerFog_Color[3],
+	Float:Subclass_PlayerFog_Distance,
 }; new Array:g_aSubclasses;
 
 new gSubclassData[SubclassData];
@@ -102,6 +103,9 @@ public plugin_natives()
 	data[Subclass_PlayerSound] = rz_playersound_create(fmt("%s_playersounds", data[Subclass_Handle]));
 	data[Subclass_NightVision] = rz_nightvision_create(fmt("%s_nightvision", data[Subclass_Handle]));
 
+	data[Subclass_PlayerFog_Color] = { 0, 0, 0 };
+	data[Subclass_PlayerFog_Distance] = 1200.0;
+
 	new id = ArrayPushArray(g_aSubclasses, data) + rz_module_get_offset(g_iModule);
 
 	TrieSetCell(g_tDefaultSubclass, ClassToStr(class), id, false);
@@ -158,6 +162,14 @@ public plugin_natives()
 		case RZ_SUBCLASS_NIGHTVISION:
 		{
 			return gSubclassData[Subclass_NightVision];
+		}
+		case RZ_SUBCLASS_FOG_COLOR:
+		{
+			set_array(arg_3, gSubclassData[Subclass_PlayerFog_Color], sizeof(gSubclassData[Subclass_PlayerFog_Color]));
+		}
+		case RZ_SUBCLASS_FOG_DISTANCE:
+		{
+			return any:gSubclassData[Subclass_PlayerFog_Distance];
 		}
 		default:
 		{
@@ -219,6 +231,14 @@ public plugin_natives()
 		case RZ_SUBCLASS_NIGHTVISION:
 		{
 			gSubclassData[Subclass_NightVision] = get_param_byref(arg_3);
+		}
+		case RZ_SUBCLASS_FOG_COLOR:
+		{
+			get_array(arg_3, gSubclassData[Subclass_PlayerFog_Color], sizeof(gSubclassData[Subclass_PlayerFog_Color]));
+		}
+		case RZ_SUBCLASS_FOG_DISTANCE:
+		{
+			gSubclassData[Subclass_PlayerFog_Distance] = get_float_byref(arg_3);
 		}
 		default:
 		{

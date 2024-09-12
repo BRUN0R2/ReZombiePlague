@@ -175,27 +175,39 @@ public rz_subclass_change_post(id, subclass)
 	rz_player_set(id, RZ_PLAYER_NIGHTVISION, rz_subclass_get(subclass, RZ_SUBCLASS_NIGHTVISION));
 }
 
-public rz_nightvisions_change_post(id, player, bool:enabled)
+public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 {
-	rz_player_set(player, RZ_PLAYER_HAS_NIGHTVISION, (rz_nightvision_get(id, RZ_NIGHTVISION_EQUIP) > RZ_NVG_EQUIP_DISABLED));
-	rz_player_set(player, RZ_PLAYER_NIGHTVISION, id);
+	rz_player_set(player, RZ_PLAYER_HAS_NIGHTVISION, (rz_nightvision_get(nightvision, RZ_NIGHTVISION_EQUIP) > RZ_NVG_EQUIP_DISABLED));
+	rz_player_set(player, RZ_PLAYER_NIGHTVISION, nightvision);
 	rz_player_set(player, RZ_PLAYER_NIGHTVISION_ENABLED, enabled);
 
 	if (enabled)
 	{
-		new pNightVisionColor[3];
+		new pVisionColor[3];
+
+		new pClass = rz_player_get(player, RZ_PLAYER_CLASS);
+		if (pClass) {
+			new Float:pDistance = 1200.0;
+			rz_class_get(pClass, RZ_CLASS_FOG_COLOR, pVisionColor);
+			rz_class_get(pClass, RZ_CLASS_FOG_DISTANCE, pDistance);
+
+			new pSubclass = rz_player_get(player, RZ_PLAYER_SUBCLASS);
+	
+			if (pSubclass) {
+				rz_subclass_get(pSubclass, RZ_SUBCLASS_FOG_COLOR, pVisionColor);
+				rz_subclass_get(pSubclass, RZ_SUBCLASS_FOG_DISTANCE, pDistance);
+			}
+
+			pVisionColor[0] = clamp(pVisionColor[0], 0, 255);
+			pVisionColor[1] = clamp(pVisionColor[1], 0, 255);
+			pVisionColor[2] = clamp(pVisionColor[2], 0, 255);
+
+			rz_util_send_player_fog(player, pVisionColor, pDistance);
+		}
 
 		rz_util_send_lightstyle(player, 0, fmt("%c", rz_main_lighting_nvg_get()));
-
-		rz_nightvision_get(id, RZ_NIGHTVISION_COLOR, pNightVisionColor);
-		rz_util_send_screenfade(player, pNightVisionColor, 0.0, 0.001, rz_nightvision_get(id, RZ_NIGHTVISION_ALPHA), (FFADE_STAYOUT | FFADE_MODULATE));
-
-		new pPlayerFogColor[3], Float:pFogDistance;
-
-		rz_player_fog_get(id, RZ_PLAYER_FOG_COLOR, pPlayerFogColor);
-		rz_player_fog_get(id, RZ_PLAYER_FOG_DISTANCE, pFogDistance);
-
-		rz_util_send_player_fog(player, pPlayerFogColor, pFogDistance);
+		rz_nightvision_get(nightvision, RZ_NIGHTVISION_COLOR, pVisionColor);
+		rz_util_send_screenfade(player, pVisionColor, 0.0, 0.001, rz_nightvision_get(nightvision, RZ_NIGHTVISION_ALPHA), (FFADE_STAYOUT | FFADE_MODULATE));
 	}
 	else
 	{
