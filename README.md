@@ -18,4 +18,4 @@ Just install it on your game server and report problems you faced.
 
 ## Acknowledgments
 Thanks to projects: ReGameDLL_CS, AMX Mod X, ReAPI<br/>
-Thanks to humans: wellasgood, Nvoymax, Alex, DANDY, steelzzz, Droads, Nordic Warrior, kostikovkirill, CaHTuK, Bodom, DimaS, bristol, wopox1337, nrjdemon, PurposeLess and others.<br/>
+Thanks to humans: wellasgood, Nvoymax, Alex, DANDY, steelzzz, Droads, Nordic Warrior, kostikovkirill, CaHTuK, Bodom, DimaS, bristol, wopox1337, nrjdemon, PurposeLess, Wilian M. and others.<br/>
