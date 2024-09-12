@@ -210,7 +210,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 	if (!is_user_connected(id))
 		return PLUGIN_HANDLED;
 
-	if (!!rz_player_get(id, RZ_PLAYER_HAS_NIGHTVISION))
+	if (!rz_player_get(id, RZ_PLAYER_HAS_NIGHTVISION))
 		return PLUGIN_HANDLED;
 
 	new Float:time = get_gametime();
