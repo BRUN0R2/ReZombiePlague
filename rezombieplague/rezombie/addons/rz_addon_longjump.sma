@@ -28,13 +28,8 @@ enum IconState
 	ICONSTATE_COOLDOWN,
 };
 
-new g_iModelIndex_Trail;
-
-public plugin_precache()
-{
+public plugin_precache(){
 	register_plugin("[ReZP] Addon: Long Jump", REZP_VERSION_STR, "fl0wer");
-
-	g_iModelIndex_Trail = precache_model("sprites/laserbeam.spr");
 }
 
 public plugin_init()
@@ -93,9 +88,6 @@ ChangeLongJump(id, bool:enabled, Float:force = 0.0, Float:height = 0.0, Float:co
 	if (gLongJump[id][LongJump_KillBeamTime] && gLongJump[id][LongJump_KillBeamTime] <= time)
 	{
 		gLongJump[id][LongJump_KillBeamTime] = 0.0;
-
-		message_begin_f(MSG_ALL, SVC_TEMPENTITY);
-		TE_KillBeam(id);
 	}
 
 	if (gLongJump[id][LongJump_NextTime])
@@ -118,7 +110,7 @@ ChangeLongJump(id, bool:enabled, Float:force = 0.0, Float:height = 0.0, Float:co
 	new Float:vecVelocity[3];
 	get_entvar(id, var_velocity, vecVelocity);
 
-	if (vector_length(vecVelocity) < 50.0)
+	if (vector_length(vecVelocity) < 0.1)
 		return;
 
 	new Float:vecPunchAngle[3];
@@ -145,9 +137,6 @@ ChangeLongJump(id, bool:enabled, Float:force = 0.0, Float:height = 0.0, Float:co
 	}
 
 	gLongJump[id][LongJump_KillBeamTime] = time + 1.0;
-	
-	message_begin_f(MSG_ALL, SVC_TEMPENTITY);
-	TE_BeamFollow(id, g_iModelIndex_Trail, 10, 10, { 255, 255, 0 }, 200);
 }
 
 LongJump_UpdateIcon(id, IconState:status)
