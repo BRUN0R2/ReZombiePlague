@@ -30,10 +30,6 @@ public plugin_precache()
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 180);
 }
 
-public plugin_init() {
-	RegisterHookChain(RG_CBasePlayer_Spawn, "@CBasePlayer_Spawn_Post", .post = true);
-}
-
 public rz_items_select_pre(id, item)
 {
 	if (item != g_iItem_NightVision)
@@ -57,18 +53,4 @@ public rz_items_select_post(id, item)
 	rz_nightvision_player_change(id, g_iHumanNVG, true);
 
 	rh_emit_sound2(id, 0, CHAN_ITEM, EQUIP_NVG_SOUND, VOL_NORM, ATTN_NORM);
-}
-
-@CBasePlayer_Spawn_Post(const id)
-{
-	if (!is_user_alive(id))
-		return;
-
-	if (get_member(id, m_iNumSpawns) != 1)
-		return;
-
-	if (rz_player_get(id, RZ_PLAYER_CLASS) != g_iClass_Human)
-		return;
-
-	rz_player_set(id, RZ_PLAYER_HAS_NIGHTVISION, false);
 }
