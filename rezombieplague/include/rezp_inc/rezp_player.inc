@@ -154,8 +154,8 @@ enum RZNightVisionEquip
 
 native rz_nightvision_create(const handle[]);
 
-native any:rz_nightvision_get(weapon, RZNightVisionProp:prop, any:...);
-native rz_nightvision_set(weapon, RZNightVisionProp:prop, any:...);
+native any:rz_nightvision_get(id, RZNightVisionProp:prop, any:...);
+native rz_nightvision_set(id, RZNightVisionProp:prop, any:...);
 
 native rz_nightvisions_find(const handle[]);
 

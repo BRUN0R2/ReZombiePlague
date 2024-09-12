@@ -14,6 +14,8 @@ const RZ_MAX_REFERENCE_LENGTH = 64;
 const RZ_MAX_PLAYER_MODEL_LENGTH = 64;
 const RZ_MAX_RESOURCE_PATH = 64;
 
+#include <rezp_inc/api/api_player_fog>
+
 #include <rezp_inc/rezp_trie>
 #include <rezp_inc/rezp_gamemodes>
 #include <rezp_inc/rezp_weapons>

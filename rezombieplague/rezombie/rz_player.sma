@@ -183,11 +183,19 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 
 	if (enabled)
 	{
-		new color[3]; rz_nightvision_get(id, RZ_NIGHTVISION_COLOR, color);
+		new pNightVisionColor[3];
 
 		rz_util_send_lightstyle(player, 0, fmt("%c", rz_main_lighting_nvg_get()));
-		rz_util_send_screenfade(player, color, 0.0, 0.001, rz_nightvision_get(id, RZ_NIGHTVISION_ALPHA), (FFADE_STAYOUT | FFADE_MODULATE));
-		rz_util_send_player_fog(player, color, 1700.0);
+
+		rz_nightvision_get(id, RZ_NIGHTVISION_COLOR, pNightVisionColor);
+		rz_util_send_screenfade(player, pNightVisionColor, 0.0, 0.001, rz_nightvision_get(id, RZ_NIGHTVISION_ALPHA), (FFADE_STAYOUT | FFADE_MODULATE));
+
+		new pPlayerFogColor[3], Float:pFogDistance;
+
+		rz_player_fog_get(id, RZ_PLAYER_FOG_COLOR, pPlayerFogColor);
+		rz_player_fog_get(id, RZ_PLAYER_FOG_DISTANCE, pFogDistance);
+
+		rz_util_send_player_fog(player, pPlayerFogColor, pFogDistance);
 	}
 	else
 	{
@@ -198,10 +206,6 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 }
 
 @MSG_ScreenFade(id, dest, player) {
-	return PLUGIN_HANDLED;
-}
-
-@MSG_PlayerFog(id, dest, player) {
 	return PLUGIN_HANDLED;
 }
 
