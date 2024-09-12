@@ -57,7 +57,7 @@ public plugin_natives()
 	register_native("rz_nightvision_set", "@native_nightvision_set");
 
 	register_native("rz_nightvisions_find", "@native_nightvisions_find");
-	register_native("rz_nightvisions_player_change", "@native_nightvisions_player_change");
+	register_native("rz_nightvision_player_change", "@native_nightvision_player_change");
 }
 
 @native_nightvision_create(plugin, argc)
@@ -169,7 +169,7 @@ public plugin_natives()
 	return 0;
 }
 
-@native_nightvisions_player_change(plugin, argc)
+@native_nightvision_player_change(plugin, argc)
 {
 	enum { arg_player = 1, arg_night_vision, arg_enabled };
 

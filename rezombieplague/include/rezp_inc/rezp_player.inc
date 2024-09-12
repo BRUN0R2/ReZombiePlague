@@ -159,7 +159,7 @@ native rz_nightvision_set(weapon, RZNightVisionProp:prop, any:...);
 
 native rz_nightvisions_find(const handle[]);
 
-native rz_nightvisions_player_change(id, nightVision, bool:enabled = true);
+native rz_nightvision_player_change(id, nightVision, bool:enabled = true);
 
 forward rz_nightvisions_change_pre(id, player, bool:enabled);
 forward rz_nightvisions_change_post(id, player, bool:enabled);

@@ -222,7 +222,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 		enabled = !enabled;
 
 		set_member(id, m_flLastCommandTime, time + 0.15, CMD_NIGHTVISION);
-		rz_nightvisions_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), enabled);
+		rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), enabled);
 
 		if (is_user_alive(id))
 		{
@@ -302,7 +302,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 	if (get_member(id, m_iJoiningState) == JOINED)
 		return;
 
-	rz_nightvisions_player_change(id, g_iIntoGameNVG);
+	rz_nightvision_player_change(id, g_iIntoGameNVG);
 }
 
 @CBasePlayer_Spawn_Pre(id)
@@ -367,7 +367,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 		return;
 
 	rz_playerprops_player_change(id, rz_player_get(id, RZ_PLAYER_PROPS), true);
-	rz_nightvisions_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), false);
+	rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), false);
 
 	set_entvar(id, var_body, g_iSettedBody[id]);
 
@@ -518,7 +518,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 	rg_give_custom_item(id, "weapon_knife", GT_APPEND, rz_player_get(id, RZ_PLAYER_KNIFE));
 
 	// double set
-	rz_nightvisions_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), false);
+	rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), false);
 	return HC_SUPERCEDE;
 }
 
@@ -601,7 +601,7 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 	else
 		nightVision = g_iSpectatorNVG;
 
-	rz_nightvisions_player_change(id, nightVision);
+	rz_nightvision_player_change(id, nightVision);
 }
 
 InfectionEffects(id)

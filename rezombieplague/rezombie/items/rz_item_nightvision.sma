@@ -54,7 +54,7 @@ public rz_items_select_post(id, item)
 		return;
 
 	rz_player_set(id, RZ_PLAYER_HAS_NIGHTVISION, true);
-	rz_nightvisions_player_change(id, g_iHumanNVG, true);
+	rz_nightvision_player_change(id, g_iHumanNVG, true);
 
 	rh_emit_sound2(id, 0, CHAN_ITEM, EQUIP_NVG_SOUND, VOL_NORM, ATTN_NORM);
 }
@@ -70,5 +70,5 @@ public rz_items_select_post(id, item)
 	if (rz_player_get(id, RZ_PLAYER_CLASS) != g_iClass_Human)
 		return;
 
-	rz_player_set(id, RZ_PLAYER_HAS_NIGHTVISION, true);
+	rz_player_set(id, RZ_PLAYER_HAS_NIGHTVISION, false);
 }
