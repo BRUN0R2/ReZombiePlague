@@ -67,6 +67,13 @@ public plugin_init() {
 	RegisterHookChain(RG_CBasePlayer_TakeDamage, "@CBasePlayer_TakeDamage_Pre", .post = false);
 }
 
+public rz_class_change_post(id, attacker, class, bool:preSpawn) {
+	if (class != g_iClass_Zombie || !is_user_alive(id))
+		return;
+
+	rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), true);
+}
+
 @CBasePlayer_TakeDamage_Pre(pVictim, inflictor, pAttacker, Float:damage, bitsDamageType)
 {	
 	if (pVictim == pAttacker || !is_user_connected(pAttacker)) {

@@ -5,7 +5,6 @@
 #include <rezp_inc/rezp_main>
 
 new g_iSubClass_Swarm;
-new g_iSwarm_NightVision;
 
 public plugin_precache()
 {
@@ -15,8 +14,7 @@ public plugin_precache()
 
 	new class; RZ_CHECK_CLASS_EXISTS(class, "class_zombie");
 	new pSubclass = g_iSubClass_Swarm = rz_subclass_create(handle, class);
-
-	new nightVision = g_iSwarm_NightVision = rz_nightvision_create("SubClass_Swarm_nvg");
+	new nightVision = rz_subclass_get(pSubclass, RZ_SUBCLASS_NIGHTVISION);
 
 	new props = rz_playerprops_create(handle);
 	new model = rz_subclass_get(pSubclass, RZ_SUBCLASS_MODEL);
@@ -62,6 +60,6 @@ public plugin_precache()
 public rz_subclass_change_post(id, subclass, pAttacker) {
 	if (subclass != g_iSubClass_Swarm || !is_user_alive(id))
 		return;
+
 	rz_longjump_player_give(id, true, 520.0, 320.0, 12.0);
-	rz_nightvision_player_change(id, g_iSwarm_NightVision, true);
 }

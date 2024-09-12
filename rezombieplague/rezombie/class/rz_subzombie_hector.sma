@@ -7,7 +7,6 @@
 new Float:SubclassHectorUpdatetime[MAX_PLAYERS + 1];
 
 new g_SubClass_Hector;
-new g_Hector_NightVision;
 
 public plugin_precache()
 {
@@ -16,19 +15,18 @@ public plugin_precache()
 	new const handle[] = "subclass_zombie_hector";
 
 	new class; RZ_CHECK_CLASS_EXISTS(class, "class_zombie");
-	new SubClass = g_SubClass_Hector = rz_subclass_create(handle, class);
-
-	new nightVision = g_Hector_NightVision = rz_nightvision_create("SubClass_Hector_nvg");
+	new pSubclass = g_SubClass_Hector = rz_subclass_create(handle, class);
+	new nightVision = rz_subclass_get(pSubclass, RZ_SUBCLASS_NIGHTVISION);
 
 	new props = rz_playerprops_create(handle);
-	new model = rz_subclass_get(SubClass, RZ_SUBCLASS_MODEL);
-	new sound = rz_subclass_get(SubClass, RZ_SUBCLASS_SOUND);
+	new model = rz_subclass_get(pSubclass, RZ_SUBCLASS_MODEL);
+	new sound = rz_subclass_get(pSubclass, RZ_SUBCLASS_SOUND);
 	new knife = rz_knife_create("knife_hector");
 	
-	rz_subclass_set(SubClass, RZ_SUBCLASS_NAME, "RZ_SUBZOMBIE_HECTOR_NAME");
-	rz_subclass_set(SubClass, RZ_SUBCLASS_DESC, "RZ_SUBZOMBIE_HECTOR_DESC");
-	rz_subclass_set(SubClass, RZ_SUBCLASS_PROPS, props);
-	rz_subclass_set(SubClass, RZ_SUBCLASS_KNIFE, knife);
+	rz_subclass_set(pSubclass, RZ_SUBCLASS_NAME, "RZ_SUBZOMBIE_HECTOR_NAME");
+	rz_subclass_set(pSubclass, RZ_SUBCLASS_DESC, "RZ_SUBZOMBIE_HECTOR_DESC");
+	rz_subclass_set(pSubclass, RZ_SUBCLASS_PROPS, props);
+	rz_subclass_set(pSubclass, RZ_SUBCLASS_KNIFE, knife);
 
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_HEALTH, 2500.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_SPEED, 250.0);
@@ -72,7 +70,6 @@ public rz_subclass_change_post(id, subclass, pAttacker) {
 	}
 	SubclassHectorUpdatetime[id] = get_gametime();
 	rz_longjump_player_give(id, true, 520.0, 320.0, 12.0);
-	rz_nightvision_player_change(id, g_Hector_NightVision, true);
 }
 
 @Player_TakeDamage_Post(victim, inflictor, attacker, Float:damage, bitsDamageType) {
