@@ -33,12 +33,9 @@ new g_iSettedBody[MAX_PLAYERS + 1];
 
 new Float:mp_round_restart_delay;
 
-new g_iSubClass_Swarm;
-
 public plugin_precache()
 {
 	register_plugin("[ReZP] Player", REZP_VERSION_STR, "fl0wer");
-	g_iSubClass_Swarm = rz_subclass_find("subclass_zombie_swarm");
 }
 
 public plugin_init()
@@ -213,18 +210,18 @@ public rz_nightvisions_change_post(id, player, bool:enabled)
 	if (!is_user_connected(id))
 		return PLUGIN_HANDLED;
 
-	if (!rz_player_get(id, RZ_PLAYER_HAS_NIGHTVISION))
+	if (!!rz_player_get(id, RZ_PLAYER_HAS_NIGHTVISION))
 		return PLUGIN_HANDLED;
 
-	new Float:pGameTime = get_gametime();
+	new Float:time = get_gametime();
 
-	if (get_member(id, m_flLastCommandTime, CMD_NIGHTVISION) <= pGameTime)
+	if (get_member(id, m_flLastCommandTime, CMD_NIGHTVISION) <= time)
 	{
 		new bool:enabled = rz_player_get(id, RZ_PLAYER_NIGHTVISION_ENABLED);
 
 		enabled = !enabled;
 
-		set_member(id, m_flLastCommandTime, pGameTime + 0.15, CMD_NIGHTVISION);
+		set_member(id, m_flLastCommandTime, time + 0.15, CMD_NIGHTVISION);
 		rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), enabled);
 
 		if (is_user_alive(id))

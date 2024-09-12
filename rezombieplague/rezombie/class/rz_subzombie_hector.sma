@@ -7,6 +7,7 @@
 new Float:SubclassHectorUpdatetime[MAX_PLAYERS + 1];
 
 new g_SubClass_Hector;
+new g_Hector_NightVision;
 
 public plugin_precache()
 {
@@ -16,7 +17,7 @@ public plugin_precache()
 
 	new class; RZ_CHECK_CLASS_EXISTS(class, "class_zombie");
 	new SubClass = g_SubClass_Hector = rz_subclass_create(handle, class);
-	new nightVision = rz_subclass_get(SubClass, RZ_SUBCLASS_NIGHTVISION);
+	new nightVision = g_Hector_NightVision = rz_subclass_get(SubClass, RZ_SUBCLASS_NIGHTVISION);
 
 	new props = rz_playerprops_create(handle);
 	new model = rz_subclass_get(SubClass, RZ_SUBCLASS_MODEL);
@@ -47,8 +48,8 @@ public plugin_precache()
 	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie/die5.wav");
 
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 0, 220, 80 });
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 180);
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 0, 80, 60 });
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 200);
 
 	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
 	rz_knife_set(knife, RZ_KNIFE_PLAYER_MODEL, "hide");
@@ -64,12 +65,12 @@ public plugin_init() {
 	RegisterHookChain(RG_CBasePlayer_UpdateClientData, "@Player_UpdateClientData_Post", .post = true);
 }
 
-public rz_subclass_change_post(id, subclass) {
+public rz_subclass_change_post(id, subclass, pAttacker) {
 	if (subclass != g_SubClass_Hector) {
 		return;
 	}
 	SubclassHectorUpdatetime[id] = get_gametime();
-	rz_nightvision_player_change(id, rz_subclass_get(id, RZ_SUBCLASS_NIGHTVISION), true);
+	rz_nightvision_player_change(id, g_Hector_NightVision, true);
 }
 
 @Player_TakeDamage_Post(victim, inflictor, attacker, Float:damage, bitsDamageType) {

@@ -14,7 +14,6 @@ new g_sPlayerDirPath[PLATFORM_MAX_PATH];
 new g_sHandle[RZ_MAX_HANDLE_LENGTH];
 
 new g_iTemp;
-new Float:g_flTemp;
 new g_sTemp[RZ_MAX_RESOURCE_PATH];
 
 public plugin_precache()
