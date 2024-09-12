@@ -17,7 +17,8 @@ public plugin_precache()
 
 	new class; RZ_CHECK_CLASS_EXISTS(class, "class_zombie");
 	new SubClass = g_SubClass_Hector = rz_subclass_create(handle, class);
-	new nightVision = g_Hector_NightVision = rz_subclass_get(SubClass, RZ_SUBCLASS_NIGHTVISION);
+
+	new nightVision = g_Hector_NightVision = rz_nightvision_create("SubClass_Hector_nvg");
 
 	new props = rz_playerprops_create(handle);
 	new model = rz_subclass_get(SubClass, RZ_SUBCLASS_MODEL);
@@ -66,10 +67,11 @@ public plugin_init() {
 }
 
 public rz_subclass_change_post(id, subclass, pAttacker) {
-	if (subclass != g_SubClass_Hector) {
+	if (subclass != g_SubClass_Hector || !is_user_alive(id)) {
 		return;
 	}
 	SubclassHectorUpdatetime[id] = get_gametime();
+	rz_longjump_player_give(id, true, 520.0, 320.0, 12.0);
 	rz_nightvision_player_change(id, g_Hector_NightVision, true);
 }
 

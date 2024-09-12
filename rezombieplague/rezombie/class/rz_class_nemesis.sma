@@ -46,7 +46,7 @@ public plugin_init()
 }
 
 public rz_class_change_post(id, attacker, class, bool:preSpawn) {
-	if (class != g_iClass_Nemesis)
+	if (class != g_iClass_Nemesis || !is_user_alive(id))
 		return;
 	rz_longjump_player_give(id, true, 600.0, 390.0, 0.8);
 	rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), true);

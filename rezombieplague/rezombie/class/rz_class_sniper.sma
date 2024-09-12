@@ -38,7 +38,7 @@ public plugin_init()
 }
 
 public rz_class_change_post(id, attacker, class, bool:preSpawn) {
-	if (class != g_iClass_Sniper)
+	if (class != g_iClass_Sniper || !is_user_alive(id))
 		return;
 	rz_longjump_player_give(id, true, 560.0, 300.0, 2.0);
 	rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), true);

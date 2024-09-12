@@ -15,13 +15,14 @@ public plugin_precache()
 
 	new class; RZ_CHECK_CLASS_EXISTS(class, "class_zombie");
 	new pSubclass = g_iSubClass_Swarm = rz_subclass_create(handle, class);
-	new nightVision = g_iSwarm_NightVision = rz_subclass_get(pSubclass, RZ_SUBCLASS_NIGHTVISION);
+
+	new nightVision = g_iSwarm_NightVision = rz_nightvision_create("SubClass_Swarm_nvg");
 
 	new props = rz_playerprops_create(handle);
 	new model = rz_subclass_get(pSubclass, RZ_SUBCLASS_MODEL);
 	new sound = rz_subclass_get(pSubclass, RZ_SUBCLASS_SOUND);
 	new knife = rz_knife_create("knife_swarm");
-	
+
 	rz_subclass_set(pSubclass, RZ_SUBCLASS_NAME, "RZ_SUBZOMBIE_SWARM_NAME");
 	rz_subclass_set(pSubclass, RZ_SUBCLASS_DESC, "RZ_SUBZOMBIE_SWARM_DESC");
 	rz_subclass_set(pSubclass, RZ_SUBCLASS_PROPS, props);
@@ -59,7 +60,8 @@ public plugin_precache()
 }
 
 public rz_subclass_change_post(id, subclass, pAttacker) {
-	if (subclass != g_iSubClass_Swarm)
+	if (subclass != g_iSubClass_Swarm || !is_user_alive(id))
 		return;
+	rz_longjump_player_give(id, true, 520.0, 320.0, 12.0);
 	rz_nightvision_player_change(id, g_iSwarm_NightVision, true);
 }
