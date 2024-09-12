@@ -45,7 +45,7 @@ public plugin_precache()
 	rz_playersound_add(sound, RZ_PAIN_SOUND_DEATH, "rezombie/zombie/die5.wav");
 
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_EQUIP, RZ_NVG_EQUIP_APPEND_AND_ENABLE);
-	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 0, 80, 60 });
+	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 100, 180, 100 });
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 200);
 
 	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
