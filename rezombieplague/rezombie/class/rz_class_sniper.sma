@@ -19,6 +19,9 @@ public plugin_precache()
 	rz_class_set(class, RZ_CLASS_NAME, "RZ_SNIPER");
 	rz_class_set(class, RZ_CLASS_HUD_COLOR, { 0, 180, 225 });
 
+	rz_class_set(class, RZ_CLASS_FOG_COLOR, { 10, 20, 10 });
+	rz_class_set(class, RZ_CLASS_FOG_DISTANCE, 800.0);
+
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_BASE_HEALTH, 50.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_GRAVITY, 0.75);
 

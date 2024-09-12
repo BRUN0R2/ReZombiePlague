@@ -20,6 +20,9 @@ public plugin_precache()
 	rz_class_set(class, RZ_CLASS_HUD_COLOR, { 0, 180, 225 });
 	rz_class_set(class, RZ_CLASS_KNIFE, knife);
 
+	rz_class_set(class, RZ_CLASS_FOG_COLOR, { 10, 10, 20 });
+	rz_class_set(class, RZ_CLASS_FOG_DISTANCE, 800.0);
+
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_BASE_HEALTH, 200.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_GRAVITY, 1.25);
 

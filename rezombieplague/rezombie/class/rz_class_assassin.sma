@@ -21,8 +21,8 @@ public plugin_precache()
 	rz_class_set(class, RZ_CLASS_SOUND, rz_playersound_find("zombie_sounds"));
 	rz_class_set(class, RZ_CLASS_KNIFE, knife);
 
-	rz_class_set(class, RZ_CLASS_FOG_COLOR, { 50, 50, 0 });
-	rz_class_set(class, RZ_CLASS_FOG_DISTANCE, 1200.0);
+	rz_class_set(class, RZ_CLASS_FOG_COLOR, { 20, 20, 10 });
+	rz_class_set(class, RZ_CLASS_FOG_DISTANCE, 800.0);
 
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_BASE_HEALTH, 100.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_GRAVITY, 0.4);
