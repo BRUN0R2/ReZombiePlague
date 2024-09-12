@@ -4,7 +4,7 @@
 #include <reapi>
 #include <rezp_inc/rezp_main>
 
-new Float:Updatetime[MAX_PLAYERS + 1];
+new Float:SubclassHectorUpdatetime[MAX_PLAYERS + 1];
 
 new g_SubClass_Hector;
 
@@ -64,19 +64,19 @@ public plugin_init() {
 	RegisterHookChain(RG_CBasePlayer_UpdateClientData, "@Player_UpdateClientData_Post", .post = true);
 }
 
-public rz_subclass_change_post(ePlayer, subclass) {
+public rz_subclass_change_post(id, subclass) {
 	if (subclass != g_SubClass_Hector) {
 		return;
 	}
-
-	Updatetime[ePlayer] = get_gametime();
+	SubclassHectorUpdatetime[id] = get_gametime();
+	rz_nightvision_player_change(id, rz_subclass_get(id, RZ_SUBCLASS_NIGHTVISION), true);
 }
 
 @Player_TakeDamage_Post(victim, inflictor, attacker, Float:damage, bitsDamageType) {
 	if (!is_user_connected(attacker) || !is_user_alive(victim)) {
 		return;
 	}
-	
+
 	if (rz_player_get(victim, RZ_PLAYER_SUBCLASS) != g_SubClass_Hector) {
 		return;
 	}
@@ -85,31 +85,31 @@ public rz_subclass_change_post(ePlayer, subclass) {
 		return;
 	}
 
-	if (Updatetime[victim] > 0.0) {
+	if (SubclassHectorUpdatetime[victim] > 0.0) {
 		return;
 	}
 
-	Updatetime[victim] = get_gametime();
+	SubclassHectorUpdatetime[victim] = get_gametime();
 }
 
 @Player_UpdateClientData_Post(const pPlayer) {
-	if (!is_user_alive(pPlayer) || !Updatetime[pPlayer] || rz_player_get(pPlayer, RZ_PLAYER_SUBCLASS) != g_SubClass_Hector) {
+	if (!is_user_connected(pPlayer) || !SubclassHectorUpdatetime[pPlayer] || rz_player_get(pPlayer, RZ_PLAYER_SUBCLASS) != g_SubClass_Hector) {
 		return;
 	}
 
 	static Float:Gametime; Gametime = get_gametime();
 	static Float:gethp; get_entvar(pPlayer, var_health, gethp);
 
-	if (Updatetime[pPlayer] > Gametime) {
+	if (SubclassHectorUpdatetime[pPlayer] > Gametime) {
 		return;
 	}
 
 	if (!is_user_alive(pPlayer) || gethp >= Float:get_entvar(pPlayer, var_max_health)) {
-		Updatetime[pPlayer] = 0.0;
+		SubclassHectorUpdatetime[pPlayer] = 0.0;
 		set_entvar(pPlayer, var_health, Float:get_entvar(pPlayer, var_max_health));
 		return;
 	}
 
-	Updatetime[pPlayer] = Gametime + 0.1;
+	SubclassHectorUpdatetime[pPlayer] = Gametime + 0.1;
 	set_entvar(pPlayer, var_health, gethp + 5.0);
 }

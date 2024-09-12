@@ -37,6 +37,13 @@ public plugin_init()
 	RegisterHookChain(RG_CBasePlayer_GiveDefaultItems, "@CBasePlayer_GiveDefaultItems_Post", true);
 }
 
+public rz_class_change_post(id, attacker, class, bool:preSpawn) {
+	if (class != g_iClass_Survivor)
+		return;
+	rz_longjump_player_give(id, true, 560.0, 300.0, 2.0);
+	rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), true);
+}
+
 @CBasePlayer_GiveDefaultItems_Post(id)
 {
 	if (rz_player_get(id, RZ_PLAYER_CLASS) != g_iClass_Survivor)

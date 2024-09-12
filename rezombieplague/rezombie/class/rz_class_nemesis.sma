@@ -45,12 +45,11 @@ public plugin_init()
 	RegisterHookChain(RG_CBasePlayer_Killed, "@CBasePlayer_Killed_Pre", false);
 }
 
-public rz_class_change_post(id, attacker, class)
-{
+public rz_class_change_post(id, attacker, class, bool:preSpawn) {
 	if (class != g_iClass_Nemesis)
 		return;
-
-	rz_longjump_player_give(id, true, 560.0, 300.0, 5.0);
+	rz_longjump_player_give(id, true, 600.0, 390.0, 0.8);
+	rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), true);
 }
 
 public rz_frost_grenade_freeze_pre(id)

@@ -43,6 +43,13 @@ public plugin_init()
 	RegisterHookChain(RG_CBasePlayer_Killed, "@CBasePlayer_Killed_Pre", false);
 }
 
+public rz_class_change_post(id, attacker, class, bool:preSpawn) {
+	if (class != g_iClass_Assassin)
+		return;
+	rz_longjump_player_give(id, true, 640.0, 420.0, 10.0);
+	rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), true);
+}
+
 public rz_fire_grenade_burn_pre(id)
 {
 	if (rz_player_get(id, RZ_PLAYER_CLASS) != g_iClass_Assassin)

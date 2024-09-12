@@ -57,9 +57,8 @@ public plugin_precache()
 	rz_knife_set(knife, RZ_KNIFE_KNOCKBACK_POWER, 60.0);
 }
 
-public rz_subclass_change_pre(id, subclass, pAttacker) {
-	if (pAttacker && rz_player_get(pAttacker, RZ_PLAYER_SUBCLASS) == g_iSubClass_Swarm) {
-		return RZ_SUPERCEDE;
-	}
-	return RZ_CONTINUE;
+public rz_subclass_change_post(id, subclass, pAttacker) {
+	if (subclass != g_iSubClass_Swarm)
+		return;
+	rz_nightvision_player_change(id, rz_subclass_get(id, RZ_SUBCLASS_NIGHTVISION), true);
 }
