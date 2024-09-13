@@ -42,7 +42,7 @@ enum RZWeaponProp
 /**
  * Creates a custom weapon.
  *
- * @param handle		Name to handle
+ * @param handle	Name to handle
  * @param reference	Weapon classname such as "weapon_*"
  *
  * @return			Weapon index
@@ -53,17 +53,17 @@ native rz_weapon_create(const handle[], const reference[]);
 /**
  * Returns a weapon's property.
  *
- * @param weapon		Weapon index
+ * @param weapon	Weapon index
  * @param prop		Weapon property. See RZWeaponProp enum
  *
- * @return           Value or array passed via the 3rd argument and more
+ * @return          Value or array passed via the 3rd argument and more
  */
 native any:rz_weapon_get(weapon, RZWeaponProp:prop, any:...);
 
 /**
  * Sets a weapon's property.
  *
- * @param weapon		Weapon index
+ * @param weapon	Weapon index
  * @param prop		Weapon property. See RZWeaponProp enum
  *
  * @return			true on success, 0 otherwise
@@ -162,11 +162,29 @@ native rz_grenades_size();
 native rz_grenades_valid(grenade);
 
 /**
+ * Sets a fire property.
+ *
+ * @param id		Player index
+ * @param attacker	Player Attacker index
+ * @param time		The time the player will stay on fire
+ */
+native rz_grenade_set_user_fire(const id, const attacker, Float:time = 1.0);
+
+/**
+ * Sets a icer property.
+ *
+ * @param id		Player index
+ * @param attacker	Player Attacker index
+ * @param time		The time the player will stay on frozen
+ */
+native rz_grenade_set_user_icer(const id, const attacker, Float:time = 1.0);
+
+/**
  * Called before a player throws a grenade.
  *
  * @param id			Player index
  * @param entity		Grenade entity index
- * @param grenad		Grenade index
+ * @param grenade		Grenade index
  */
 forward rz_grenades_throw_pre(id, entity, grenade);
 
@@ -175,7 +193,7 @@ forward rz_grenades_throw_pre(id, entity, grenade);
  *
  * @param id			Player index
  * @param entity		Grenade entity index
- * @param grenade	Grenade index
+ * @param grenade		Grenade index
  */
 forward rz_grenades_throw_post(id, entity, grenade);
 
@@ -187,7 +205,7 @@ forward rz_grenades_throw_post(id, entity, grenade);
  *	- RZ_SUPERCEDE (block explosion)
  *	- RZ_BREAK (block explosion, sets FL_KILLME flag to id)
  *
- * @param id			Grenade entity index
+ * @param id		Grenade entity index
  * @param grenade	Grenade index
  */
 forward rz_grenades_explode_pre(id, grenade);
@@ -195,7 +213,7 @@ forward rz_grenades_explode_pre(id, grenade);
 /**
  * Called after a grenade explodes.
  *
- * @param id			Grenade entity index
+ * @param id		Grenade entity index
  * @param grenade	Grenade index
  */
 forward rz_grenades_explode_post(id, grenade);

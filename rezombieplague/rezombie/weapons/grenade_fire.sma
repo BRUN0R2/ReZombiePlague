@@ -73,6 +73,10 @@ public plugin_init()
 	gForwards[Fw_Fire_Grenade_Burn_Post] = CreateMultiForward("rz_fire_grenade_burn_post", ET_IGNORE, FP_CELL);
 }
 
+public plugin_natives() {
+	register_native("rz_grenade_set_user_fire", "@native_grenade_set_user_fire");
+}
+
 public rz_grenades_throw_post(id, entity, grenade)
 {
 	if (grenade != g_iGrenade_Fire)
@@ -84,17 +88,17 @@ public rz_grenades_throw_post(id, entity, grenade)
 	TE_BeamFollow(entity, g_iModelIndex_LaserBeam, 10, 10, { 200, 0, 0 }, 200);
 }
 
-public rz_grenades_explode_pre(id, grenade)
+public rz_grenades_explode_pre(entity, grenade)
 {
 	if (grenade != g_iGrenade_Fire)
 		return RZ_CONTINUE;
 
-	new owner = get_entvar(id, var_owner);
+	new pAttacker = get_entvar(entity, var_owner);
 	new Float:vecOrigin[3];
 	new Float:vecOrigin2[3];
 	new Float:vecAxis[3];
 
-	get_entvar(id, var_origin, vecOrigin);
+	get_entvar(entity, var_origin, vecOrigin);
 
 	vecAxis = vecOrigin;
 	vecAxis[2] += 555.0;
@@ -102,32 +106,32 @@ public rz_grenades_explode_pre(id, grenade)
 	message_begin_f(MSG_PVS, SVC_TEMPENTITY, vecOrigin);
 	TE_BeamCylinder(vecOrigin, vecAxis, g_iModelIndex_ShockWave, 0, 0, 4, 60, 0, { 200, 0, 0 }, 200, 0);
 
-	rh_emit_sound2(id, 0, CHAN_WEAPON, FIRE_EXPLODE_SOUND, VOL_NORM, ATTN_NORM);
+	rh_emit_sound2(entity, 0, CHAN_WEAPON, FIRE_EXPLODE_SOUND, VOL_NORM, ATTN_NORM);
 
-	for (new i = 1; i <= MaxClients; i++)
+	for (new pTarget = 1; pTarget <= MaxClients; pTarget++)
 	{
-		if (!is_user_alive(i))
+		if (!is_user_alive(pTarget))
 			continue;
 
-		get_entvar(i, var_origin, vecOrigin2);
+		get_entvar(pTarget, var_origin, vecOrigin2);
 
 		if (vector_distance(vecOrigin, vecOrigin2) > 350.0)
 			continue;
 
-		if (!ExecuteHamB(Ham_FVisible, i, id))
+		// Does not work with bots
+		/*if (!ExecuteHamB(Ham_FVisible, pTarget, entity))
+			continue;*/ // In the future I will replace it with another option
+
+		if (get_member(pTarget, m_iTeam) != TEAM_TERRORIST)
 			continue;
 
-		if (get_member(i, m_iTeam) != TEAM_TERRORIST)
-			continue;
-
-		IgnitePlayer(i, owner);
+		IgnitePlayer(pTarget, pAttacker, 12.0);
 	}
 
 	return RZ_BREAK;
 }
 
-public rz_class_change_post(id, attacker, class)
-{
+public rz_class_change_post(id, attacker, class) {
 	Flame_Destroy(id, true);
 }
 
@@ -139,16 +143,11 @@ public rz_class_change_post(id, attacker, class)
 	return HC_SUPERCEDE;
 }
 
-@CSGameRules_RestartRound_Post()
-{
-	for (new i = 1; i <= MaxClients; i++)
-	{
-		Flame_Destroy(i);
-	}
+@CSGameRules_RestartRound_Post() for (new pTarget = 1; pTarget <= MaxClients; pTarget++) {
+	Flame_Destroy(pTarget);
 }
 
-@CBasePlayer_Killed_Pre(id, attacker, gib)
-{
+@CBasePlayer_Killed_Pre(id, attacker, gib) {
 	// maybe spawn?
 	Flame_Destroy(id, true);
 }
@@ -172,73 +171,87 @@ public rz_class_change_post(id, attacker, class)
 	return HC_SUPERCEDE;
 }
 
-IgnitePlayer(id, attacker)
+@native_grenade_set_user_fire(plugin_id, num_params) {
+	enum {
+		ArgpTarget = 1,
+		ArgpAttacker = 2,
+		ArgpDuration = 3,
+	};
+
+	new pTarget = get_param(ArgpTarget);
+	new pAttacker = get_param(ArgpAttacker);
+	new Float:pDuration = get_param_f(ArgpDuration);
+
+	if (!is_user_alive(pTarget)) {
+		return false;
+	}
+
+	IgnitePlayer(pTarget, pAttacker, pDuration);
+	return true;
+}
+
+IgnitePlayer(pTarget, pAttacker, Float:pTime)
 {
-	ExecuteForward(gForwards[Fw_Fire_Grenade_Burn_Pre], gForwards[Fw_Return], id);
+	ExecuteForward(gForwards[Fw_Fire_Grenade_Burn_Pre], gForwards[Fw_Return], pTarget);
 
 	if (gForwards[Fw_Return] >= RZ_SUPERCEDE)
 		return;
-	
-	new flame = g_iFlameEntity[id];
 
-	if (is_nullent(flame))
-	{
-		flame = Flame_Create(id, attacker);
+	new flame = g_iFlameEntity[pTarget];
+
+	if (is_nullent(flame)) {
+		flame = Flame_Create(pTarget, pAttacker, pTime);
 	}
-	else
-	{
-		// refreeze
-		Flame_Destroy(id, true);
-
-		flame = Flame_Create(id, attacker);
+	else {
+		// Burn again
+		Flame_Destroy(pTarget, true);
+		flame = Flame_Create(pTarget, pAttacker, pTime);
 	}
 
-	g_iFlameEntity[id] = flame;
-
-	rg_reset_maxspeed(id);
-
-	ExecuteForward(gForwards[Fw_Fire_Grenade_Burn_Post], gForwards[Fw_Return], id);
+	g_iFlameEntity[pTarget] = flame;
+	rg_reset_maxspeed(pTarget);
+	ExecuteForward(gForwards[Fw_Fire_Grenade_Burn_Post], gForwards[Fw_Return], pTarget);
 }
 
-Flame_Create(owner, attacker)
+Flame_Create(pTarget, pAttacker, Float:pTime = 1.0)
 {
-	new id = rg_create_entity("env_sprite");
+	new pFlame = rg_create_entity("env_sprite");
 
-	if (is_nullent(id))
+	if (is_nullent(pFlame))
 		return 0;
 
-	new Float:time = get_gametime();
+	new Float:pGametime = get_gametime();
 
-	set_entvar(id, var_classname, FLAME_CLASSNAME);
-	set_entvar(id, var_owner, owner);
-	set_entvar(id, var_aiment, owner);
-	set_entvar(id, var_enemy, attacker);
-	set_entvar(id, var_movetype, MOVETYPE_FOLLOW);
-	set_entvar(id, var_nextthink, time);
-	set_entvar(id, var_dmgtime, time + 5.0);
+	set_entvar(pFlame, var_classname, FLAME_CLASSNAME);
+	set_entvar(pFlame, var_owner, pTarget);
+	set_entvar(pFlame, var_aiment, pTarget);
+	set_entvar(pFlame, var_enemy, pAttacker);
+	set_entvar(pFlame, var_movetype, MOVETYPE_FOLLOW);
+	set_entvar(pFlame, var_nextthink, pGametime);
+	set_entvar(pFlame, var_dmgtime, pGametime + pTime);
 
-	set_entvar(id, var_framerate, 1.0);
-	set_entvar(id, var_scale, 0.5);
-	set_entvar(id, var_rendermode, kRenderTransAdd);
-	set_entvar(id, var_renderamt, 255.0);
+	set_entvar(pFlame, var_framerate, 1.0);
+	set_entvar(pFlame, var_scale, 0.3);
+	set_entvar(pFlame, var_rendermode, kRenderTransAdd);
+	set_entvar(pFlame, var_renderamt, 255.0);
 
-	engfunc(EngFunc_SetModel, id, FLAME_SPRITE);
+	engfunc(EngFunc_SetModel, pFlame, FLAME_SPRITE);
 
-	set_ent_data_float(id, "CSprite", "m_lastTime", time);
-	set_ent_data_float(id, "CSprite", "m_maxFrame", float(engfunc(EngFunc_ModelFrames, g_iModelIndex_Flame) - 1));
+	set_ent_data_float(pFlame, "CSprite", "m_lastTime", pGametime);
+	set_ent_data_float(pFlame, "CSprite", "m_maxFrame", float(engfunc(EngFunc_ModelFrames, g_iModelIndex_Flame) - 1));
 
-	SetThink(id, "@Flame_Think");
+	SetThink(pFlame, "@Flame_Think");
 
-	return id;
+	return pFlame;
 }
 
-Flame_Destroy(owner, bool:smoke = false)
+Flame_Destroy(pTarget, bool:smoke = false)
 {
-	new id = g_iFlameEntity[owner];
+	new pFlame = g_iFlameEntity[pTarget];
 
-	g_iFlameEntity[owner] = 0;
+	g_iFlameEntity[pTarget] = 0;
 
-	if (is_nullent(id))
+	if (is_nullent(pFlame))
 		return;
 
 	if (smoke)
@@ -246,7 +259,7 @@ Flame_Destroy(owner, bool:smoke = false)
 		new Float:vecOrigin[3];
 		new Float:vecOffset[3];
 
-		get_entvar(owner, var_origin, vecOrigin);
+		get_entvar(pTarget, var_origin, vecOrigin);
 
 		vecOffset = vecOrigin;
 		vecOffset[2] -= 50.0;
@@ -255,7 +268,7 @@ Flame_Destroy(owner, bool:smoke = false)
 		TE_Smoke(vecOffset, g_iModelIndex_BlackSmoke3, random_num(15, 20), random_num(10, 20));
 	}
 
-	set_entvar(id, var_flags, FL_KILLME);
+	set_entvar(pFlame, var_flags, FL_KILLME);
 }
 
 @Flame_Think(id)
@@ -277,7 +290,7 @@ Flame_Destroy(owner, bool:smoke = false)
 
 	if (Float:get_entvar(id, var_pain_finished) <= time)
 	{
-		set_entvar(id, var_pain_finished, time + 1.0);
+		set_entvar(id, var_pain_finished, time + 0.8);
 
 		if (random_num(0, 1))
 			rh_emit_sound2(owner, 0, CHAN_VOICE, FIRE_BURN_SOUND[random_num(0, sizeof(FIRE_BURN_SOUND) - 1)], VOL_NORM, ATTN_NORM);
