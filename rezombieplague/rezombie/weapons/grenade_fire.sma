@@ -254,7 +254,7 @@ Flame_Destroy(pTarget, bool:smoke = false)
 	if (is_nullent(pFlame))
 		return;
 
-	if (smoke)
+	if (smoke && is_user_connected(pTarget))
 	{
 		new Float:vecOrigin[3];
 		new Float:vecOffset[3];
@@ -278,7 +278,7 @@ Flame_Destroy(pTarget, bool:smoke = false)
 
 	if ((!is_nullent(owner) && get_entvar(owner, var_flags) & FL_INWATER) || Float:get_entvar(id, var_dmgtime) <= time)
 	{
-		Flame_Destroy(owner);
+		Flame_Destroy(owner, true);
 
 		if (is_user_alive(owner))
 		{

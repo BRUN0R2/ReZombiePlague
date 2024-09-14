@@ -215,14 +215,16 @@ public plugin_init()
 	}
 }
 
-@CBasePlayerWeapon_Spawn_Post(id)
+@CBasePlayerWeapon_Spawn_Post(const pWeapon)
 {
-	new impulse = get_entvar(id, var_impulse);
+	new impulse = get_entvar(pWeapon, var_impulse);
 
 	if (!impulse)
 		return;
 
-	new WeaponIdType:weaponId = get_member(id, m_iId);
+	new WeaponIdType:weaponId = get_member(pWeapon, m_iId);
+
+	new handle[RZ_MAX_HANDLE_LENGTH];
 
 	switch (weaponId)
 	{
@@ -230,27 +232,38 @@ public plugin_init()
 		{
 			if (rz_knifes_valid(impulse))
 			{
-				SetMemberByProp(id, m_Knife_flStabBaseDamage, rz_knife_get(impulse, RZ_KNIFE_STAB_BASE_DAMAGE));
-				SetMemberByProp(id, m_Knife_flSwingBaseDamage, rz_knife_get(impulse, RZ_KNIFE_SWING_BASE_DAMAGE));
-				SetMemberByProp(id, m_Knife_flStabDistance, rz_knife_get(impulse, RZ_KNIFE_STAB_DISTANCE));
-				SetMemberByProp(id, m_Knife_flSwingDistance, rz_knife_get(impulse, RZ_KNIFE_SWING_DISTANCE));
+				SetMemberByProp(pWeapon, m_Knife_flStabBaseDamage, rz_knife_get(impulse, RZ_KNIFE_STAB_BASE_DAMAGE));
+				SetMemberByProp(pWeapon, m_Knife_flSwingBaseDamage, rz_knife_get(impulse, RZ_KNIFE_SWING_BASE_DAMAGE));
+				SetMemberByProp(pWeapon, m_Knife_flStabDistance, rz_knife_get(impulse, RZ_KNIFE_STAB_DISTANCE));
+				SetMemberByProp(pWeapon, m_Knife_flSwingDistance, rz_knife_get(impulse, RZ_KNIFE_SWING_DISTANCE));
 			}
+
+			rz_knife_get(impulse, RZ_KNIFE_HANDLE, handle, charsmax(handle));
+			set_entvar(pWeapon, var_classname, handle);
 		}
 		case WEAPON_HEGRENADE, WEAPON_FLASHBANG, WEAPON_SMOKEGRENADE:
 		{
+			if (rz_grenades_valid(impulse))
+			{
+				rz_grenade_get(impulse, RZ_GRENADE_HANDLE, handle, charsmax(handle));
+				set_entvar(pWeapon, var_classname, handle);
+			}
 		}
 		default:
 		{
 			if (rz_weapons_valid(impulse))
 			{
-				SetMemberByProp(id, m_Weapon_flBaseDamage, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE));
+				SetMemberByProp(pWeapon, m_Weapon_flBaseDamage, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE));
 
 				switch (weaponId)
 				{
-					case WEAPON_FAMAS: SetMemberByProp(id, m_Famas_flBaseDamageBurst, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
-					case WEAPON_USP: SetMemberByProp(id, m_USP_flBaseDamageSil, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
-					case WEAPON_M4A1: SetMemberByProp(id, m_M4A1_flBaseDamageSil, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
+					case WEAPON_FAMAS: SetMemberByProp(pWeapon, m_Famas_flBaseDamageBurst, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
+					case WEAPON_USP: SetMemberByProp(pWeapon, m_USP_flBaseDamageSil, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
+					case WEAPON_M4A1: SetMemberByProp(pWeapon, m_M4A1_flBaseDamageSil, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
 				}
+
+				rz_weapon_get(impulse, RZ_WEAPON_HANDLE, handle, charsmax(handle));
+				set_entvar(pWeapon, var_classname, handle);
 			}
 		}
 	}

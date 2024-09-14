@@ -329,7 +329,7 @@ public plugin_natives()
 	/*new index = rz_module_get_valid_index(g_iModule_Weapons, weapon);
 
 	RZ_CHECK_MODULE_VALID_INDEX(index, false)*/
-	
+
 	ArrayGetArray(g_aDefaultWeapons, weaponId, gDefaultWeaponData);
 
 	new prop = get_param(arg_prop);
@@ -402,7 +402,7 @@ public plugin_natives()
 	new index = rz_module_get_valid_index(g_iModule_Weapons, weapon);
 
 	RZ_CHECK_MODULE_VALID_INDEX(index, false)
-	
+
 	ArrayGetArray(g_aWeapons, index, gWeaponData);
 
 	new prop = get_param(arg_prop);

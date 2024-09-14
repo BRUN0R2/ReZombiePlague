@@ -13,6 +13,7 @@ const RZ_MAX_LANGKEY_LENGTH = 64;
 const RZ_MAX_REFERENCE_LENGTH = 64;
 const RZ_MAX_PLAYER_MODEL_LENGTH = 64;
 const RZ_MAX_RESOURCE_PATH = 64;
+const WEAPON_DATA_MAX_LENGTH = 256;
 
 #include <rezp_inc/rezp_trie>
 #include <rezp_inc/rezp_gamemodes>
@@ -58,7 +59,10 @@ enum RZMainProp
  */
 native rz_get_configsdir(buffer[], len);
 
+// The old method will be removed and we will only use the new one
 native rz_load_langs(const name[]);
+native rz_add_translate(const name[]);
+
 native rz_print(text[], any:...);
 native rz_log(bool:isError, text[], any:...);
 native rz_sys_error(const error[], any:...);
