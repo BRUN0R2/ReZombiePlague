@@ -71,6 +71,7 @@ public rz_gamemodes_change_post(gameMode) {
 
     set_member_game(m_bCompleteReset, false);
     rz_gamemodes_set(RZ_GAMEMODES_CURRENT, 0);
+    rz_gamemodes_set(RZ_GAMEMODES_FORCE, 0);
 
     rz_class_override_default(TEAM_TERRORIST, 0);
     rz_class_override_default(TEAM_CT, 0);
