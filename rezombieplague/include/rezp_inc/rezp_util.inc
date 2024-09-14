@@ -116,3 +116,49 @@ stock rz_util_te_dlight(Float:position[3], radius, color[3], life, decayRate)
 	write_byte(decayRate); // decay rate in 10's
 	message_end();
 }
+
+stock rz_util_te_beamentoint(startEntity, Float:end[3] = {0.0, 0.0, 0.0}, spriteIndex = 0, startingFrame = 0, frameRate = 0, life = 1, lineWidth = 1, noiseAmplitude = 0, RGBA[4] = {255, 255, 255, 255}, scrollSpeed = 0)
+{
+	message_begin_f(MSG_BROADCAST, SVC_TEMPENTITY);
+	write_byte(TE_BEAMENTPOINT);
+	write_short(startEntity); // start entity
+	write_coord_f(end[0]); // endposition.x
+	write_coord_f(end[1]); // endposition.y
+	write_coord_f(end[2]); // endposition.z
+	write_short(spriteIndex); // sprite index
+	write_byte(startingFrame); // starting frame
+	write_byte(frameRate); // frame rate in 0.1's
+	write_byte(life); // life in 0.1's
+	write_byte(lineWidth); // line width in 0.1's
+	write_byte(noiseAmplitude); // noise amplitude in 0.01's
+	write_byte(RGBA[0]); // red
+	write_byte(RGBA[1]); // green
+	write_byte(RGBA[2]); // blue
+	write_byte(RGBA[3]); // brightness
+	write_byte(scrollSpeed); // scroll speed in 0.1's
+	message_end();
+}
+
+stock rz_util_te_beamcylinder(Float:position[3] = NULL_VECTOR, Float:axis[3] = NULL_VECTOR, spriteIndex = 0, startingFrame = 0, frameRate = 0, life = 1, lineWidth = 3, noiseAmplitude = 0, RGBA[4] = {255, 255, 255, 255}, scrollSpeed = 0)
+{
+	message_begin_f(MSG_PVS, SVC_TEMPENTITY, position);
+	write_byte(TE_BEAMCYLINDER);
+	write_coord_f(position[0]); // position.x
+	write_coord_f(position[1]); // position.y
+	write_coord_f(position[2]); // position.z
+	write_coord_f(axis[0]); // axis.x
+	write_coord_f(axis[1]); // axis.y
+	write_coord_f(axis[2]); // axis.z
+	write_short(spriteIndex); // sprite index
+	write_byte(startingFrame); // starting frame
+	write_byte(frameRate); // frame rate in 0.1's
+	write_byte(life); // life in 0.1's
+	write_byte(lineWidth); // line width in 0.1's
+	write_byte(noiseAmplitude); // noise amplitude in 0.01's
+	write_byte(RGBA[0]); // red
+	write_byte(RGBA[1]); // green
+	write_byte(RGBA[2]); // blue
+	write_byte(RGBA[3]); // brightness
+	write_byte(scrollSpeed); // scroll speed in 0.1's
+	message_end();
+}

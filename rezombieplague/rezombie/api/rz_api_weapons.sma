@@ -25,9 +25,13 @@ enum _:WeaponData
 	Weapon_PlayerModel[RZ_MAX_RESOURCE_PATH],
 	Weapon_WorldModel[RZ_MAX_RESOURCE_PATH],
 	Weapon_WeaponList[RZ_MAX_RESOURCE_PATH],
-	Float:Weapon_BaseDamage,
+	Float:Weapon_BaseDamage1,
 	Float:Weapon_BaseDamage2,
 	Float:Weapon_KnockbackPower,
+	Weapon_cylinder_bool,
+	Weapon_beampoint_bool,
+	Weapon_cylinder_color[4],
+	Weapon_beampoint_color[4],
 
 }; new Array:g_aWeapons;
 
@@ -384,15 +388,32 @@ public plugin_natives()
 
 	new data[WeaponData];
 
-	// check handle available
-	// check ref valid
-
 	get_string(arg_handle, data[Weapon_Handle], charsmax(data[Weapon_Handle]));
 	get_string(arg_reference, data[Weapon_Reference], charsmax(data[Weapon_Reference]));
+
+	if (!strlen(data[Weapon_Handle])) {
+		rz_log(true, "Invalid handle: %s", data[Weapon_Handle]);
+		return false;
+	}
+
+	if (!strlen(data[Weapon_Reference])) {
+		rz_log(true, "Invalid reference: %s", data[Weapon_Reference]);
+		return false;
+	}
+
+	data[Weapon_BaseDamage1] = -1.0;
+	data[Weapon_BaseDamage2] = -1.0;
 	data[Weapon_KnockbackPower] = -1.0;
+
+	data[Weapon_cylinder_bool] = false;
+	data[Weapon_beampoint_bool] = false;
+
+	data[Weapon_cylinder_color] = {255, 255, 255, 255};
+	data[Weapon_beampoint_color] = {255, 255, 255, 255};
 
 	return ArrayPushArray(g_aWeapons, data) + rz_module_get_offset(g_iModule_Weapons);
 }
+
 
 @native_weapon_get(plugin, argc)
 {
@@ -441,9 +462,9 @@ public plugin_natives()
 		{
 			set_string(arg_3, gWeaponData[Weapon_WeaponList], get_param_byref(arg_4));
 		}
-		case RZ_WEAPON_BASE_DAMAGE:
+		case RZ_WEAPON_BASE_DAMAGE1:
 		{
-			return any:gWeaponData[Weapon_BaseDamage];
+			return any:gWeaponData[Weapon_BaseDamage1];
 		}
 		case RZ_WEAPON_BASE_DAMAGE2:
 		{
@@ -452,6 +473,22 @@ public plugin_natives()
 		case RZ_WEAPON_KNOCKBACK_POWER:
 		{
 			return any:gWeaponData[Weapon_KnockbackPower];
+		}
+		case RZ_WEAPON_BEAM_CYLINDER:
+		{
+			return bool:gWeaponData[Weapon_cylinder_bool];
+		}
+		case RZ_WEAPON_BEAM_POINTER:
+		{
+			return bool:gWeaponData[Weapon_beampoint_bool];
+		}
+		case RZ_WEAPON_BEAM_CYLINDER_COLOR:
+		{
+			set_array(arg_3, gWeaponData[Weapon_cylinder_color], sizeof(gWeaponData[Weapon_cylinder_color]));
+		}
+		case RZ_WEAPON_BEAM_POINTER_COLOR:
+		{
+			set_array(arg_3, gWeaponData[Weapon_beampoint_color], sizeof(gWeaponData[Weapon_beampoint_color]));
 		}
 		default:
 		{
@@ -513,9 +550,9 @@ public plugin_natives()
 			if (gWeaponData[Weapon_WeaponList][0])
 				register_clcmd(gWeaponData[Weapon_WeaponList], "@Command_SelectWeapon", index);
 		}
-		case RZ_WEAPON_BASE_DAMAGE:
+		case RZ_WEAPON_BASE_DAMAGE1:
 		{
-			gWeaponData[Weapon_BaseDamage] = get_float_byref(arg_3);
+			gWeaponData[Weapon_BaseDamage1] = get_float_byref(arg_3);
 		}
 		case RZ_WEAPON_BASE_DAMAGE2:
 		{
@@ -524,6 +561,22 @@ public plugin_natives()
 		case RZ_WEAPON_KNOCKBACK_POWER:
 		{
 			gWeaponData[Weapon_KnockbackPower] = get_float_byref(arg_3);
+		}
+		case RZ_WEAPON_BEAM_CYLINDER:
+		{
+			gWeaponData[Weapon_cylinder_bool] = get_param_byref(arg_3);
+		}
+		case RZ_WEAPON_BEAM_POINTER:
+		{
+			gWeaponData[Weapon_beampoint_bool] = get_param_byref(arg_3);
+		}
+		case RZ_WEAPON_BEAM_CYLINDER_COLOR:
+		{
+			get_array(arg_3, gWeaponData[Weapon_cylinder_color], sizeof(gWeaponData[Weapon_cylinder_color]));
+		}
+		case RZ_WEAPON_BEAM_POINTER_COLOR:
+		{
+			get_array(arg_3, gWeaponData[Weapon_beampoint_color], sizeof(gWeaponData[Weapon_beampoint_color]));
 		}
 		default:
 		{

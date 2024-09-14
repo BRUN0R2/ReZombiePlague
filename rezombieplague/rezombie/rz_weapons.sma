@@ -6,9 +6,17 @@
 #include <rezp_inc/rezp_main>
 #include <rezp_inc/util_messages>
 
+new gl_iLaserSprite;
+new gl_iShockSprite;
+
 public plugin_precache()
 {
 	register_plugin("[ReZP] Weapons", REZP_VERSION_STR, "fl0wer");
+
+	rz_trie_create();
+
+	gl_iLaserSprite = precache_model("sprites/dot.spr");
+	gl_iShockSprite = precache_model("sprites/shockwave.spr");
 }
 
 public plugin_init()
@@ -16,6 +24,9 @@ public plugin_init()
 	RegisterHookChain(RG_CBasePlayer_AddPlayerItem, "@CBasePlayer_AddPlayerItem_Post", true);
 	RegisterHookChain(RG_CBasePlayerWeapon_DefaultDeploy, "@CBasePlayerWeapon_DefaultDeploy_Pre", false);
 	RegisterHookChain(RG_CWeaponBox_SetModel, "@CWeaponBox_SetModel_Pre", false);
+
+	RegisterHookChain(RG_CBasePlayer_TakeDamage, "@CBasePlayer_TakeDamage_Pre", .post = false);
+	RegisterHookChain(RG_IsPenetrableEntity, "@RG_IsPenetrableEntity_Post", .post = true);
 
 	new weaponName[RZ_MAX_REFERENCE_LENGTH];
 
@@ -30,6 +41,10 @@ public plugin_init()
 	}
 
 	rz_load_langs("weapons");
+}
+
+public plugin_end() {
+	rz_trie_destroy();
 }
 
 @SV_StartSound_Pre(recipients, entity, channel, sample[], volume, Float:attenuation, flags, pitch)	
@@ -98,18 +113,21 @@ public plugin_init()
 		{
 			case WEAPON_KNIFE:
 			{
-				if (rz_knifes_valid(impulse))
+				if (rz_knifes_valid(impulse)) {
 					rz_knife_get(impulse, RZ_KNIFE_WEAPONLIST, name, charsmax(name));
+				}
 			}
 			case WEAPON_HEGRENADE, WEAPON_FLASHBANG, WEAPON_SMOKEGRENADE:
 			{
-				if (rz_grenades_valid(impulse))
+				if (rz_grenades_valid(impulse)) {
 					rz_grenade_get(impulse, RZ_GRENADE_WEAPONLIST, name, charsmax(name));
+				}
 			}
 			default:
 			{
-				if (rz_weapons_valid(impulse))
+				if (rz_weapons_valid(impulse)) {
 					rz_weapon_get(impulse, RZ_WEAPON_WEAPONLIST, name, charsmax(name));
+				}
 			}
 		}
 	}
@@ -253,7 +271,7 @@ public plugin_init()
 		{
 			if (rz_weapons_valid(impulse))
 			{
-				SetMemberByProp(pWeapon, m_Weapon_flBaseDamage, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE));
+				SetMemberByProp(pWeapon, m_Weapon_flBaseDamage, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE1));
 
 				switch (weaponId)
 				{
@@ -269,10 +287,131 @@ public plugin_init()
 	}
 }
 
+@CBasePlayer_TakeDamage_Pre(const pVictim, const inflictor, const pAttacker, Float:pDamage, const bitsDamageType) {
+	if (pDamage <= 0.0 || !(bitsDamageType & DMG_BULLET) || pVictim == pAttacker) {
+		return HC_CONTINUE;
+	}
+
+	if (!is_user_connected(pAttacker) || !is_user_alive(pVictim)) {
+        return HC_CONTINUE;
+    }
+
+	if (!rg_is_player_can_takedamage(pVictim, pAttacker)) {
+		return HC_CONTINUE;
+	}
+
+	new pActiveItem = get_member(pAttacker, m_pActiveItem);
+	if (is_nullent(pActiveItem)) {
+		return HC_CONTINUE;
+	}
+
+	static impulse; impulse = get_entvar(pActiveItem, var_impulse);
+	if (!impulse || !rz_weapons_valid(impulse)) {
+		return HC_CONTINUE;
+	}
+
+	/*switch (get_member(pVictim, m_LastHitGroup))
+	{
+		case HITGROUP_GENERIC:	pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_GENERIC_DAMAGE);
+		case HITGROUP_HEAD:		pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_HEAD_DAMAGE);
+		case HITGROUP_CHEST:	pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_CHEST_DAMAGE);
+		case HITGROUP_STOMACH:	pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_STOMACH_DAMAGE);
+		case HITGROUP_LEFTARM,
+		HITGROUP_RIGHTARM:		pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_ARMS_DAMAGE);
+		case HITGROUP_LEFTLEG,
+		HITGROUP_RIGHTLEG:		pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_LEGS_DAMAGE);
+
+		default: pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_ARMS_DAMAGE);
+	}
+
+	SetHookChainArg(4, ATYPE_FLOAT, pDamage);*/
+
+	if (bool:rz_weapon_get(impulse, RZ_WEAPON_BEAM_CYLINDER))
+	{
+		static Float:pVictimOrigin[3], Float:pVecAxis[3];
+		get_entvar(pVictim, var_origin, pVictimOrigin);
+		pVecAxis = pVictimOrigin;
+
+		if (get_entvar(pVictim, var_flags) & FL_DUCKING)
+			pVictimOrigin[2] -= 15.0;
+		else 
+			pVictimOrigin[2] -= 34.0;
+
+		pVecAxis[2] += 200.0;
+
+		static CylinderColor[4];
+		rz_weapon_get(impulse, RZ_WEAPON_BEAM_CYLINDER_COLOR, CylinderColor);
+
+		CylinderColor[0] = clamp(CylinderColor[0], 0, 255); // Red
+		CylinderColor[1] = clamp(CylinderColor[1], 0, 255); // Green
+		CylinderColor[2] = clamp(CylinderColor[2], 0, 255); // Blue
+		CylinderColor[3] = clamp(CylinderColor[3], 0, 255); // Brightness
+
+		// noiseAmplitude = random_num(0, 30) = min and max shock effect
+
+		rz_util_te_beamcylinder(
+			.position = pVictimOrigin,
+			.axis = pVecAxis,
+			.spriteIndex = gl_iShockSprite,
+			.startingFrame = 0,
+			.frameRate = 0,
+			.life = 1,
+			.lineWidth = 5,
+			.noiseAmplitude = random_num(0, 30),
+			.RGBA = CylinderColor,
+			.scrollSpeed = 0
+		);
+	}
+
+	return HC_CONTINUE;
+}
+
+@RG_IsPenetrableEntity_Post(const Float:vecSrc[3], Float:vecEnd[3], const pAttacker, const pHit) {
+	if (!is_user_alive(pAttacker)) {
+		return;
+	}
+
+	new pActiveItem = get_member(pAttacker, m_pActiveItem);
+	if (is_nullent(pActiveItem)) {
+		return;
+	}
+	static pImpulse; pImpulse = get_entvar(pActiveItem, var_impulse);
+	if (!pImpulse || !rz_weapons_valid(pImpulse)) {
+		return;
+	}
+
+	if (bool:rz_weapon_get(pImpulse, RZ_WEAPON_BEAM_POINTER))
+	{
+		static BeamPointerColor[4];
+
+		rz_weapon_get(pImpulse, RZ_WEAPON_BEAM_POINTER_COLOR, BeamPointerColor);
+
+		BeamPointerColor[0] = clamp(BeamPointerColor[0], 0, 255); // Red
+		BeamPointerColor[1] = clamp(BeamPointerColor[1], 0, 255); // Green
+		BeamPointerColor[2] = clamp(BeamPointerColor[2], 0, 255); // Blue
+		BeamPointerColor[3] = clamp(BeamPointerColor[3], 0, 255); // Brightness
+
+		// noiseAmplitude = random_num(0, 30) = min and max shock effect
+
+		rz_util_te_beamentoint(
+			.startEntity = pAttacker|0x1000, // The effect comes out of the gun barrel 0x1000
+			.end = vecEnd,
+			.spriteIndex = gl_iLaserSprite,
+			.startingFrame = 0,
+			.frameRate = 0,
+			.life = 1,
+			.lineWidth = 5,
+			.noiseAmplitude = 0,
+			.RGBA = BeamPointerColor,
+			.scrollSpeed = 0
+		);
+	}
+}
+
 SetMemberByProp(id, any:member, Float:value)
 {
 	if (!value)
 		return;
-	
+
 	set_member(id, member, value);
 }
