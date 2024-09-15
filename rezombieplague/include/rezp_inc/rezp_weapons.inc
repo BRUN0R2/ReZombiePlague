@@ -4,6 +4,8 @@
 
 #define _rezp_weapons_included
 
+#define var_weapon_handle var_noise
+
 /**
  * Default weapon properties.
  */
@@ -240,7 +242,7 @@ stock bool:rz_find_weapon_by_handler(const id, const handler[]) {
 
         while (!is_nullent(pItem)) {
             new pHandler[RZ_MAX_HANDLE_LENGTH];
-            get_entvar(pItem, var_noise, pHandler, charsmax(pHandler));
+            get_entvar(pItem, var_weapon_handle, pHandler, charsmax(pHandler));
 
             if (equali(pHandler, handler)) {
                 return true;

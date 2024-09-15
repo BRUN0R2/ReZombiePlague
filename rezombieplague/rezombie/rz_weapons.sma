@@ -257,14 +257,14 @@ public plugin_end() {
 			}
 
 			rz_knife_get(impulse, RZ_KNIFE_HANDLE, handle, charsmax(handle));
-			set_entvar(pWeapon, var_noise, handle);
+			set_entvar(pWeapon, var_weapon_handle, handle);
 		}
 		case WEAPON_HEGRENADE, WEAPON_FLASHBANG, WEAPON_SMOKEGRENADE:
 		{
 			if (rz_grenades_valid(impulse))
 			{
 				rz_grenade_get(impulse, RZ_GRENADE_HANDLE, handle, charsmax(handle));
-				set_entvar(pWeapon, var_noise, handle);
+				set_entvar(pWeapon, var_weapon_handle, handle);
 			}
 		}
 		default:
@@ -281,7 +281,7 @@ public plugin_end() {
 				}
 
 				rz_weapon_get(impulse, RZ_WEAPON_HANDLE, handle, charsmax(handle));
-				set_entvar(pWeapon, var_noise, handle);
+				set_entvar(pWeapon, var_weapon_handle, handle);
 			}
 		}
 	}
