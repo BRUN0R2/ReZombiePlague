@@ -242,8 +242,6 @@ public plugin_end() {
 
 	new WeaponIdType:weaponId = get_member(pWeapon, m_iId);
 
-	new handle[RZ_MAX_HANDLE_LENGTH];
-
 	switch (weaponId)
 	{
 		case WEAPON_KNIFE:
@@ -255,17 +253,10 @@ public plugin_end() {
 				SetMemberByProp(pWeapon, m_Knife_flStabDistance, rz_knife_get(impulse, RZ_KNIFE_STAB_DISTANCE));
 				SetMemberByProp(pWeapon, m_Knife_flSwingDistance, rz_knife_get(impulse, RZ_KNIFE_SWING_DISTANCE));
 			}
-
-			rz_knife_get(impulse, RZ_KNIFE_HANDLE, handle, charsmax(handle));
-			set_entvar(pWeapon, var_classname, handle);
 		}
 		case WEAPON_HEGRENADE, WEAPON_FLASHBANG, WEAPON_SMOKEGRENADE:
 		{
-			if (rz_grenades_valid(impulse))
-			{
-				rz_grenade_get(impulse, RZ_GRENADE_HANDLE, handle, charsmax(handle));
-				set_entvar(pWeapon, var_classname, handle);
-			}
+			if (rz_grenades_valid(impulse)) {}
 		}
 		default:
 		{
@@ -279,9 +270,6 @@ public plugin_end() {
 					case WEAPON_USP: SetMemberByProp(pWeapon, m_USP_flBaseDamageSil, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
 					case WEAPON_M4A1: SetMemberByProp(pWeapon, m_M4A1_flBaseDamageSil, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
 				}
-
-				rz_weapon_get(impulse, RZ_WEAPON_HANDLE, handle, charsmax(handle));
-				set_entvar(pWeapon, var_classname, handle);
 			}
 		}
 	}
