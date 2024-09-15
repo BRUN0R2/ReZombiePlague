@@ -231,7 +231,7 @@ Flame_Create(pTarget, pAttacker, Float:pTime = 1.0)
 	set_entvar(pFlame, var_dmgtime, pGametime + pTime);
 
 	set_entvar(pFlame, var_framerate, 1.0);
-	set_entvar(pFlame, var_scale, 0.3);
+	set_entvar(pFlame, var_scale, 0.4);
 	set_entvar(pFlame, var_rendermode, kRenderTransAdd);
 	set_entvar(pFlame, var_renderamt, 255.0);
 
