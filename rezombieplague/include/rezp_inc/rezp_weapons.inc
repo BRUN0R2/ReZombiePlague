@@ -230,3 +230,25 @@ stock bool:rz_is_weapon_valid(pWeapon, impulse = 0) {
 	if (get_entvar(pWeapon, var_impulse) == impulse) return true;
 	return false;
 }
+
+/**
+ * Find weapons by Handler
+ */
+stock bool:rz_find_weapon_by_handler(const id, const handler[]) {
+    for (new InventorySlotType:iSlot = PRIMARY_WEAPON_SLOT, pItem; iSlot <= C4_SLOT; iSlot++) {
+        pItem = get_member(id, m_rgpPlayerItems, iSlot);
+
+        while (!is_nullent(pItem)) {
+            new pHandler[RZ_MAX_HANDLE_LENGTH];
+            get_entvar(pItem, var_noise, pHandler, charsmax(pHandler));
+
+            if (equali(pHandler, handler)) {
+                return true;
+            }
+
+            pItem = get_member(pItem, m_pNext);
+        }
+    }
+
+    return false;
+}
