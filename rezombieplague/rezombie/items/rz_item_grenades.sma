@@ -17,9 +17,13 @@ new g_iGrenade_Flare;
 new g_iClass_Zombie;
 new g_iClass_Human;
 
+new const AMMO_PICKUP_SOUND[] = "items/9mmclip1.wav";
+
 public plugin_precache()
 {
 	register_plugin("[ReZP] Item: Grenades", REZP_VERSION_STR, "fl0wer");
+
+	precache_sound(AMMO_PICKUP_SOUND);
 
 	g_iGrenade_Infect = rz_grenades_find("grenade_infect");
 
@@ -86,32 +90,32 @@ public rz_items_select_pre(id, item)
 
 public rz_items_select_post(id, item)
 {
-	new grenade;
+	new pGrenade;
 
-	if (item == g_iItem_Infect)
-	{
-		grenade = g_iItem_Infect;
+	if (item == g_iItem_Infect) {
+		pGrenade = g_iItem_Infect;
 	}
-	else if (item == g_iItem_Fire)
-	{
-		grenade = g_iGrenade_Fire;
+	else if (item == g_iItem_Fire) {
+		pGrenade = g_iGrenade_Fire;
 	}
-	else if (item == g_iItem_Frost)
-	{
-		grenade = g_iGrenade_Frost;
+	else if (item == g_iItem_Frost) {
+		pGrenade = g_iGrenade_Frost;
 	}
-	else if (item == g_iItem_Flare)
-	{
-		grenade = g_iGrenade_Flare;
+	else if (item == g_iItem_Flare) {
+		pGrenade = g_iGrenade_Flare;
 	}
-	else
-		return;
+	else return;
 
 	new reference[RZ_MAX_REFERENCE_LENGTH];
-	rz_grenade_get(grenade, RZ_GRENADE_REFERENCE, reference, charsmax(reference));
+	rz_grenade_get(pGrenade, RZ_GRENADE_REFERENCE, reference, charsmax(reference));
 
-	if (!rg_has_item_by_name(id, reference))
-		rg_give_custom_item(id, reference, GT_APPEND, grenade);
-	/*else
-		give ammo*/
+	if (!rg_has_item_by_name(id, reference)) {
+		rg_give_custom_item(id, reference, GT_APPEND, pGrenade);
+	}
+	else
+	{
+		new WeaponIdType:gtype = rg_get_weapon_info(reference, WI_ID);
+		rg_set_user_bpammo(id, gtype, rg_get_user_bpammo(id, gtype) + 1);
+		rh_emit_sound2(id, 0, CHAN_ITEM, AMMO_PICKUP_SOUND, VOL_NORM, ATTN_NORM);
+	}
 }
