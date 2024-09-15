@@ -230,22 +230,3 @@ stock bool:rz_is_weapon_valid(pWeapon, impulse = 0) {
 	if (get_entvar(pWeapon, var_impulse) == impulse) return true;
 	return false;
 }
-
-/**
- * Find weapons by name
- */
-stock bool:rz_find_weapon_by_classname(const this, const classname[]) {
-	for (new InventorySlotType:iSlot = PRIMARY_WEAPON_SLOT, pItem; iSlot <= C4_SLOT; iSlot++) {
-		pItem = get_member(this, m_rgpPlayerItems, iSlot);
-
-		while (!is_nullent(pItem))
-		{
-			if (FClassnameIs(pItem, classname))
-				return true;
-	
-			pItem = get_member(pItem, m_pNext);
-		}
-	}
-
-	return false;
-}
