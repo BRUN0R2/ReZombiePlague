@@ -87,6 +87,42 @@ stock rz_util_send_player_fog(id, color[3], Float:pRange = 0.0)
 	}
 }
 
+stock rz_util_precache_sprites_from_txt(const szTextFile[])
+{
+	new szTxtDir[64], szSprDir[64]; 
+	new szFileData[128], szSprName[48], temp[1];
+
+	format(szTxtDir, charsmax(szTxtDir), "sprites/%s.txt", szTextFile);
+	precache_generic(szTxtDir);
+
+	new iFile = fopen(szTxtDir, "rb");
+	while(iFile && !feof(iFile)) 
+	{
+		fgets(iFile, szFileData, charsmax(szFileData));
+		trim(szFileData);
+
+		if(!strlen(szFileData)) 
+			continue;
+
+		new pos = containi(szFileData, "640");	
+				
+		if (pos == -1) {
+			continue;
+		}
+
+		format(szFileData, charsmax(szFileData), "%s", szFileData[pos+3]);		
+		trim(szFileData);
+
+		strtok(szFileData, szSprName, charsmax(szSprName), temp, charsmax(temp), ' ', 1);
+		trim(szSprName);
+			
+		format(szSprDir, charsmax(szSprDir), "sprites/%s.spr", szSprName);
+		precache_generic(szSprDir);
+	}
+
+	if (iFile) fclose(iFile);
+}
+
 // All stocks are from tempentities.inc and messages.inc
 // I just did it to make things easier
 

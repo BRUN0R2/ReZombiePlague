@@ -14,7 +14,7 @@ new JSON:g_iJsonHandleCopy;
 new g_sBaseDirPath[PLATFORM_MAX_PATH];
 new g_sWeaponsDirPath[PLATFORM_MAX_PATH];
 
-new Float:g_flTemp;
+new Float:g_flTemp, bool:gl_itemBool;
 new g_sTemp[RZ_MAX_RESOURCE_PATH];
 
 public plugin_precache()
@@ -158,9 +158,13 @@ WeaponConfigs()
 		WeaponPropField("player_model", i, RZ_WEAPON_PLAYER_MODEL, RZ_MAX_RESOURCE_PATH);
 		WeaponPropField("world_model", i, RZ_WEAPON_WORLD_MODEL, RZ_MAX_RESOURCE_PATH);
 		WeaponPropField("weaponlist", i, RZ_WEAPON_WEAPONLIST, RZ_MAX_RESOURCE_PATH);
-		WeaponPropField("base_damage", i, RZ_WEAPON_BASE_DAMAGE, 12);
+		WeaponPropField("base_damage1", i, RZ_WEAPON_BASE_DAMAGE1, 12);
 		WeaponPropField("base_damage2", i, RZ_WEAPON_BASE_DAMAGE2, 12);
 		WeaponPropField("knockback_power", i, RZ_WEAPON_KNOCKBACK_POWER, 12);
+		WeaponPropField("weapon_beam_cynlinder", i, RZ_WEAPON_BEAM_CYLINDER, 24);
+		WeaponPropField("weapon_beam_cynlinder_color", i, RZ_WEAPON_BEAM_CYLINDER_COLOR, 32);
+		WeaponPropField("weapon_beam_pointer", i, RZ_WEAPON_BEAM_POINTER, 24);
+		WeaponPropField("weapon_beam_pointer_color", i, RZ_WEAPON_BEAM_POINTER_COLOR, 32);
 
 		if (g_bCreating)
 		{
@@ -355,7 +359,7 @@ WeaponPropField(value[], weapon, RZWeaponProp:prop, length)
 {
 	switch (prop)
 	{
-		case RZ_WEAPON_KNOCKBACK_POWER:
+		case RZ_WEAPON_BASE_DAMAGE1, RZ_WEAPON_BASE_DAMAGE2, RZ_WEAPON_KNOCKBACK_POWER:
 		{
 			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
 			{
@@ -366,6 +370,43 @@ WeaponPropField(value[], weapon, RZWeaponProp:prop, length)
 			{
 				g_flTemp = Float:rz_weapon_get(weapon, prop);
 				json_object_set_string(g_iJsonHandle, value, fmt("%.1f", g_flTemp));
+			}
+		}
+		case RZ_WEAPON_BEAM_CYLINDER, RZ_WEAPON_BEAM_POINTER:
+		{
+			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONBoolean))
+			{
+				gl_itemBool = json_object_get_bool(g_iJsonHandle, value);
+				rz_weapon_set(weapon, prop, gl_itemBool);
+			}
+			else
+			{
+				gl_itemBool = bool:rz_weapon_get(weapon, prop);
+				json_object_set_bool(g_iJsonHandle, value, gl_itemBool);
+			}
+		}
+		case RZ_WEAPON_BEAM_CYLINDER_COLOR, RZ_WEAPON_BEAM_POINTER_COLOR:
+		{
+			new colorInt[4];
+
+			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
+			{
+				new color[4];
+
+				json_object_get_string(g_iJsonHandle, value, g_sTemp, length - 1);
+
+				if (parse(g_sTemp, color[0], charsmax(color[]), color[1], charsmax(color[]), color[2], charsmax(color[]), color[3], charsmax(color[])) == 4)
+				{
+					colorInt[0] = str_to_num(color[0]);
+					colorInt[1] = str_to_num(color[1]);
+					colorInt[2] = str_to_num(color[2]);
+					colorInt[3] = str_to_num(color[3]);
+
+					rz_weapon_set(weapon, prop, colorInt);
+				}
+			} else {
+				rz_weapon_get(weapon, prop, colorInt);
+				json_object_set_string(g_iJsonHandle, value, fmt("%d %d %d %d", colorInt[0], colorInt[1], colorInt[2], colorInt[3]));
 			}
 		}
 		default:
@@ -390,9 +431,8 @@ WeaponPropField(value[], weapon, RZWeaponProp:prop, length)
 				{
 					precache_model(g_sTemp);
 				}
-				case RZ_WEAPON_WEAPONLIST:
-				{
-					precache_generic(fmt("sprites/%s.txt", g_sTemp));
+				case RZ_WEAPON_WEAPONLIST: {
+					rz_util_precache_sprites_from_txt(g_sTemp);
 				}
 			}
 		}
@@ -442,9 +482,8 @@ KnifePropField(value[], knife, RZKnifeProp:prop, length)
 					if (!equal(g_sTemp, "hide"))
 						precache_model(g_sTemp);
 				}
-				case RZ_KNIFE_WEAPONLIST:
-				{
-					precache_generic(fmt("sprites/%s.txt", g_sTemp));
+				case RZ_KNIFE_WEAPONLIST: {
+					rz_util_precache_sprites_from_txt(g_sTemp);
 				}
 			}
 		}
@@ -473,9 +512,8 @@ GrenadePropField(value[], grenade, RZGrenadeProp:prop, length)
 		{
 			precache_model(g_sTemp);
 		}
-		case RZ_GRENADE_WEAPONLIST:
-		{
-			precache_generic(fmt("sprites/%s.txt", g_sTemp));
+		case RZ_GRENADE_WEAPONLIST: {
+			rz_util_precache_sprites_from_txt(g_sTemp);
 		}
 	}
 }

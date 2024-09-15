@@ -391,18 +391,8 @@ public plugin_natives()
 	get_string(arg_handle, data[Weapon_Handle], charsmax(data[Weapon_Handle]));
 	get_string(arg_reference, data[Weapon_Reference], charsmax(data[Weapon_Reference]));
 
-	if (!strlen(data[Weapon_Handle])) {
-		rz_log(true, "Invalid handle: %s", data[Weapon_Handle]);
-		return false;
-	}
-
-	if (!strlen(data[Weapon_Reference])) {
-		rz_log(true, "Invalid reference: %s", data[Weapon_Reference]);
-		return false;
-	}
-
-	data[Weapon_BaseDamage1] = -1.0;
-	data[Weapon_BaseDamage2] = -1.0;
+	data[Weapon_BaseDamage1] = 0.0;
+	data[Weapon_BaseDamage2] = 0.0;
 	data[Weapon_KnockbackPower] = -1.0;
 
 	data[Weapon_cylinder_bool] = false;
