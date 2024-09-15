@@ -391,7 +391,7 @@ WeaponPropField(value[], weapon, RZWeaponProp:prop, length)
 
 			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
 			{
-				new color[4];
+				new color[4][5];
 
 				json_object_get_string(g_iJsonHandle, value, g_sTemp, length - 1);
 
