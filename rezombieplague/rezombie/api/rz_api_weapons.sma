@@ -256,8 +256,8 @@ public plugin_natives()
 	register_native("rz_weapons_default_find", "@native_weapons_default_find");
 
 	register_native("rz_weapon_create", "@native_weapon_create");
-	register_native("rz_weapon_get", "@native_weapon_get");
-	register_native("rz_weapon_set", "@native_weapon_set");
+	register_native("get_weapon_var", "@native_weapon_get");
+	register_native("set_weapon_var", "@native_weapon_set");
 
 	register_native("rz_weapons_start", "@native_weapons_start");
 	register_native("rz_weapons_find", "@native_weapons_find");
@@ -265,8 +265,8 @@ public plugin_natives()
 	register_native("rz_weapons_valid", "@native_weapons_valid");
 
 	register_native("rz_knife_create", "@native_knife_create");
-	register_native("rz_knife_get", "@native_knife_get");
-	register_native("rz_knife_set", "@native_knife_set");
+	register_native("get_knife_var", "@native_knife_get");
+	register_native("set_knife_var", "@native_knife_set");
 	register_native("rz_knife_sound_add", "@native_knife_sound_add");
 
 	register_native("rz_knifes_start", "@native_knifes_start");
@@ -275,8 +275,8 @@ public plugin_natives()
 	register_native("rz_knifes_valid", "@native_knifes_valid");
 
 	register_native("rz_grenade_create", "@native_grenade_create");
-	register_native("rz_grenade_get", "@native_grenade_get");
-	register_native("rz_grenade_set", "@native_grenade_set");
+	register_native("get_grenade_var", "@native_grenade_get");
+	register_native("set_grenade_var", "@native_grenade_set");
 
 	register_native("rz_grenades_start", "@native_grenades_start");
 	register_native("rz_grenades_find", "@native_grenades_find");

@@ -459,7 +459,7 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 		new impulse = get_entvar(activeItem, var_impulse);
 
 		if (impulse && rz_weapons_valid(impulse))
-			weaponKnockbackPower = Float:rz_weapon_get(impulse, RZ_WEAPON_KNOCKBACK_POWER);
+			weaponKnockbackPower = Float:get_weapon_var(impulse, RZ_WEAPON_KNOCKBACK_POWER);
 		else
 			weaponKnockbackPower = Float:rz_weapon_default_get(get_member(activeItem, m_iId), RZ_DEFAULT_WEAPON_KNOCKBACK_POWER);
 

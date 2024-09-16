@@ -55,7 +55,7 @@ public rz_class_change_post(id, attacker, class, bool:preSpawn) {
 	if (g_iWeapon_SniperAWP)
 	{
 		new reference[RZ_MAX_REFERENCE_LENGTH];
-		rz_weapon_get(g_iWeapon_SniperAWP, RZ_WEAPON_REFERENCE, reference, charsmax(reference));
+		get_weapon_var(g_iWeapon_SniperAWP, RZ_WEAPON_REFERENCE, reference, charsmax(reference));
 
 		new item = rg_give_custom_item(id, reference, GT_APPEND, g_iWeapon_SniperAWP);
 

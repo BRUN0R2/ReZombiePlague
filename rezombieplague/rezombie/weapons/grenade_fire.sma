@@ -54,9 +54,9 @@ public plugin_precache()
 
 	new grenade = g_iGrenade_Fire = rz_grenade_create("grenade_fire", "weapon_hegrenade");
 
-	rz_grenade_set(grenade, RZ_GRENADE_NAME, "RZ_WPN_FIRE_GRENADE");
-	rz_grenade_set(grenade, RZ_GRENADE_SHORT_NAME, "RZ_WPN_FIRE_SHORT");
-	rz_grenade_set(grenade, RZ_GRENADE_VIEW_MODEL, FIRE_VIEW_MODEL);
+	set_grenade_var(grenade, RZ_GRENADE_NAME, "RZ_WPN_FIRE_GRENADE");
+	set_grenade_var(grenade, RZ_GRENADE_SHORT_NAME, "RZ_WPN_FIRE_SHORT");
+	set_grenade_var(grenade, RZ_GRENADE_VIEW_MODEL, FIRE_VIEW_MODEL);
 }
 
 public plugin_init()

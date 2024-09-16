@@ -669,9 +669,9 @@ AddWeapon(section, const handle[])
 
 				if (weapon)
 				{
-					rz_grenade_get(weapon, RZ_GRENADE_REFERENCE, data[SelectWeapon_Reference], charsmax(data[SelectWeapon_Reference]));
-					rz_grenade_get(weapon, RZ_GRENADE_NAME, data[SelectWeapon_Name], charsmax(data[SelectWeapon_Name]));
-					rz_grenade_get(weapon, RZ_GRENADE_SHORT_NAME, data[SelectWeapon_ShortName], charsmax(data[SelectWeapon_ShortName]));
+					get_grenade_var(weapon, RZ_GRENADE_REFERENCE, data[SelectWeapon_Reference], charsmax(data[SelectWeapon_Reference]));
+					get_grenade_var(weapon, RZ_GRENADE_NAME, data[SelectWeapon_Name], charsmax(data[SelectWeapon_Name]));
+					get_grenade_var(weapon, RZ_GRENADE_SHORT_NAME, data[SelectWeapon_ShortName], charsmax(data[SelectWeapon_ShortName]));
 
 					found = true;
 				}
@@ -683,8 +683,8 @@ AddWeapon(section, const handle[])
 				if (weapon)
 				{
 					copy(data[SelectWeapon_Reference], charsmax(data[SelectWeapon_Reference]), "weapon_knife");
-					rz_knife_get(weapon, RZ_KNIFE_NAME, data[SelectWeapon_Name], charsmax(data[SelectWeapon_Name]));
-					rz_knife_get(weapon, RZ_KNIFE_SHORT_NAME, data[SelectWeapon_ShortName], charsmax(data[SelectWeapon_ShortName]));
+					get_knife_var(weapon, RZ_KNIFE_NAME, data[SelectWeapon_Name], charsmax(data[SelectWeapon_Name]));
+					get_knife_var(weapon, RZ_KNIFE_SHORT_NAME, data[SelectWeapon_ShortName], charsmax(data[SelectWeapon_ShortName]));
 
 					found = true;
 				}
@@ -695,9 +695,9 @@ AddWeapon(section, const handle[])
 
 				if (weapon)
 				{
-					rz_weapon_get(weapon, RZ_WEAPON_REFERENCE, data[SelectWeapon_Reference], charsmax(data[SelectWeapon_Reference]));
-					rz_weapon_get(weapon, RZ_WEAPON_NAME, data[SelectWeapon_Name], charsmax(data[SelectWeapon_Name]));
-					rz_weapon_get(weapon, RZ_WEAPON_SHORT_NAME, data[SelectWeapon_ShortName], charsmax(data[SelectWeapon_ShortName]));
+					get_weapon_var(weapon, RZ_WEAPON_REFERENCE, data[SelectWeapon_Reference], charsmax(data[SelectWeapon_Reference]));
+					get_weapon_var(weapon, RZ_WEAPON_NAME, data[SelectWeapon_Name], charsmax(data[SelectWeapon_Name]));
+					get_weapon_var(weapon, RZ_WEAPON_SHORT_NAME, data[SelectWeapon_ShortName], charsmax(data[SelectWeapon_ShortName]));
 
 					found = true;
 				}

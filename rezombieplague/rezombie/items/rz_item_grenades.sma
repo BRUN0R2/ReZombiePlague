@@ -107,7 +107,7 @@ public rz_items_select_post(id, item)
 	else return;
 
 	new reference[RZ_MAX_REFERENCE_LENGTH];
-	rz_grenade_get(pGrenade, RZ_GRENADE_REFERENCE, reference, charsmax(reference));
+	get_grenade_var(pGrenade, RZ_GRENADE_REFERENCE, reference, charsmax(reference));
 
 	if (!rg_has_item_by_name(id, reference)) {
 		rg_give_custom_item(id, reference, GT_APPEND, pGrenade);

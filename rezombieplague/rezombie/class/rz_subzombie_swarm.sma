@@ -52,13 +52,13 @@ public plugin_precache()
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_COLOR, { 100, 180, 100 });
 	rz_nightvision_set(nightVision, RZ_NIGHTVISION_ALPHA, 200);
 
-	rz_knife_set(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
-	rz_knife_set(knife, RZ_KNIFE_PLAYER_MODEL, "hide");
-	rz_knife_set(knife, RZ_KNIFE_STAB_BASE_DAMAGE, 250.0);
-	rz_knife_set(knife, RZ_KNIFE_SWING_BASE_DAMAGE, 100.0);
-	rz_knife_set(knife, RZ_KNIFE_STAB_DISTANCE, 45.0);
-	rz_knife_set(knife, RZ_KNIFE_SWING_DISTANCE, 60.0);
-	rz_knife_set(knife, RZ_KNIFE_KNOCKBACK_POWER, 60.0);
+	set_knife_var(knife, RZ_KNIFE_VIEW_MODEL, "models/rezombie/weapons/knifes/source_v.mdl");
+	set_knife_var(knife, RZ_KNIFE_PLAYER_MODEL, "hide");
+	set_knife_var(knife, RZ_KNIFE_STAB_BASE_DAMAGE, 250.0);
+	set_knife_var(knife, RZ_KNIFE_SWING_BASE_DAMAGE, 100.0);
+	set_knife_var(knife, RZ_KNIFE_STAB_DISTANCE, 45.0);
+	set_knife_var(knife, RZ_KNIFE_SWING_DISTANCE, 60.0);
+	set_knife_var(knife, RZ_KNIFE_KNOCKBACK_POWER, 60.0);
 }
 
 public rz_subclass_change_post(id, subclass, pAttacker) {

@@ -103,8 +103,8 @@ public plugin_init()
 
 			for (i = start; i < end; i++)
 			{
-				rz_weapon_get(i, RZ_WEAPON_HANDLE, handle, charsmax(handle));
-				rz_weapon_get(i, RZ_WEAPON_REFERENCE, reference, charsmax(reference));
+				get_weapon_var(i, RZ_WEAPON_HANDLE, handle, charsmax(handle));
+				get_weapon_var(i, RZ_WEAPON_REFERENCE, reference, charsmax(reference));
 
 				server_print("%4d. %d  : %s (%s)", count + 1, i, handle, reference);
 				count++;
@@ -115,7 +115,7 @@ public plugin_init()
 
 			for (i = start; i < end; i++)
 			{
-				rz_knife_get(i, RZ_KNIFE_HANDLE, handle, charsmax(handle));
+				get_knife_var(i, RZ_KNIFE_HANDLE, handle, charsmax(handle));
 
 				server_print("%4d. %d  : %s (%s)", count + 1, i, handle, "weapon_knife");
 				count++;
@@ -126,8 +126,8 @@ public plugin_init()
 
 			for (i = start; i < end; i++)
 			{
-				rz_grenade_get(i, RZ_GRENADE_HANDLE, handle, charsmax(handle));
-				rz_grenade_get(i, RZ_GRENADE_REFERENCE, reference, charsmax(reference));
+				get_grenade_var(i, RZ_GRENADE_HANDLE, handle, charsmax(handle));
+				get_grenade_var(i, RZ_GRENADE_REFERENCE, reference, charsmax(reference));
 
 				server_print("%4d. %d  : %s (%s)", count + 1, i, handle, reference);
 				count++;

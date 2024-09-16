@@ -85,7 +85,7 @@ public plugin_end() {
 
 		if (knifeSound != RZ_KNIFE_SOUND_NONE)
 		{
-			new Array:sounds = rz_knife_get(impulse, RZ_KNIFE_SOUNDS_BANK, knifeSound);
+			new Array:sounds = get_knife_var(impulse, RZ_KNIFE_SOUNDS_BANK, knifeSound);
 			new soundsNum = ArraySize(sounds);
 
 			if (soundsNum)
@@ -114,19 +114,19 @@ public plugin_end() {
 			case WEAPON_KNIFE:
 			{
 				if (rz_knifes_valid(impulse)) {
-					rz_knife_get(impulse, RZ_KNIFE_WEAPONLIST, name, charsmax(name));
+					get_knife_var(impulse, RZ_KNIFE_WEAPONLIST, name, charsmax(name));
 				}
 			}
 			case WEAPON_HEGRENADE, WEAPON_FLASHBANG, WEAPON_SMOKEGRENADE:
 			{
 				if (rz_grenades_valid(impulse)) {
-					rz_grenade_get(impulse, RZ_GRENADE_WEAPONLIST, name, charsmax(name));
+					get_grenade_var(impulse, RZ_GRENADE_WEAPONLIST, name, charsmax(name));
 				}
 			}
 			default:
 			{
 				if (rz_weapons_valid(impulse)) {
-					rz_weapon_get(impulse, RZ_WEAPON_WEAPONLIST, name, charsmax(name));
+					get_weapon_var(impulse, RZ_WEAPON_WEAPONLIST, name, charsmax(name));
 				}
 			}
 		}
@@ -166,8 +166,8 @@ public plugin_end() {
 		{
 			if (rz_knifes_valid(impulse))
 			{
-				rz_knife_get(impulse, RZ_KNIFE_VIEW_MODEL, newViewModel, charsmax(newViewModel));
-				rz_knife_get(impulse, RZ_KNIFE_PLAYER_MODEL, newPlayerModel, charsmax(newPlayerModel));
+				get_knife_var(impulse, RZ_KNIFE_VIEW_MODEL, newViewModel, charsmax(newViewModel));
+				get_knife_var(impulse, RZ_KNIFE_PLAYER_MODEL, newPlayerModel, charsmax(newPlayerModel));
 			}
 			else
 				return;
@@ -176,8 +176,8 @@ public plugin_end() {
 		{
 			if (rz_grenades_valid(impulse))
 			{
-				rz_grenade_get(impulse, RZ_GRENADE_VIEW_MODEL, newViewModel, charsmax(newViewModel));
-				rz_grenade_get(impulse, RZ_GRENADE_PLAYER_MODEL, newPlayerModel, charsmax(newPlayerModel));
+				get_grenade_var(impulse, RZ_GRENADE_VIEW_MODEL, newViewModel, charsmax(newViewModel));
+				get_grenade_var(impulse, RZ_GRENADE_PLAYER_MODEL, newPlayerModel, charsmax(newPlayerModel));
 			}
 			else
 				return;
@@ -186,8 +186,8 @@ public plugin_end() {
 		{
 			if (rz_weapons_valid(impulse))
 			{
-				rz_weapon_get(impulse, RZ_WEAPON_VIEW_MODEL, newViewModel, charsmax(newViewModel));
-				rz_weapon_get(impulse, RZ_WEAPON_PLAYER_MODEL, newPlayerModel, charsmax(newPlayerModel));
+				get_weapon_var(impulse, RZ_WEAPON_VIEW_MODEL, newViewModel, charsmax(newViewModel));
+				get_weapon_var(impulse, RZ_WEAPON_PLAYER_MODEL, newPlayerModel, charsmax(newPlayerModel));
 			}
 			else
 				return;
@@ -223,7 +223,7 @@ public plugin_end() {
 
 		if (rz_weapons_valid(impulse))
 		{
-			rz_weapon_get(impulse, RZ_WEAPON_WORLD_MODEL, worldModel, charsmax(worldModel));
+			get_weapon_var(impulse, RZ_WEAPON_WORLD_MODEL, worldModel, charsmax(worldModel));
 
 			if (worldModel[0])
 				SetHookChainArg(2, ATYPE_STRING, worldModel);
@@ -250,20 +250,20 @@ public plugin_end() {
 		{
 			if (rz_knifes_valid(impulse))
 			{
-				SetMemberByProp(pWeapon, m_Knife_flStabBaseDamage, rz_knife_get(impulse, RZ_KNIFE_STAB_BASE_DAMAGE));
-				SetMemberByProp(pWeapon, m_Knife_flSwingBaseDamage, rz_knife_get(impulse, RZ_KNIFE_SWING_BASE_DAMAGE));
-				SetMemberByProp(pWeapon, m_Knife_flStabDistance, rz_knife_get(impulse, RZ_KNIFE_STAB_DISTANCE));
-				SetMemberByProp(pWeapon, m_Knife_flSwingDistance, rz_knife_get(impulse, RZ_KNIFE_SWING_DISTANCE));
+				SetMemberByProp(pWeapon, m_Knife_flStabBaseDamage, get_knife_var(impulse, RZ_KNIFE_STAB_BASE_DAMAGE));
+				SetMemberByProp(pWeapon, m_Knife_flSwingBaseDamage, get_knife_var(impulse, RZ_KNIFE_SWING_BASE_DAMAGE));
+				SetMemberByProp(pWeapon, m_Knife_flStabDistance, get_knife_var(impulse, RZ_KNIFE_STAB_DISTANCE));
+				SetMemberByProp(pWeapon, m_Knife_flSwingDistance, get_knife_var(impulse, RZ_KNIFE_SWING_DISTANCE));
 			}
 
-			rz_knife_get(impulse, RZ_KNIFE_HANDLE, handle, charsmax(handle));
+			get_knife_var(impulse, RZ_KNIFE_HANDLE, handle, charsmax(handle));
 			set_entvar(pWeapon, var_weapon_handle, handle);
 		}
 		case WEAPON_HEGRENADE, WEAPON_FLASHBANG, WEAPON_SMOKEGRENADE:
 		{
 			if (rz_grenades_valid(impulse))
 			{
-				rz_grenade_get(impulse, RZ_GRENADE_HANDLE, handle, charsmax(handle));
+				get_grenade_var(impulse, RZ_GRENADE_HANDLE, handle, charsmax(handle));
 				set_entvar(pWeapon, var_weapon_handle, handle);
 			}
 		}
@@ -271,16 +271,16 @@ public plugin_end() {
 		{
 			if (rz_weapons_valid(impulse))
 			{
-				SetMemberByProp(pWeapon, m_Weapon_flBaseDamage, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE1));
+				SetMemberByProp(pWeapon, m_Weapon_flBaseDamage, get_weapon_var(impulse, RZ_WEAPON_BASE_DAMAGE1));
 
 				switch (weaponId)
 				{
-					case WEAPON_FAMAS: SetMemberByProp(pWeapon, m_Famas_flBaseDamageBurst, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
-					case WEAPON_USP: SetMemberByProp(pWeapon, m_USP_flBaseDamageSil, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
-					case WEAPON_M4A1: SetMemberByProp(pWeapon, m_M4A1_flBaseDamageSil, rz_weapon_get(impulse, RZ_WEAPON_BASE_DAMAGE2));
+					case WEAPON_FAMAS: SetMemberByProp(pWeapon, m_Famas_flBaseDamageBurst, get_weapon_var(impulse, RZ_WEAPON_BASE_DAMAGE2));
+					case WEAPON_USP: SetMemberByProp(pWeapon, m_USP_flBaseDamageSil, get_weapon_var(impulse, RZ_WEAPON_BASE_DAMAGE2));
+					case WEAPON_M4A1: SetMemberByProp(pWeapon, m_M4A1_flBaseDamageSil, get_weapon_var(impulse, RZ_WEAPON_BASE_DAMAGE2));
 				}
 
-				rz_weapon_get(impulse, RZ_WEAPON_HANDLE, handle, charsmax(handle));
+				get_weapon_var(impulse, RZ_WEAPON_HANDLE, handle, charsmax(handle));
 				set_entvar(pWeapon, var_weapon_handle, handle);
 			}
 		}
@@ -312,21 +312,21 @@ public plugin_end() {
 
 	/*switch (get_member(pVictim, m_LastHitGroup))
 	{
-		case HITGROUP_GENERIC:	pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_GENERIC_DAMAGE);
-		case HITGROUP_HEAD:		pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_HEAD_DAMAGE);
-		case HITGROUP_CHEST:	pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_CHEST_DAMAGE);
-		case HITGROUP_STOMACH:	pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_STOMACH_DAMAGE);
+		case HITGROUP_GENERIC:	pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_GENERIC_DAMAGE);
+		case HITGROUP_HEAD:		pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_HEAD_DAMAGE);
+		case HITGROUP_CHEST:	pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_CHEST_DAMAGE);
+		case HITGROUP_STOMACH:	pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_STOMACH_DAMAGE);
 		case HITGROUP_LEFTARM,
-		HITGROUP_RIGHTARM:		pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_ARMS_DAMAGE);
+		HITGROUP_RIGHTARM:		pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_ARMS_DAMAGE);
 		case HITGROUP_LEFTLEG,
-		HITGROUP_RIGHTLEG:		pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_LEGS_DAMAGE);
+		HITGROUP_RIGHTLEG:		pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_LEGS_DAMAGE);
 
-		default: pDamage = Float:rz_weapon_get(impulse, RZ_WEAPON_ARMS_DAMAGE);
+		default: pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_ARMS_DAMAGE);
 	}
 
 	SetHookChainArg(4, ATYPE_FLOAT, pDamage);*/
 
-	if (bool:rz_weapon_get(impulse, RZ_WEAPON_BEAM_CYLINDER))
+	if (bool:get_weapon_var(impulse, RZ_WEAPON_BEAM_CYLINDER))
 	{
 		static Float:pVictimOrigin[3], Float:pVecAxis[3];
 		get_entvar(pVictim, var_origin, pVictimOrigin);
@@ -340,7 +340,7 @@ public plugin_end() {
 		pVecAxis[2] += 200.0;
 
 		static CylinderColor[4];
-		rz_weapon_get(impulse, RZ_WEAPON_BEAM_CYLINDER_COLOR, CylinderColor);
+		get_weapon_var(impulse, RZ_WEAPON_BEAM_CYLINDER_COLOR, CylinderColor);
 
 		CylinderColor[0] = clamp(CylinderColor[0], 0, 255); // Red
 		CylinderColor[1] = clamp(CylinderColor[1], 0, 255); // Green
@@ -380,11 +380,11 @@ public plugin_end() {
 		return;
 	}
 
-	if (bool:rz_weapon_get(pImpulse, RZ_WEAPON_BEAM_POINTER))
+	if (bool:get_weapon_var(pImpulse, RZ_WEAPON_BEAM_POINTER))
 	{
 		static BeamPointerColor[4];
 
-		rz_weapon_get(pImpulse, RZ_WEAPON_BEAM_POINTER_COLOR, BeamPointerColor);
+		get_weapon_var(pImpulse, RZ_WEAPON_BEAM_POINTER_COLOR, BeamPointerColor);
 
 		BeamPointerColor[0] = clamp(BeamPointerColor[0], 0, 255); // Red
 		BeamPointerColor[1] = clamp(BeamPointerColor[1], 0, 255); // Green

@@ -31,8 +31,8 @@ public plugin_precache()
 
 	new grenade = g_iGrenade_Infect = rz_grenade_create("grenade_infect", "weapon_hegrenade");
 
-	rz_grenade_set(grenade, RZ_GRENADE_NAME, "RZ_WPN_INFECT_GRENADE");
-	rz_grenade_set(grenade, RZ_GRENADE_VIEW_MODEL, INFECTION_VIEW_MODEL);
+	set_grenade_var(grenade, RZ_GRENADE_NAME, "RZ_WPN_INFECT_GRENADE");
+	set_grenade_var(grenade, RZ_GRENADE_VIEW_MODEL, INFECTION_VIEW_MODEL);
 }
 
 public rz_grenades_throw_post(id, entity, grenade)

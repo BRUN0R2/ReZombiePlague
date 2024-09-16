@@ -64,7 +64,7 @@ native rz_weapon_create(const handle[], const reference[]);
  *
  * @return          Value or array passed via the 3rd argument and more
  */
-native any:rz_weapon_get(weapon, RZWeaponProp:prop, any:...);
+native any:get_weapon_var(weapon, RZWeaponProp:prop, any:...);
 
 /**
  * Sets a weapon's property.
@@ -74,7 +74,7 @@ native any:rz_weapon_get(weapon, RZWeaponProp:prop, any:...);
  *
  * @return			true on success, 0 otherwise
  */
-native rz_weapon_set(weapon, RZWeaponProp:prop, any:...);
+native set_weapon_var(weapon, RZWeaponProp:prop, any:...);
 
 native rz_weapons_start();
 
@@ -124,9 +124,9 @@ enum RZKnifeSound
 
 native rz_knife_create(const handle[]);
 
-native any:rz_knife_get(knife, RZKnifeProp:prop, any:...);
+native any:get_knife_var(knife, RZKnifeProp:prop, any:...);
 
-native rz_knife_set(knife, RZKnifeProp:prop, any:...);
+native set_knife_var(knife, RZKnifeProp:prop, any:...);
 
 native rz_knife_sound_add(knife, RZKnifeSound:knifeSound, const sample[]);
 
@@ -155,9 +155,9 @@ enum RZGrenadeProp
 
 native rz_grenade_create(const handle[], const reference[]);
 
-native any:rz_grenade_get(grenade, RZGrenadeProp:prop, any:...);
+native any:get_grenade_var(grenade, RZGrenadeProp:prop, any:...);
 
-native rz_grenade_set(grenade, RZGrenadeProp:prop, any:...);
+native set_grenade_var(grenade, RZGrenadeProp:prop, any:...);
 
 native rz_grenades_start();
 

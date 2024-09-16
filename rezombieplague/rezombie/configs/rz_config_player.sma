@@ -198,7 +198,7 @@ ClassPropField_Knife(value[], class, length, defValue[])
 
 		if (knife)
 		{
-			rz_knife_get(knife, RZ_KNIFE_HANDLE, g_sHandle, charsmax(g_sHandle));
+			get_knife_var(knife, RZ_KNIFE_HANDLE, g_sHandle, charsmax(g_sHandle));
 			json_object_set_string(g_iJsonHandle, value, g_sHandle);
 		}
 		else

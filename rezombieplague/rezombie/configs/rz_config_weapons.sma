@@ -126,7 +126,7 @@ WeaponConfigs()
 
 	for (new i = start; i < end; i++)
 	{
-		rz_weapon_get(i, RZ_WEAPON_HANDLE, handle, charsmax(handle));
+		get_weapon_var(i, RZ_WEAPON_HANDLE, handle, charsmax(handle));
 		formatex(filePath, charsmax(filePath), "%s/%s.json", g_sWeaponsDirPath, handle);
 
 		if (file_exists(filePath))
@@ -200,7 +200,7 @@ KnifeConfigs()
 
 	for (new i = start; i < end; i++)
 	{
-		rz_knife_get(i, RZ_KNIFE_HANDLE, handle, charsmax(handle));
+		get_knife_var(i, RZ_KNIFE_HANDLE, handle, charsmax(handle));
 		formatex(filePath, charsmax(filePath), "%s/%s.json", g_sWeaponsDirPath, handle);
 
 		if (file_exists(filePath))
@@ -270,7 +270,7 @@ GrenadeConfigs()
 
 	for (new i = start; i < end; i++)
 	{
-		rz_grenade_get(i, RZ_GRENADE_HANDLE, handle, charsmax(handle));
+		get_grenade_var(i, RZ_GRENADE_HANDLE, handle, charsmax(handle));
 		formatex(filePath, charsmax(filePath), "%s/%s.json", g_sWeaponsDirPath, handle);
 
 		if (file_exists(filePath))
@@ -364,11 +364,11 @@ WeaponPropField(value[], weapon, RZWeaponProp:prop, length)
 			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
 			{
 				json_object_get_string(g_iJsonHandle, value, g_sTemp, length - 1);
-				rz_weapon_set(weapon, prop, str_to_float(g_sTemp));
+				set_weapon_var(weapon, prop, str_to_float(g_sTemp));
 			}
 			else
 			{
-				g_flTemp = Float:rz_weapon_get(weapon, prop);
+				g_flTemp = Float:get_weapon_var(weapon, prop);
 				json_object_set_string(g_iJsonHandle, value, fmt("%.1f", g_flTemp));
 			}
 		}
@@ -377,11 +377,11 @@ WeaponPropField(value[], weapon, RZWeaponProp:prop, length)
 			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONBoolean))
 			{
 				gl_itemBool = json_object_get_bool(g_iJsonHandle, value);
-				rz_weapon_set(weapon, prop, gl_itemBool);
+				set_weapon_var(weapon, prop, gl_itemBool);
 			}
 			else
 			{
-				gl_itemBool = bool:rz_weapon_get(weapon, prop);
+				gl_itemBool = bool:get_weapon_var(weapon, prop);
 				json_object_set_bool(g_iJsonHandle, value, gl_itemBool);
 			}
 		}
@@ -402,10 +402,10 @@ WeaponPropField(value[], weapon, RZWeaponProp:prop, length)
 					colorInt[2] = str_to_num(color[2]);
 					colorInt[3] = str_to_num(color[3]);
 
-					rz_weapon_set(weapon, prop, colorInt);
+					set_weapon_var(weapon, prop, colorInt);
 				}
 			} else {
-				rz_weapon_get(weapon, prop, colorInt);
+				get_weapon_var(weapon, prop, colorInt);
 				json_object_set_string(g_iJsonHandle, value, fmt("%d %d %d %d", colorInt[0], colorInt[1], colorInt[2], colorInt[3]));
 			}
 		}
@@ -414,11 +414,11 @@ WeaponPropField(value[], weapon, RZWeaponProp:prop, length)
 			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
 			{
 				json_object_get_string(g_iJsonHandle, value, g_sTemp, length - 1);
-				rz_weapon_set(weapon, prop, g_sTemp);
+				set_weapon_var(weapon, prop, g_sTemp);
 			}
 			else
 			{
-				rz_weapon_get(weapon, prop, g_sTemp, length - 1);
+				get_weapon_var(weapon, prop, g_sTemp, length - 1);
 				json_object_set_string(g_iJsonHandle, value, g_sTemp);
 			}
 
@@ -450,11 +450,11 @@ KnifePropField(value[], knife, RZKnifeProp:prop, length)
 			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
 			{
 				json_object_get_string(g_iJsonHandle, value, g_sTemp, length - 1);
-				rz_knife_set(knife, prop, str_to_float(g_sTemp));
+				set_knife_var(knife, prop, str_to_float(g_sTemp));
 			}
 			else
 			{
-				g_flTemp = Float:rz_knife_get(knife, prop);
+				g_flTemp = Float:get_knife_var(knife, prop);
 
 				json_object_set_string(g_iJsonHandle, value, fmt("%.1f", g_flTemp));
 			}
@@ -464,11 +464,11 @@ KnifePropField(value[], knife, RZKnifeProp:prop, length)
 			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
 			{
 				json_object_get_string(g_iJsonHandle, value, g_sTemp, length - 1);
-				rz_knife_set(knife, prop, g_sTemp);
+				set_knife_var(knife, prop, g_sTemp);
 			}
 			else
 			{
-				rz_knife_get(knife, prop, g_sTemp, length - 1);
+				get_knife_var(knife, prop, g_sTemp, length - 1);
 				json_object_set_string(g_iJsonHandle, value, g_sTemp);
 			}
 
@@ -495,11 +495,11 @@ GrenadePropField(value[], grenade, RZGrenadeProp:prop, length)
 	if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
 	{
 		json_object_get_string(g_iJsonHandle, value, g_sTemp, length - 1);
-		rz_grenade_set(grenade, prop, g_sTemp);
+		set_grenade_var(grenade, prop, g_sTemp);
 	}
 	else
 	{
-		rz_grenade_get(grenade, prop, g_sTemp, length - 1);
+		get_grenade_var(grenade, prop, g_sTemp, length - 1);
 		json_object_set_string(g_iJsonHandle, value, g_sTemp);
 	}
 

@@ -49,9 +49,9 @@ public plugin_precache()
 
 	new grenade = g_iGrenade_Frost = rz_grenade_create("grenade_frost", "weapon_flashbang");
 
-	rz_grenade_set(grenade, RZ_GRENADE_NAME, "RZ_WPN_FROST_GRENADE");
-	rz_grenade_set(grenade, RZ_GRENADE_SHORT_NAME, "RZ_WPN_FROST_SHORT");
-	rz_grenade_set(grenade, RZ_GRENADE_VIEW_MODEL, FROST_VIEW_MODEL);
+	set_grenade_var(grenade, RZ_GRENADE_NAME, "RZ_WPN_FROST_GRENADE");
+	set_grenade_var(grenade, RZ_GRENADE_SHORT_NAME, "RZ_WPN_FROST_SHORT");
+	set_grenade_var(grenade, RZ_GRENADE_VIEW_MODEL, FROST_VIEW_MODEL);
 }
 
 public plugin_init()
