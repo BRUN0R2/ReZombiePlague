@@ -27,6 +27,12 @@ enum _:WeaponData
 	Weapon_WeaponList[RZ_MAX_RESOURCE_PATH],
 	Float:Weapon_BaseDamage1,
 	Float:Weapon_BaseDamage2,
+	Float:Weapon_generic_Damage,
+	Float:Weapon_Head_Damage,
+	Float:Weapon_chest_Damage,
+	Float:Weapon_stomach_Damage,
+	Float:Weapon_arms_Damage,
+	Float:Weapon_legs_Damage,
 	Float:Weapon_KnockbackPower,
 	Weapon_cylinder_bool,
 	Weapon_beampoint_bool,
@@ -297,7 +303,7 @@ public plugin_natives()
 
 	new prop = get_param(arg_prop);
 
-	switch (prop)
+	switch (RZDefaultWeaponProp:prop)
 	{
 		case RZ_DEFAULT_WEAPON_HANDLE:
 		{
@@ -338,7 +344,7 @@ public plugin_natives()
 
 	new prop = get_param(arg_prop);
 
-	switch (prop)
+	switch (RZDefaultWeaponProp:prop)
 	{
 		case RZ_DEFAULT_WEAPON_HANDLE:
 		{
@@ -393,6 +399,14 @@ public plugin_natives()
 
 	data[Weapon_BaseDamage1] = 0.0;
 	data[Weapon_BaseDamage2] = 0.0;
+
+	data[Weapon_generic_Damage] = 0.0;
+	data[Weapon_Head_Damage] = 0.0;
+	data[Weapon_chest_Damage] = 0.0;
+	data[Weapon_stomach_Damage] = 0.0;
+	data[Weapon_arms_Damage] = 0.0;
+	data[Weapon_legs_Damage] = 0.0;
+
 	data[Weapon_KnockbackPower] = -1.0;
 
 	data[Weapon_cylinder_bool] = false;
@@ -418,7 +432,7 @@ public plugin_natives()
 
 	new prop = get_param(arg_prop);
 
-	switch (prop)
+	switch (RZWeaponProp:prop)
 	{
 		case RZ_WEAPON_HANDLE:
 		{
@@ -459,6 +473,30 @@ public plugin_natives()
 		case RZ_WEAPON_BASE_DAMAGE2:
 		{
 			return any:gWeaponData[Weapon_BaseDamage2];
+		}
+		case RZ_WEAPON_GENERIC_DAMAGE:
+		{
+			return any:gWeaponData[Weapon_generic_Damage];
+		}
+		case RZ_WEAPON_HEAD_DAMAGE:
+		{
+			return any:gWeaponData[Weapon_Head_Damage];
+		}
+		case RZ_WEAPON_CHEST_DAMAGE:
+		{
+			return any:gWeaponData[Weapon_chest_Damage];
+		}
+		case RZ_WEAPON_STOMACH_DAMAGE:
+		{
+			return any:gWeaponData[Weapon_stomach_Damage];
+		}
+		case RZ_WEAPON_ARMS_DAMAGE:
+		{
+			return any:gWeaponData[Weapon_arms_Damage];
+		}
+		case RZ_WEAPON_LEGS_DAMAGE:
+		{
+			return any:gWeaponData[Weapon_legs_Damage];
 		}
 		case RZ_WEAPON_KNOCKBACK_POWER:
 		{
@@ -503,7 +541,7 @@ public plugin_natives()
 
 	new prop = get_param(arg_prop);
 
-	switch (prop)
+	switch (RZWeaponProp:prop)
 	{
 		case RZ_WEAPON_HANDLE:
 		{
@@ -547,6 +585,30 @@ public plugin_natives()
 		case RZ_WEAPON_BASE_DAMAGE2:
 		{
 			gWeaponData[Weapon_BaseDamage2] = get_float_byref(arg_3);
+		}
+		case RZ_WEAPON_GENERIC_DAMAGE:
+		{
+			gWeaponData[Weapon_generic_Damage] = get_float_byref(arg_3);
+		}
+		case RZ_WEAPON_HEAD_DAMAGE:
+		{
+			gWeaponData[Weapon_Head_Damage] = get_float_byref(arg_3);
+		}
+		case RZ_WEAPON_CHEST_DAMAGE:
+		{
+			gWeaponData[Weapon_chest_Damage] = get_float_byref(arg_3);
+		}
+		case RZ_WEAPON_STOMACH_DAMAGE:
+		{
+			gWeaponData[Weapon_stomach_Damage] = get_float_byref(arg_3);
+		}
+		case RZ_WEAPON_ARMS_DAMAGE:
+		{
+			gWeaponData[Weapon_arms_Damage] = get_float_byref(arg_3);
+		}
+		case RZ_WEAPON_LEGS_DAMAGE:
+		{
+			gWeaponData[Weapon_legs_Damage] = get_float_byref(arg_3);
 		}
 		case RZ_WEAPON_KNOCKBACK_POWER:
 		{
@@ -648,7 +710,7 @@ public plugin_natives()
 
 	new prop = get_param(arg_prop);
 
-	switch (prop)
+	switch (RZKnifeProp:prop)
 	{
 		case RZ_KNIFE_HANDLE:
 		{
@@ -723,7 +785,7 @@ public plugin_natives()
 
 	new prop = get_param(arg_prop);
 
-	switch (prop)
+	switch (RZKnifeProp:prop)
 	{
 		case RZ_KNIFE_HANDLE:
 		{
@@ -874,37 +936,37 @@ public plugin_natives()
 
 	new prop = get_param(arg_prop);
 
-	switch (prop)
+	switch (RZGrenadeProp:prop)
 	{
-		case RZ_WEAPON_HANDLE:
+		case RZ_GRENADE_HANDLE:
 		{
 			set_string(arg_3, gGrenadeData[Grenade_Handle], get_param_byref(arg_4));
 		}
-		case RZ_WEAPON_REFERENCE:
+		case RZ_GRENADE_REFERENCE:
 		{
 			set_string(arg_3, gGrenadeData[Grenade_Reference], get_param_byref(arg_4));
 		}
-		case RZ_WEAPON_NAME:
+		case RZ_GRENADE_NAME:
 		{
 			set_string(arg_3, gGrenadeData[Grenade_Name], get_param_byref(arg_4));
 		}
-		case RZ_WEAPON_SHORT_NAME:
+		case RZ_GRENADE_SHORT_NAME:
 		{
 			set_string(arg_3, gGrenadeData[Grenade_ShortName], get_param_byref(arg_4));
 		}
-		case RZ_WEAPON_VIEW_MODEL:
+		case RZ_GRENADE_VIEW_MODEL:
 		{
 			set_string(arg_3, gGrenadeData[Grenade_ViewModel], get_param_byref(arg_4));
 		}
-		case RZ_WEAPON_PLAYER_MODEL:
+		case RZ_GRENADE_PLAYER_MODEL:
 		{
 			set_string(arg_3, gGrenadeData[Grenade_PlayerModel], get_param_byref(arg_4));
 		}
-		case RZ_WEAPON_WORLD_MODEL:
+		case RZ_GRENADE_WORLD_MODEL:
 		{
 			set_string(arg_3, gGrenadeData[Grenade_WorldModel], get_param_byref(arg_4));
 		}
-		case RZ_WEAPON_WEAPONLIST:
+		case RZ_GRENADE_WEAPONLIST:
 		{
 			set_string(arg_3, gGrenadeData[Grenade_WeaponList], get_param_byref(arg_4));
 		}
@@ -931,37 +993,37 @@ public plugin_natives()
 
 	new prop = get_param(arg_prop);
 
-	switch (prop)
+	switch (RZGrenadeProp:prop)
 	{
-		case RZ_WEAPON_HANDLE:
+		case RZ_GRENADE_HANDLE:
 		{
 			get_string(arg_3, gGrenadeData[Grenade_Handle], charsmax(gGrenadeData[Grenade_Handle]));
 		}
-		case RZ_WEAPON_REFERENCE:
+		case RZ_GRENADE_REFERENCE:
 		{
 			get_string(arg_3, gGrenadeData[Grenade_Reference], charsmax(gGrenadeData[Grenade_Reference]));
 		}
-		case RZ_WEAPON_NAME:
+		case RZ_GRENADE_NAME:
 		{
 			get_string(arg_3, gGrenadeData[Grenade_Name], charsmax(gGrenadeData[Grenade_Name]));
 		}
-		case RZ_WEAPON_SHORT_NAME:
+		case RZ_GRENADE_SHORT_NAME:
 		{
 			get_string(arg_3, gGrenadeData[Grenade_ShortName], charsmax(gGrenadeData[Grenade_ShortName]));
 		}
-		case RZ_WEAPON_VIEW_MODEL:
+		case RZ_GRENADE_VIEW_MODEL:
 		{
 			get_string(arg_3, gGrenadeData[Grenade_ViewModel], charsmax(gGrenadeData[Grenade_ViewModel]));
 		}
-		case RZ_WEAPON_PLAYER_MODEL:
+		case RZ_GRENADE_PLAYER_MODEL:
 		{
 			get_string(arg_3, gGrenadeData[Grenade_PlayerModel], charsmax(gGrenadeData[Grenade_PlayerModel]));
 		}
-		case RZ_WEAPON_WORLD_MODEL:
+		case RZ_GRENADE_WORLD_MODEL:
 		{
 			get_string(arg_3, gGrenadeData[Grenade_WorldModel], charsmax(gGrenadeData[Grenade_WorldModel]));
 		}
-		case RZ_WEAPON_WEAPONLIST:
+		case RZ_GRENADE_WEAPONLIST:
 		{
 			get_string(arg_3, gGrenadeData[Grenade_WeaponList], charsmax(gGrenadeData[Grenade_WeaponList]));
  

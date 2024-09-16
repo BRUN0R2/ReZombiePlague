@@ -4,6 +4,12 @@
 
 #define _rezp_player_included
 
+enum PlayerProtectionState {
+  Protection_NoSet,
+  Protection_Active,
+  Protection_Expired,
+};
+
 enum RZPlayerProp
 {
 	RZ_PLAYER_CLASS,
@@ -167,3 +173,14 @@ native rz_nightvision_player_change(id, nightVision, bool:enabled = true);
 
 forward rz_nightvisions_change_pre(id, player, bool:enabled);
 forward rz_nightvisions_change_post(id, player, bool:enabled);
+
+stock PlayerProtectionState:GetProtectionState(const player) {
+	new Float:spawnProtectionEndTime = get_member(player, m_flSpawnProtectionEndTime);
+	if (spawnProtectionEndTime <= 0.0) {
+		return Protection_NoSet;
+	}
+	if (spawnProtectionEndTime >= get_gametime()) {
+		return Protection_Active;
+	}
+	return Protection_Expired;
+}

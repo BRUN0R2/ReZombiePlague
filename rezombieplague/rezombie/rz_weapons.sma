@@ -288,7 +288,7 @@ public plugin_end() {
 }
 
 @CBasePlayer_TakeDamage_Pre(const pVictim, const inflictor, const pAttacker, Float:pDamage, const bitsDamageType) {
-	if (pDamage <= 0.0 || !(bitsDamageType & DMG_BULLET) || pVictim == pAttacker) {
+	if (!(bitsDamageType & DMG_BULLET) || pVictim == pAttacker) {
 		return HC_CONTINUE;
 	}
 
@@ -310,21 +310,51 @@ public plugin_end() {
 		return HC_CONTINUE;
 	}
 
-	/*switch (get_member(pVictim, m_LastHitGroup))
-	{
-		case HITGROUP_GENERIC:	pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_GENERIC_DAMAGE);
-		case HITGROUP_HEAD:		pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_HEAD_DAMAGE);
-		case HITGROUP_CHEST:	pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_CHEST_DAMAGE);
-		case HITGROUP_STOMACH:	pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_STOMACH_DAMAGE);
-		case HITGROUP_LEFTARM,
-		HITGROUP_RIGHTARM:		pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_ARMS_DAMAGE);
-		case HITGROUP_LEFTLEG,
-		HITGROUP_RIGHTLEG:		pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_LEGS_DAMAGE);
+	static const Float:WEAPON_NULL_DAMAGE = 0.0;
 
+	switch (get_member(pVictim, m_LastHitGroup)) {
+		case HITGROUP_GENERIC: {
+			new Float:weaponDamage = Float:get_weapon_var(impulse, RZ_WEAPON_GENERIC_DAMAGE);
+			if (weaponDamage != WEAPON_NULL_DAMAGE) {
+				pDamage = weaponDamage;
+			}
+		}
+		case HITGROUP_HEAD: {
+			new Float:weaponDamage = Float:get_weapon_var(impulse, RZ_WEAPON_HEAD_DAMAGE);
+			if (weaponDamage != WEAPON_NULL_DAMAGE) {
+				pDamage = weaponDamage;
+			}
+		}
+		case HITGROUP_CHEST: {
+			new Float:weaponDamage = Float:get_weapon_var(impulse, RZ_WEAPON_CHEST_DAMAGE);
+			if (weaponDamage != WEAPON_NULL_DAMAGE) {
+				pDamage = weaponDamage;
+			}
+		}
+		case HITGROUP_STOMACH: {
+			new Float:weaponDamage = Float:get_weapon_var(impulse, RZ_WEAPON_STOMACH_DAMAGE);
+			if (weaponDamage != WEAPON_NULL_DAMAGE) {
+				pDamage = weaponDamage;
+			}
+		}
+		case HITGROUP_LEFTARM, HITGROUP_RIGHTARM: {
+			new Float:weaponDamage = Float:get_weapon_var(impulse, RZ_WEAPON_ARMS_DAMAGE);
+			if (weaponDamage != WEAPON_NULL_DAMAGE) {
+				pDamage = weaponDamage;
+			}
+		}
+		case HITGROUP_LEFTLEG, HITGROUP_RIGHTLEG: {
+			new Float:weaponDamage = Float:get_weapon_var(impulse, RZ_WEAPON_LEGS_DAMAGE);
+			if (weaponDamage != WEAPON_NULL_DAMAGE) {
+				pDamage = weaponDamage;
+			}
+		}
 		default: pDamage = Float:get_weapon_var(impulse, RZ_WEAPON_ARMS_DAMAGE);
 	}
 
-	SetHookChainArg(4, ATYPE_FLOAT, pDamage);*/
+	if (pDamage > WEAPON_NULL_DAMAGE) {
+		SetHookChainArg(4, ATYPE_FLOAT, pDamage);
+	}
 
 	if (bool:get_weapon_var(impulse, RZ_WEAPON_BEAM_CYLINDER))
 	{
@@ -357,7 +387,7 @@ public plugin_end() {
 			.frameRate = 0,
 			.life = 1,
 			.lineWidth = 5,
-			.noiseAmplitude = random_num(0, 30),
+			.noiseAmplitude = 99,
 			.RGBA = CylinderColor,
 			.scrollSpeed = 0
 		);
