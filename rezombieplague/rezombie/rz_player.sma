@@ -41,7 +41,7 @@ public plugin_precache()
 public plugin_init()
 {
 	register_message(get_user_msgid("ScreenFade"), "@MSG_ScreenFade");
-	register_message(get_user_msgid("Message_Fog"), "@MSG_PlayerFog");
+	register_message(get_user_msgid("Fog"), "@MSG_PlayerFog");
 
 	register_clcmd("nightvision", "@Command_NightVision");
 
@@ -218,6 +218,10 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 }
 
 @MSG_ScreenFade(id, dest, player) {
+	return PLUGIN_HANDLED;
+}
+
+@MSG_PlayerFog(id, dest, player) {
 	return PLUGIN_HANDLED;
 }
 
