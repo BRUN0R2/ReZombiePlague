@@ -160,6 +160,12 @@ WeaponConfigs()
 		WeaponPropField("weaponlist", i, RZ_WEAPON_WEAPONLIST, RZ_MAX_RESOURCE_PATH);
 		WeaponPropField("base_damage1", i, RZ_WEAPON_BASE_DAMAGE1, 12);
 		WeaponPropField("base_damage2", i, RZ_WEAPON_BASE_DAMAGE2, 12);
+		WeaponPropField("weapon_generic_damage", i, RZ_WEAPON_GENERIC_DAMAGE, 12);
+		WeaponPropField("weapon_head_damage", i, RZ_WEAPON_HEAD_DAMAGE, 12);
+		WeaponPropField("weapon_chest_damage", i, RZ_WEAPON_CHEST_DAMAGE, 12);
+		WeaponPropField("weapon_stomach_damage", i, RZ_WEAPON_STOMACH_DAMAGE, 12);
+		WeaponPropField("weapon_arms_damage", i, RZ_WEAPON_ARMS_DAMAGE, 12);
+		WeaponPropField("weapon_legs_damage", i, RZ_WEAPON_LEGS_DAMAGE, 12);
 		WeaponPropField("knockback_power", i, RZ_WEAPON_KNOCKBACK_POWER, 12);
 		WeaponPropField("weapon_beam_cynlinder", i, RZ_WEAPON_BEAM_CYLINDER, 24);
 		WeaponPropField("weapon_beam_cynlinder_color", i, RZ_WEAPON_BEAM_CYLINDER_COLOR, 32);
