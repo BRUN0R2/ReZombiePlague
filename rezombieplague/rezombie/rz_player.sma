@@ -391,11 +391,8 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 
 	set_entvar(id, var_body, g_iSettedBody[id]);
 
-	if (get_member_game(m_bFreezePeriod))
-		set_member(id, m_bCanShootOverride, true);
-
-	if (rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
-		set_member(id, m_iHideHUD, get_member(id, m_iHideHUD) | HIDEHUD_MONEY);
+	/*if (rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
+		set_member(id, m_iHideHUD, get_member(id, m_iHideHUD) | HIDEHUD_MONEY);*/
 
 	if (get_member(id, m_iNumSpawns) == 1)
 	{
