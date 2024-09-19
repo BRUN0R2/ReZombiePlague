@@ -152,12 +152,12 @@ public rz_class_change_post(id, attacker, class) {
 	Flame_Destroy(id, true);
 }
 
-@CBasePlayer_ResetMaxSpeed_Post(id)
+@CBasePlayer_ResetMaxSpeed_Post(const id)
 {
 	if (is_nullent(g_iFlameEntity[id]))
 		return;
 
-	new Float:burnSpeed = 200.0;
+	new Float:burnSpeed = 185.0;
 	new Float:maxSpeed = get_entvar(id, var_maxspeed) * 0.75;
 
 	set_entvar(id, var_maxspeed, floatmax(maxSpeed, burnSpeed));
@@ -271,41 +271,39 @@ Flame_Destroy(pTarget, bool:smoke = false)
 	set_entvar(pFlame, var_flags, FL_KILLME);
 }
 
-@Flame_Think(id)
+@Flame_Think(const pEntity)
 {
-	new owner = get_entvar(id, var_owner);
+	new owner = get_entvar(pEntity, var_owner);
 	new Float:time = get_gametime();
 
-	if ((!is_nullent(owner) && get_entvar(owner, var_flags) & FL_INWATER) || Float:get_entvar(id, var_dmgtime) <= time)
+	if ((!is_nullent(owner) && get_entvar(owner, var_flags) & FL_INWATER) || Float:get_entvar(pEntity, var_dmgtime) <= time)
 	{
 		Flame_Destroy(owner, true);
 
-		if (is_user_alive(owner))
-		{
+		if (is_user_alive(owner)) {
 			rg_reset_maxspeed(owner);
 		}
-
 		return;
 	}
 
-	if (Float:get_entvar(id, var_pain_finished) <= time)
+	if (Float:get_entvar(pEntity, var_pain_finished) <= time)
 	{
-		set_entvar(id, var_pain_finished, time + 0.8);
+		set_entvar(pEntity, var_pain_finished, time + 0.8);
 
-		if (random_num(0, 1))
+		if (random_num(0, 3))
 			rh_emit_sound2(owner, 0, CHAN_VOICE, FIRE_BURN_SOUND[random_num(0, sizeof(FIRE_BURN_SOUND) - 1)], VOL_NORM, ATTN_NORM);
 
-		new attacker = get_entvar(id, var_enemy);
+		new attacker = get_entvar(pEntity, var_enemy);
 
 		if (attacker && !is_user_connected(attacker))
 		{
 			attacker = 0;
-			set_entvar(id, var_enemy, 0);
+			set_entvar(pEntity, var_enemy, 0);
 		}
 
 		if (rg_is_player_can_takedamage(owner, attacker))
 		{
-			new Float:damage = 100.0;
+			static const Float:pDamage = 100.0;
 
 			new Float:velocityModifier = get_member(owner, m_flVelocityModifier);
 			new Float:vecVelocity[3];
@@ -314,7 +312,9 @@ Flame_Destroy(pTarget, bool:smoke = false)
 
 			g_bFireDamage = true;
 			set_member(owner, m_LastHitGroup, HITGROUP_GENERIC);
-			ExecuteHamB(Ham_TakeDamage, owner, id, attacker, damage, DMG_BURN | DMG_NEVERGIB);
+			rg_multidmg_clear();
+			rg_multidmg_add(pEntity, owner, pDamage, DMG_BURN);
+			rg_multidmg_apply(pEntity, attacker);
 			g_bFireDamage = false;
 
 			if (is_user_alive(owner))
@@ -325,16 +325,16 @@ Flame_Destroy(pTarget, bool:smoke = false)
 		}
 	}
 
-	new Float:frame = Float:get_entvar(id, var_frame);
+	new Float:frame = Float:get_entvar(pEntity, var_frame);
 
 	frame++;
-	//frame += Float:get_entvar(id, var_framerate) * (time - get_ent_data_float(id, "CSprite", "m_lastTime"));
+	//frame += Float:get_entvar(pEntity, var_framerate) * (time - get_ent_data_float(pEntity, "CSprite", "m_lastTime"));
 
-	if (frame > get_ent_data_float(id, "CSprite", "m_maxFrame"))
+	if (frame > get_ent_data_float(pEntity, "CSprite", "m_maxFrame"))
 		frame = 0.0;
 
-	set_entvar(id, var_frame, frame);
-	set_entvar(id, var_nextthink, time + 0.1);
+	set_entvar(pEntity, var_frame, frame);
+	set_entvar(pEntity, var_nextthink, time + 0.1);
 
-	set_ent_data_float(id, "CSprite", "m_lastTime", time);
+	set_ent_data_float(pEntity, "CSprite", "m_lastTime", time);
 }
