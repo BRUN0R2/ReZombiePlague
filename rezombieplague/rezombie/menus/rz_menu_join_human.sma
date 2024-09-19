@@ -60,7 +60,7 @@ public client_putinserver(id)
 
 @ShowVGUIMenu_Pre(id, VGUIMenu:menuType, bitsSlots, oldMenu[])
 {
-	if (mp_auto_join_team)
+	if (mp_auto_join_team || is_user_bot(id))
 		return HC_CONTINUE;
 
 	switch (menuType)
@@ -130,7 +130,6 @@ public client_putinserver(id)
 	if (key == 9)
 	{
 		new subclass = ArrayGetCell(g_aMenuItems[id], random_num(0, itemsNum - 1));
-
 		rz_player_set(id, RZ_PLAYER_SUBCLASS_CHOSEN, subclass, g_iClass_Human);
 	}
 	else
@@ -154,9 +153,14 @@ public client_putinserver(id)
 			}
 		}
 
-		new subclass = ArrayGetCell(g_aMenuItems[id], g_iMenuPage[id] * SUBCLASS_MAX_PAGE_ITEMS + key);
-		
-		rz_player_set(id, RZ_PLAYER_SUBCLASS_CHOSEN, subclass, g_iClass_Human);
+		new SubClassIndex; if (is_user_bot(id)) {
+			SubClassIndex = ArrayGetCell(g_aMenuItems[id], random_num(0, itemsNum - 1));
+		}
+		else if (is_user_connected(id)) {
+			ArrayGetCell(g_aMenuItems[id], g_iMenuPage[id] * SUBCLASS_MAX_PAGE_ITEMS + key);
+		}
+
+		rz_player_set(id, RZ_PLAYER_SUBCLASS_CHOSEN, SubClassIndex, g_iClass_Human);
 	}
 
 	SetHookChainArg(2, ATYPE_INTEGER, MenuChoose_CT);
