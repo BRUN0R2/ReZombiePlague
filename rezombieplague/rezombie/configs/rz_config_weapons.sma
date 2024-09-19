@@ -308,6 +308,7 @@ GrenadeConfigs()
 		GrenadePropField("player_model", i, RZ_GRENADE_PLAYER_MODEL, RZ_MAX_RESOURCE_PATH);
 		GrenadePropField("world_model", i, RZ_GRENADE_WORLD_MODEL, RZ_MAX_RESOURCE_PATH);
 		GrenadePropField("weaponlist", i, RZ_GRENADE_WEAPONLIST, RZ_MAX_RESOURCE_PATH);
+		GrenadePropField("distance_effect", i, RZ_GRENADE_DISTANCE_EFFECT, 32);
 
 		if (g_bCreating)
 		{
@@ -500,28 +501,48 @@ KnifePropField(value[], knife, RZKnifeProp:prop, length)
 
 GrenadePropField(value[], grenade, RZGrenadeProp:prop, length)
 {
-	if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
-	{
-		json_object_get_string(g_iJsonHandle, value, g_sTemp, length - 1);
-		set_grenade_var(grenade, prop, g_sTemp);
-	}
-	else
-	{
-		get_grenade_var(grenade, prop, g_sTemp, length - 1);
-		json_object_set_string(g_iJsonHandle, value, g_sTemp);
-	}
-
-	if (!g_sTemp[0])
-		return;
-
 	switch (prop)
 	{
-		case RZ_GRENADE_VIEW_MODEL, RZ_GRENADE_PLAYER_MODEL, RZ_GRENADE_WORLD_MODEL:
+		case RZ_GRENADE_DISTANCE_EFFECT:
 		{
-			precache_model(g_sTemp);
+			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
+			{
+				json_object_get_string(g_iJsonHandle, value, g_sTemp, length - 1);
+				set_grenade_var(grenade, prop, str_to_float(g_sTemp));
+			}
+			else
+			{
+				g_flTemp = Float:get_grenade_var(grenade, prop);
+				json_object_set_string(g_iJsonHandle, value, fmt("%.1f", g_flTemp));
+			}
 		}
-		case RZ_GRENADE_WEAPONLIST: {
-			rz_util_precache_sprites_from_txt(g_sTemp);
+		default:
+		{
+			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONString))
+			{
+				json_object_get_string(g_iJsonHandle, value, g_sTemp, length - 1);
+				set_grenade_var(grenade, prop, g_sTemp);
+			}
+			else
+			{
+				get_grenade_var(grenade, prop, g_sTemp, length - 1);
+				json_object_set_string(g_iJsonHandle, value, g_sTemp);
+			}
+
+			if (!g_sTemp[0])
+				return;
+
+			switch (prop)
+			{
+				case RZ_GRENADE_VIEW_MODEL, RZ_GRENADE_PLAYER_MODEL, RZ_GRENADE_WORLD_MODEL:
+				{
+					precache_model(g_sTemp);
+				}
+				case RZ_GRENADE_WEAPONLIST:
+				{
+					rz_util_precache_sprites_from_txt(g_sTemp);
+				}
+			}
 		}
 	}
 }

@@ -57,6 +57,8 @@ public plugin_precache()
 	set_grenade_var(grenade, RZ_GRENADE_NAME, "RZ_WPN_FIRE_GRENADE");
 	set_grenade_var(grenade, RZ_GRENADE_SHORT_NAME, "RZ_WPN_FIRE_SHORT");
 	set_grenade_var(grenade, RZ_GRENADE_VIEW_MODEL, FIRE_VIEW_MODEL);
+
+	set_grenade_var(grenade, RZ_GRENADE_DISTANCE_EFFECT, 350.0);
 }
 
 public plugin_init()
@@ -85,7 +87,7 @@ public rz_grenades_throw_post(id, entity, grenade)
 	rz_util_set_rendering(entity, kRenderNormal, 16.0, Float:{ 200.0, 0.0, 0.0 }, kRenderFxGlowShell);
 
 	message_begin_f(MSG_ALL, SVC_TEMPENTITY);
-	TE_BeamFollow(entity, g_iModelIndex_LaserBeam, 10, 10, { 200, 0, 0 }, 200);
+	TE_BeamFollow(entity, g_iModelIndex_LaserBeam, 10, 10, { 200, 0, 0 }, 255);
 }
 
 public rz_grenades_explode_pre(entity, grenade)
@@ -114,8 +116,8 @@ public rz_grenades_explode_pre(entity, grenade)
 			continue;
 
 		get_entvar(pTarget, var_origin, vecOrigin2);
-
-		if (vector_distance(vecOrigin, vecOrigin2) > 350.0)
+		new Float:pGrenadeDistance = get_grenade_var(grenade, RZ_GRENADE_DISTANCE_EFFECT);
+		if (vector_distance(vecOrigin, vecOrigin2) > pGrenadeDistance)
 			continue;
 
 		// Does not work with bots
@@ -223,9 +225,9 @@ Flame_Create(pTarget, pAttacker, Float:pTime = 1.0)
 	new Float:pGametime = get_gametime();
 
 	set_entvar(pFlame, var_classname, FLAME_CLASSNAME);
-	set_entvar(pFlame, var_owner, pTarget);
+	set_entvar(pFlame, var_owner, pAttacker);
 	set_entvar(pFlame, var_aiment, pTarget);
-	set_entvar(pFlame, var_enemy, pAttacker);
+	set_entvar(pFlame, var_enemy, pTarget);
 	set_entvar(pFlame, var_movetype, MOVETYPE_FOLLOW);
 	set_entvar(pFlame, var_nextthink, pGametime);
 	set_entvar(pFlame, var_dmgtime, pGametime + pTime);
@@ -273,15 +275,15 @@ Flame_Destroy(pTarget, bool:smoke = false)
 
 @Flame_Think(const pEntity)
 {
-	new owner = get_entvar(pEntity, var_owner);
+	new pTarget = get_entvar(pEntity, var_enemy);
 	new Float:time = get_gametime();
 
-	if ((!is_nullent(owner) && get_entvar(owner, var_flags) & FL_INWATER) || Float:get_entvar(pEntity, var_dmgtime) <= time)
+	if ((!is_nullent(pTarget) && get_entvar(pTarget, var_flags) & FL_INWATER) || Float:get_entvar(pEntity, var_dmgtime) <= time)
 	{
-		Flame_Destroy(owner, true);
+		Flame_Destroy(pTarget, true);
 
-		if (is_user_alive(owner)) {
-			rg_reset_maxspeed(owner);
+		if (is_user_alive(pTarget)) {
+			rg_reset_maxspeed(pTarget);
 		}
 		return;
 	}
@@ -290,37 +292,36 @@ Flame_Destroy(pTarget, bool:smoke = false)
 	{
 		set_entvar(pEntity, var_pain_finished, time + 0.8);
 
-		if (random_num(0, 3))
-			rh_emit_sound2(owner, 0, CHAN_VOICE, FIRE_BURN_SOUND[random_num(0, sizeof(FIRE_BURN_SOUND) - 1)], VOL_NORM, ATTN_NORM);
+		if (random_num(0, 4))
+			rh_emit_sound2(pTarget, 0, CHAN_VOICE, FIRE_BURN_SOUND[random_num(0, sizeof(FIRE_BURN_SOUND) - 1)], VOL_NORM, ATTN_NORM);
 
-		new attacker = get_entvar(pEntity, var_enemy);
-
-		if (attacker && !is_user_connected(attacker))
+		new pAttacker = get_entvar(pEntity, var_owner);
+		if (pAttacker && !is_user_connected(pAttacker))
 		{
-			attacker = 0;
-			set_entvar(pEntity, var_enemy, 0);
+			pAttacker = 0;
+			set_entvar(pEntity, var_owner, 0);
 		}
 
-		if (rg_is_player_can_takedamage(owner, attacker))
+		if (rg_is_player_can_takedamage(pTarget, pAttacker))
 		{
 			static const Float:pDamage = 100.0;
 
-			new Float:velocityModifier = get_member(owner, m_flVelocityModifier);
+			new Float:velocityModifier = get_member(pTarget, m_flVelocityModifier);
 			new Float:vecVelocity[3];
 
-			get_entvar(owner, var_velocity, vecVelocity);
+			get_entvar(pTarget, var_velocity, vecVelocity);
 
 			g_bFireDamage = true;
-			set_member(owner, m_LastHitGroup, HITGROUP_GENERIC);
+			set_member(pTarget, m_LastHitGroup, HITGROUP_GENERIC);
 			rg_multidmg_clear();
-			rg_multidmg_add(pEntity, owner, pDamage, DMG_BURN);
-			rg_multidmg_apply(pEntity, attacker);
+			rg_multidmg_add(pEntity, pTarget, pDamage, DMG_BURN);
+			rg_multidmg_apply(pEntity, pAttacker);
 			g_bFireDamage = false;
 
-			if (is_user_alive(owner))
+			if (is_user_alive(pTarget))
 			{
-				set_entvar(owner, var_velocity, vecVelocity);
-				set_member(owner, m_flVelocityModifier, velocityModifier);
+				set_entvar(pTarget, var_velocity, vecVelocity);
+				set_member(pTarget, m_flVelocityModifier, velocityModifier);
 			}
 		}
 	}
