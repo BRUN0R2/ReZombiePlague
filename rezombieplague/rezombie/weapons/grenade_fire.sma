@@ -18,7 +18,7 @@ new const FIRE_BURN_SOUND[][] = {
 };
 
 new const FLAME_SPRITE[] = "sprites/rezombie/weapons/grenades/flame.spr";
-new const FLAME_CLASSNAME[] = "ent_flame2";
+new const FLAME_CLASSNAME[] = "ent_pFlame2";
 
 new g_iFlameEntity[MAX_PLAYERS + 1];
 new bool:g_bFireDamage;
@@ -59,6 +59,7 @@ public plugin_precache()
 	set_grenade_var(grenade, RZ_GRENADE_VIEW_MODEL, FIRE_VIEW_MODEL);
 
 	set_grenade_var(grenade, RZ_GRENADE_DISTANCE_EFFECT, 350.0);
+	set_grenade_var(grenade, RZ_GRENADE_PLAYERS_DAMAGE, 100.0);
 }
 
 public plugin_init()
@@ -90,17 +91,17 @@ public rz_grenades_throw_post(id, entity, grenade)
 	TE_BeamFollow(entity, g_iModelIndex_LaserBeam, 10, 10, { 200, 0, 0 }, 255);
 }
 
-public rz_grenades_explode_pre(entity, grenade)
+public rz_grenades_explode_pre(pEntity, pGrenade)
 {
-	if (grenade != g_iGrenade_Fire)
+	if (pGrenade != g_iGrenade_Fire)
 		return RZ_CONTINUE;
 
-	new pAttacker = get_entvar(entity, var_owner);
+	new pAttacker = get_entvar(pEntity, var_owner);
 	new Float:vecOrigin[3];
 	new Float:vecOrigin2[3];
 	new Float:vecAxis[3];
 
-	get_entvar(entity, var_origin, vecOrigin);
+	get_entvar(pEntity, var_origin, vecOrigin);
 
 	vecAxis = vecOrigin;
 	vecAxis[2] += 555.0;
@@ -108,7 +109,7 @@ public rz_grenades_explode_pre(entity, grenade)
 	message_begin_f(MSG_PVS, SVC_TEMPENTITY, vecOrigin);
 	TE_BeamCylinder(vecOrigin, vecAxis, g_iModelIndex_ShockWave, 0, 0, 4, 60, 0, { 200, 0, 0 }, 200, 0);
 
-	rh_emit_sound2(entity, 0, CHAN_WEAPON, FIRE_EXPLODE_SOUND, VOL_NORM, ATTN_NORM);
+	rh_emit_sound2(pEntity, 0, CHAN_WEAPON, FIRE_EXPLODE_SOUND, VOL_NORM, ATTN_NORM);
 
 	for (new pTarget = 1; pTarget <= MaxClients; pTarget++)
 	{
@@ -116,7 +117,7 @@ public rz_grenades_explode_pre(entity, grenade)
 			continue;
 
 		get_entvar(pTarget, var_origin, vecOrigin2);
-		new Float:pGrenadeDistance = get_grenade_var(grenade, RZ_GRENADE_DISTANCE_EFFECT);
+		new Float:pGrenadeDistance = Float:get_grenade_var(pGrenade, RZ_GRENADE_DISTANCE_EFFECT);
 		if (vector_distance(vecOrigin, vecOrigin2) > pGrenadeDistance)
 			continue;
 
@@ -127,7 +128,7 @@ public rz_grenades_explode_pre(entity, grenade)
 		if (get_member(pTarget, m_iTeam) != TEAM_TERRORIST)
 			continue;
 
-		IgnitePlayer(pTarget, pAttacker, 12.0);
+		IgnitePlayer(pTarget, pAttacker, 12.0, Float:get_grenade_var(pGrenade, RZ_GRENADE_PLAYERS_DAMAGE));
 	}
 
 	return RZ_BREAK;
@@ -178,21 +179,23 @@ public rz_class_change_post(id, attacker, class) {
 		ArgpTarget = 1,
 		ArgpAttacker = 2,
 		ArgpDuration = 3,
+		ArgpDamage = 4,
 	};
 
 	new pTarget = get_param(ArgpTarget);
 	new pAttacker = get_param(ArgpAttacker);
 	new Float:pDuration = get_param_f(ArgpDuration);
+	new Float:pDamage = get_param_f(ArgpDamage);
 
 	if (!is_user_alive(pTarget)) {
 		return false;
 	}
 
-	IgnitePlayer(pTarget, pAttacker, pDuration);
+	IgnitePlayer(pTarget, pAttacker, pDuration, pDamage);
 	return true;
 }
 
-IgnitePlayer(pTarget, pAttacker, Float:pTime)
+IgnitePlayer(pTarget, pAttacker, Float:pTime, Float:pDamage = 1.0)
 {
 	ExecuteForward(gForwards[Fw_Fire_Grenade_Burn_Pre], gForwards[Fw_Return], pTarget);
 
@@ -202,12 +205,12 @@ IgnitePlayer(pTarget, pAttacker, Float:pTime)
 	new flame = g_iFlameEntity[pTarget];
 
 	if (is_nullent(flame)) {
-		flame = Flame_Create(pTarget, pAttacker, pTime);
+		flame = Flame_Create(pTarget, pAttacker, pTime, pDamage);
 	}
 	else {
 		// Burn again
 		Flame_Destroy(pTarget, true);
-		flame = Flame_Create(pTarget, pAttacker, pTime);
+		flame = Flame_Create(pTarget, pAttacker, pTime, pDamage);
 	}
 
 	g_iFlameEntity[pTarget] = flame;
@@ -215,7 +218,7 @@ IgnitePlayer(pTarget, pAttacker, Float:pTime)
 	ExecuteForward(gForwards[Fw_Fire_Grenade_Burn_Post], gForwards[Fw_Return], pTarget);
 }
 
-Flame_Create(pTarget, pAttacker, Float:pTime = 1.0)
+Flame_Create(pTarget, pAttacker, Float:pTime = 1.0, Float:pDamage)
 {
 	new pFlame = rg_create_entity("env_sprite");
 
@@ -228,6 +231,7 @@ Flame_Create(pTarget, pAttacker, Float:pTime = 1.0)
 	set_entvar(pFlame, var_owner, pAttacker);
 	set_entvar(pFlame, var_aiment, pTarget);
 	set_entvar(pFlame, var_enemy, pTarget);
+	set_entvar(pFlame, var_dmg_take, pDamage);
 	set_entvar(pFlame, var_movetype, MOVETYPE_FOLLOW);
 	set_entvar(pFlame, var_nextthink, pGametime);
 	set_entvar(pFlame, var_dmgtime, pGametime + pTime);
@@ -304,18 +308,18 @@ Flame_Destroy(pTarget, bool:smoke = false)
 
 		if (rg_is_player_can_takedamage(pTarget, pAttacker))
 		{
-			static const Float:pDamage = 100.0;
-
 			new Float:velocityModifier = get_member(pTarget, m_flVelocityModifier);
-			new Float:vecVelocity[3];
+			static Float:vecVelocity[3];
 
 			get_entvar(pTarget, var_velocity, vecVelocity);
 
 			g_bFireDamage = true;
 			set_member(pTarget, m_LastHitGroup, HITGROUP_GENERIC);
+
 			rg_multidmg_clear();
-			rg_multidmg_add(pEntity, pTarget, pDamage, DMG_BURN);
+			rg_multidmg_add(pEntity, pTarget, Float:get_entvar(pEntity, var_dmg_take), DMG_BURN);
 			rg_multidmg_apply(pEntity, pAttacker);
+	
 			g_bFireDamage = false;
 
 			if (is_user_alive(pTarget))

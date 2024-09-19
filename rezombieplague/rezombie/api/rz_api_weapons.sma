@@ -69,6 +69,7 @@ enum _:GrenadeData
 	Grenade_WorldModel[RZ_MAX_RESOURCE_PATH],
 	Grenade_WeaponList[RZ_MAX_RESOURCE_PATH],
 	Float:Grenade_Distance_Effect,
+	Float:Grenade_Players_Damage,
 
 }; new Array:g_aGrenades;
 
@@ -922,6 +923,7 @@ public plugin_natives()
 	get_string(arg_reference, data[Grenade_Reference], charsmax(data[Grenade_Reference]));
 
 	data[Grenade_Distance_Effect] = 350.0;
+	data[Grenade_Players_Damage] = 100.0;
 
 	return ArrayPushArray(g_aGrenades, data) + rz_module_get_offset(g_iModule_Grenades);
 }
@@ -976,6 +978,10 @@ public plugin_natives()
 		case RZ_GRENADE_DISTANCE_EFFECT:
 		{
 			return any:gGrenadeData[Grenade_Distance_Effect];
+		}
+		case RZ_GRENADE_PLAYERS_DAMAGE:
+		{
+			return any:gGrenadeData[Grenade_Players_Damage];
 		}
 		default:
 		{
@@ -1040,6 +1046,10 @@ public plugin_natives()
 		case RZ_GRENADE_DISTANCE_EFFECT:
 		{
 			gGrenadeData[Grenade_Distance_Effect] = get_float_byref(arg_3);
+		}
+		case RZ_GRENADE_PLAYERS_DAMAGE:
+		{
+			gGrenadeData[Grenade_Players_Damage] = get_float_byref(arg_3);
 		}
 		default:
 		{

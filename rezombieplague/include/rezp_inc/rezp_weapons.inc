@@ -158,6 +158,7 @@ enum RZGrenadeProp
 	RZ_GRENADE_WORLD_MODEL,		// [RZ_MAX_RESOURCE_PATH]
 	RZ_GRENADE_WEAPONLIST,		// [RZ_MAX_RESOURCE_PATH]
 	RZ_GRENADE_DISTANCE_EFFECT,	// Float
+	RZ_GRENADE_PLAYERS_DAMAGE,	// Float
 };
 
 native rz_grenade_create(const handle[], const reference[]);
@@ -181,7 +182,7 @@ native rz_grenades_valid(grenade);
  * @param attacker	Player Attacker index
  * @param time		The time the player will stay on fire
  */
-native rz_grenade_set_user_fire(const id, const attacker, Float:time = 1.0);
+native rz_grenade_set_user_fire(const id, const attacker, Float:time = 1.0, Float:damage = 1.0);
 
 /**
  * Sets a icer property.

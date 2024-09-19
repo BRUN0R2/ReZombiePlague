@@ -52,6 +52,8 @@ public plugin_precache()
 	set_grenade_var(grenade, RZ_GRENADE_NAME, "RZ_WPN_FROST_GRENADE");
 	set_grenade_var(grenade, RZ_GRENADE_SHORT_NAME, "RZ_WPN_FROST_SHORT");
 	set_grenade_var(grenade, RZ_GRENADE_VIEW_MODEL, FROST_VIEW_MODEL);
+
+	set_grenade_var(grenade, RZ_GRENADE_DISTANCE_EFFECT, 350.0);
 }
 
 public plugin_init()
@@ -96,23 +98,24 @@ public rz_grenades_explode_pre(id, grenade)
 
 	rh_emit_sound2(id, 0, CHAN_WEAPON, FROST_EXPLODE_SOUND, VOL_NORM, ATTN_NORM);
 
-	for (new i = 1; i <= MaxClients; i++)
+	for (new pTarget = 1; pTarget <= MaxClients; pTarget++)
 	{
-		if (!is_user_alive(i))
+		if (!is_user_alive(pTarget))
 			continue;
 
-		get_entvar(i, var_origin, vecOrigin2);
-
-		if (vector_distance(vecOrigin, vecOrigin2) > 350.0)
+		get_entvar(pTarget, var_origin, vecOrigin2);
+		new Float:pGrenadeDistance = get_grenade_var(grenade, RZ_GRENADE_DISTANCE_EFFECT);
+		if (vector_distance(vecOrigin, vecOrigin2) > pGrenadeDistance)
 			continue;
 
-		if (!ExecuteHamB(Ham_FVisible, i, id))
+		// Does not work with bots
+		/*if (!ExecuteHamB(Ham_FVisible, pTarget, entity))
+			continue;*/ // In the future I will replace it with another option
+
+		if (get_member(pTarget, m_iTeam) != TEAM_TERRORIST)
 			continue;
 
-		if (get_member(i, m_iTeam) != TEAM_TERRORIST)
-			continue;
-
-		FreezePlayer(i);
+		FreezePlayer(pTarget);
 	}
 
 	return RZ_BREAK;
@@ -151,7 +154,7 @@ public client_disconnected(id)
 		return;
 
 	get_entvar(id, var_velocity, g_vecOldVelocity);
-	SetHookChainArg(4, ATYPE_FLOAT, damage * 0.7);
+	SetHookChainArg(4, ATYPE_FLOAT, damage * 0.5);
 }
 
 @CBasePlayer_TakeDamage_Post(id, inflictor, attacker, Float:damage, bitsDamageType)
