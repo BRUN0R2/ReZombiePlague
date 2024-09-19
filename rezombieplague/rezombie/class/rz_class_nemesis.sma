@@ -55,6 +55,14 @@ public rz_class_change_post(id, attacker, class, bool:preSpawn) {
 	rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), true);
 }
 
+public rz_fire_grenade_burn_pre(id)
+{
+	if (rz_player_get(id, RZ_PLAYER_CLASS) != g_iClass_Nemesis)
+		return RZ_CONTINUE;
+
+	return RZ_SUPERCEDE;
+}
+
 public rz_frost_grenade_freeze_pre(id)
 {
 	if (rz_player_get(id, RZ_PLAYER_CLASS) != g_iClass_Nemesis)
