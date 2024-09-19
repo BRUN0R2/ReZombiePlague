@@ -11,12 +11,15 @@ new g_iHudSync_Info;
 
 new Float:rz_playerinfo_hud_pos[2];
 
-public plugin_init()
+public plugin_precache()
 {
 	register_plugin("[ReZP] Addon: Player Info", REZP_VERSION_STR, "fl0wer");
 
 	rz_add_translate("hud");
+}
 
+public plugin_init()
+{
 	register_message(get_user_msgid("Money"), "@MSG_Money");
 	register_message(get_user_msgid("SpecHealth"), "@MSG_SpecHealth1");
 	register_message(get_user_msgid("SpecHealth2"), "@MSG_SpecHealth2");
@@ -110,15 +113,13 @@ public client_putinserver(id) {
 
 	g_nextHudInfoTime[id] = Gametime + 0.1;
 
-	static class, subclass, color[3], Float:xSpeed, Float:velocity[3];
+	static class, subclass, color[3], Float:pSpeed, Float:velocity[3];
 	class = rz_player_get(id, RZ_PLAYER_CLASS);
 
 	if (!class) return;
 
-	SetGlobalTransTarget(id);
-
 	get_entvar(id, var_velocity, velocity);
-	xSpeed = floatsqroot(floatpower(velocity[0], 2.0) + floatpower(velocity[1], 2.0));
+	pSpeed = floatsqroot(floatpower(velocity[0], 2.0) + floatpower(velocity[1], 2.0));
 
 	subclass = rz_player_get(id, RZ_PLAYER_SUBCLASS);
 
@@ -127,6 +128,8 @@ public client_putinserver(id) {
 	rz_class_get(class, RZ_CLASS_NAME, name, charsmax(name));
 
 	new len; static text[512];
+
+	SetGlobalTransTarget(id);
 
 	if (subclass) {
 		static subclassName[RZ_MAX_LANGKEY_LENGTH];
@@ -139,7 +142,7 @@ public client_putinserver(id) {
 		ADD_FORMATEX("^n» %l: %l", "RZ_HUD_CLASS", className);
 	}
 
-	ADD_FORMATEX("^n» %l: %.1f", "RZ_HUD_SPEED", xSpeed);
+	ADD_FORMATEX("^n» %l: %.1f", "RZ_HUD_SPEED", pSpeed);
 
 	set_hudmessage(color[0], color[1], color[2], rz_playerinfo_hud_pos[0], rz_playerinfo_hud_pos[1], 0, 0.0, 0.30, 0.0, 0.0);
 	ShowSyncHudMsg(id, g_iHudSync_Info, text);

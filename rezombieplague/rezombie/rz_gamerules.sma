@@ -95,6 +95,7 @@ public plugin_init()
 
 	RegisterHookChain(RG_CSGameRules_RestartRound, "@CSGameRules_RestartRound_Pre", false);
 	RegisterHookChain(RG_CSGameRules_RestartRound, "@CSGameRules_RestartRound_Post", true);
+	RegisterHookChain(RG_CSGameRules_OnRoundFreezeEnd, "@CSGameRules_OnRoundFreezeEnd_Post", true);
 	RegisterHookChain(RG_CSGameRules_CheckWinConditions, "@CSGameRules_CheckWinConditions_Pre", false);
 	RegisterHookChain(RG_CSGameRules_CheckWinConditions, "@CSGameRules_CheckWinConditions_Post", true);
 	RegisterHookChain(RG_CSGameRules_FPlayerCanTakeDamage, "@CSGameRules_FPlayerCanTakeDamage_Pre", false);
@@ -170,6 +171,17 @@ public plugin_init()
 @CSGameRules_RestartRound_Post()
 {
 	ForceLevelInitialize();
+}
+
+@CSGameRules_OnRoundFreezeEnd_Post()
+{
+	for (new i = 1; i <= MaxClients; i++)
+	{
+		if (!is_user_alive(i))
+			continue;
+
+		set_member(i, m_bCanShootOverride, false);
+	}
 }
 
 @CSGameRules_CheckWinConditions_Pre()
