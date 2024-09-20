@@ -178,20 +178,22 @@ native rz_grenades_valid(grenade);
 /**
  * Sets a fire property.
  *
- * @param id		Player index
+ * @param target	Player index
  * @param attacker	Player Attacker index
- * @param time		The time the player will stay on fire
+ * @param duration	The time the player will stay on fire
+ * @param damage	Flame damage
  */
-native rz_grenade_set_user_fire(const id, const attacker, Float:time = 1.0, Float:damage = 1.0);
+native rz_grenade_set_user_fire(const target, const attacker, Float:duration = 0.0, Float:damage = 1.0);
 
 /**
  * Sets a icer property.
  *
- * @param id		Player index
+ * @param target	Player index
  * @param attacker	Player Attacker index
- * @param time		The time the player will stay on frozen
+ * @param duration	The time the player will stay on frozen
+ * @param damage	Freeze damage
  */
-native rz_grenade_set_user_icer(const id, const attacker, Float:time = 1.0);
+native rz_grenade_set_user_icer(const target, const attacker, Float:duration = 0.0, Float:damage = 1.0);
 
 /**
  * Called before a player throws a grenade.
