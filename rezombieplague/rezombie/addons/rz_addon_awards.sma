@@ -63,6 +63,9 @@ public rz_class_change_post(id, attacker)
 		if (team != TEAM_TERRORIST && team != TEAM_CT)
 			continue;
 
+		if (get_member(i, m_iNumSpawns) < 1)
+			continue;
+
 		if (winTeam == TEAM_UNASSIGNED)
 			rz_give_bonus(i, AWARD_TEAM_DRAW, "%L", LANG_PLAYER, "RZ_AWARD_TEAM_DRAW");
 		else if (winTeam == team)
