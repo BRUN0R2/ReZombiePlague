@@ -103,7 +103,7 @@ public client_putinserver(id) {
 }
 
 @CBasePlayer_UpdateClientData_Post(const id) {
-	if (!g_nextHudInfoTime[id] || !is_user_connected(id) || is_user_bot(id))
+	if (!g_nextHudInfoTime[id] || !is_user_alive(id) || is_user_bot(id))
 		return;
 
 	static Float:Gametime; Gametime = get_gametime();
