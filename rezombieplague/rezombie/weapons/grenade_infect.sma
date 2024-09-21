@@ -46,18 +46,18 @@ public rz_grenades_throw_post(id, entity, grenade)
 	TE_BeamFollow(entity, g_iModelIndex_LaserBeam, 10, 10, { 0, 200, 0 }, 200);
 }
 
-public rz_grenades_explode_pre(id, grenade)
+public rz_grenades_explode_pre(pEntity, grenade)
 {
 	if (grenade != g_iGrenade_Infect)
 		return RZ_CONTINUE;
 
-	new owner = get_entvar(id, var_owner);
+	new pAttacker = get_entvar(pEntity, var_owner);
 
 	new Float:vecOrigin[3];
 	new Float:vecOrigin2[3];
 	new Float:vecAxis[3];
 
-	get_entvar(id, var_origin, vecOrigin);
+	get_entvar(pEntity, var_origin, vecOrigin);
 
 	vecAxis = vecOrigin;
 	vecAxis[2] += 555.0;
@@ -65,28 +65,29 @@ public rz_grenades_explode_pre(id, grenade)
 	message_begin_f(MSG_PVS, SVC_TEMPENTITY, vecOrigin);
 	TE_BeamCylinder(vecOrigin, vecAxis, g_iModelIndex_ShockWave, 0, 0, 4, 60, 0, { 0, 200, 0 }, 200, 0);
 
-	rh_emit_sound2(id, 0, CHAN_WEAPON, INFECTION_EXPLODE_SOUND, VOL_NORM, ATTN_NORM);
+	rh_emit_sound2(pEntity, 0, CHAN_WEAPON, INFECTION_EXPLODE_SOUND, VOL_NORM, ATTN_NORM);
 
-	if (!is_user_connected(owner) && rz_player_get(owner, RZ_PLAYER_CLASS) != g_iClass_Zombie)
-		owner = 0;
+	if (!is_user_connected(pAttacker) && rz_player_get(pAttacker, RZ_PLAYER_CLASS) != g_iClass_Zombie)
+		pAttacker = 0;
 
-	for (new i = 1; i <= MaxClients; i++)
+	for (new pTarget = 1; pTarget <= MaxClients; pTarget++)
 	{
-		if (!is_user_alive(i))
+		if (!is_user_alive(pTarget))
 			continue;
 
-		get_entvar(i, var_origin, vecOrigin2);
+		get_entvar(pTarget, var_origin, vecOrigin2);
 
 		if (vector_distance(vecOrigin, vecOrigin2) > 350.0)
 			continue;
 
-		if (!ExecuteHamB(Ham_FVisible, i, id))
+		// Does not work with bots
+		/*if (!ExecuteHamB(Ham_FVisible, pTarget, entity))
+			continue;*/ // In the future I will replace it with another option
+
+		if (rz_player_get(pTarget, RZ_PLAYER_CLASS) != g_iClass_Human)
 			continue;
 
-		if (rz_player_get(i, RZ_PLAYER_CLASS) != g_iClass_Human)
-			continue;
-
-		rz_class_player_change(i, owner, g_iClass_Zombie);
+		rz_class_player_change(pTarget, pAttacker, g_iClass_Zombie);
 	}
 
 	return RZ_BREAK;

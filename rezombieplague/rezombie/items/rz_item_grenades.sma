@@ -93,7 +93,7 @@ public rz_items_select_post(id, item)
 	new pGrenade;
 
 	if (item == g_iItem_Infect) {
-		pGrenade = g_iItem_Infect;
+		pGrenade = g_iGrenade_Infect;
 	}
 	else if (item == g_iItem_Fire) {
 		pGrenade = g_iGrenade_Fire;
