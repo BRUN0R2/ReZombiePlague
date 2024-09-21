@@ -21,7 +21,7 @@ new const FLAME_SPRITE[] = "sprites/rezombie/weapons/grenades/flame.spr";
 new const FLAME_CLASSNAME[] = "ent_pFlame2";
 
 new g_iFlameEntity[MAX_PLAYERS + 1];
-new bool:g_bFireDamage;
+new bool:g_bFireDamage[MAX_PLAYERS + 1];
 
 new g_iModelIndex_Flame;
 new g_iModelIndex_LaserBeam;
@@ -64,13 +64,13 @@ public plugin_precache()
 
 public plugin_init()
 {
-	RegisterHookChain(RH_SV_StartSound, "@SV_StartSound_Pre", false);
+	RegisterHookChain(RH_SV_StartSound, "@SV_StartSound_Pre", .post = false);
 	
-	RegisterHookChain(RG_CSGameRules_RestartRound, "@CSGameRules_RestartRound_Post", true);
+	RegisterHookChain(RG_CSGameRules_RestartRound, "@CSGameRules_RestartRound_Post", .post = true);
 
-	RegisterHookChain(RG_CBasePlayer_Killed, "@CBasePlayer_Killed_Pre", false);
-	RegisterHookChain(RG_CBasePlayer_ResetMaxSpeed, "@CBasePlayer_ResetMaxSpeed_Post", true);
-	RegisterHookChain(RG_CBasePlayer_SetAnimation, "@CBasePlayer_SetAnimation_Pre", false);
+	RegisterHookChain(RG_CBasePlayer_Killed, "@CBasePlayer_Killed_Pre", .post = false);
+	RegisterHookChain(RG_CBasePlayer_ResetMaxSpeed, "@CBasePlayer_ResetMaxSpeed_Post", .post = true);
+	RegisterHookChain(RG_CBasePlayer_SetAnimation, "@CBasePlayer_SetAnimation_Pre", .post = false);
 
 	gForwards[Fw_Fire_Grenade_Burn_Pre] = CreateMultiForward("rz_fire_grenade_burn_pre", ET_CONTINUE, FP_CELL);
 	gForwards[Fw_Fire_Grenade_Burn_Post] = CreateMultiForward("rz_fire_grenade_burn_post", ET_IGNORE, FP_CELL);
@@ -134,13 +134,15 @@ public rz_grenades_explode_pre(pEntity, pGrenade)
 	return RZ_BREAK;
 }
 
-public rz_class_change_post(id, attacker, class) {
+public rz_class_change_pre(id, attacker, class) {
 	Flame_Destroy(id, true);
 }
 
-@SV_StartSound_Pre(recipients, entity, channel, sample[], volume, Float:attenuation, flags, pitch)	
-{
-	if (!g_bFireDamage)
+@SV_StartSound_Pre(recipients, entity, channel, sample[], volume, Float:attenuation, flags, pitch) {
+	if (!is_user_connected(entity))
+		return HC_CONTINUE;
+
+	if (!g_bFireDamage[entity])
 		return HC_CONTINUE;
 
 	return HC_SUPERCEDE;
@@ -150,9 +152,10 @@ public rz_class_change_post(id, attacker, class) {
 	Flame_Destroy(pTarget);
 }
 
-@CBasePlayer_Killed_Pre(id, attacker, gib) {
+@CBasePlayer_Killed_Pre(pVictim, attacker, gib) {
 	// maybe spawn?
-	Flame_Destroy(id, true);
+	Flame_Destroy(pVictim, true);
+	g_bFireDamage[pVictim] = false;
 }
 
 @CBasePlayer_ResetMaxSpeed_Post(const id)
@@ -166,9 +169,8 @@ public rz_class_change_post(id, attacker, class) {
 	set_entvar(id, var_maxspeed, floatmax(maxSpeed, burnSpeed));
 }
 
-@CBasePlayer_SetAnimation_Pre(id, PLAYER_ANIM:playerAnim)
-{
-	if (!g_bFireDamage)
+@CBasePlayer_SetAnimation_Pre(id, PLAYER_ANIM:playerAnim) {
+	if (!g_bFireDamage[id])
 		return HC_CONTINUE;
 
 	return HC_SUPERCEDE;
@@ -195,7 +197,7 @@ public rz_class_change_post(id, attacker, class) {
 	return true;
 }
 
-IgnitePlayer(pTarget, pAttacker, Float:pTime, Float:pDamage = 1.0)
+IgnitePlayer(pTarget, pAttacker, Float:pDuration, Float:pDamage)
 {
 	ExecuteForward(gForwards[Fw_Fire_Grenade_Burn_Pre], gForwards[Fw_Return], pTarget);
 
@@ -205,12 +207,12 @@ IgnitePlayer(pTarget, pAttacker, Float:pTime, Float:pDamage = 1.0)
 	new flame = g_iFlameEntity[pTarget];
 
 	if (is_nullent(flame)) {
-		flame = Flame_Create(pTarget, pAttacker, pTime, pDamage);
+		flame = Flame_Create(pTarget, pAttacker, pDuration, pDamage);
 	}
 	else {
 		// Burn again
 		Flame_Destroy(pTarget, true);
-		flame = Flame_Create(pTarget, pAttacker, pTime, pDamage);
+		flame = Flame_Create(pTarget, pAttacker, pDuration, pDamage);
 	}
 
 	g_iFlameEntity[pTarget] = flame;
@@ -218,7 +220,7 @@ IgnitePlayer(pTarget, pAttacker, Float:pTime, Float:pDamage = 1.0)
 	ExecuteForward(gForwards[Fw_Fire_Grenade_Burn_Post], gForwards[Fw_Return], pTarget);
 }
 
-Flame_Create(pTarget, pAttacker, Float:pTime = 1.0, Float:pDamage)
+Flame_Create(pTarget, pAttacker, Float:pDuration = 0.0, Float:pDamage = 1.0)
 {
 	new pFlame = rg_create_entity("env_sprite");
 
@@ -234,7 +236,7 @@ Flame_Create(pTarget, pAttacker, Float:pTime = 1.0, Float:pDamage)
 	set_entvar(pFlame, var_dmg_take, pDamage);
 	set_entvar(pFlame, var_movetype, MOVETYPE_FOLLOW);
 	set_entvar(pFlame, var_nextthink, pGametime);
-	set_entvar(pFlame, var_dmgtime, pGametime + pTime);
+	set_entvar(pFlame, var_dmgtime, pGametime + pDuration);
 
 	set_entvar(pFlame, var_framerate, 1.0);
 	set_entvar(pFlame, var_scale, 0.4);
@@ -313,14 +315,14 @@ Flame_Destroy(pTarget, bool:smoke = false)
 
 			get_entvar(pTarget, var_velocity, vecVelocity);
 
-			g_bFireDamage = true;
+			g_bFireDamage[pTarget] = true;
 			set_member(pTarget, m_LastHitGroup, HITGROUP_GENERIC);
 
 			rg_multidmg_clear();
 			rg_multidmg_add(pEntity, pTarget, Float:get_entvar(pEntity, var_dmg_take), DMG_BURN);
 			rg_multidmg_apply(pEntity, pAttacker);
 	
-			g_bFireDamage = false;
+			g_bFireDamage[pTarget] = false;
 
 			if (is_user_alive(pTarget))
 			{
