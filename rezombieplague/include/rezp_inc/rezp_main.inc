@@ -88,6 +88,7 @@ native rz_module_find(const name[]);
 native bool:rz_game_is_warmup();
 native rz_game_get_playersnum(TeamName:team);
 native rz_game_get_alivesnum();
+native rz_game_get_random_player();
 
 forward rz_fire_grenade_burn_pre(id);
 forward rz_fire_grenade_burn_post(id);

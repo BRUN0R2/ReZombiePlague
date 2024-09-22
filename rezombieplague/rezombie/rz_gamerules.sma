@@ -465,6 +465,7 @@ public plugin_natives()
 	register_native("rz_game_is_warmup", "@native_game_is_warmup");
 	register_native("rz_game_get_playersnum", "@native_game_get_playersnum");
 	register_native("rz_game_get_alivesnum", "@native_game_get_alivesnum");
+	register_native("rz_game_get_random_player", "@native_game_get_random_player");
 }
 
 @native_game_is_warmup(plugin, argc)
@@ -515,4 +516,21 @@ public plugin_natives()
 	}
 	
 	return cachedAlivesNum;
+}
+
+@native_game_get_random_player(plugin, argc)
+{
+	static randomPlayer;
+	new alivePlayers[MAX_PLAYERS + 1];
+	new aliveCount = 0;
+
+	for (new i = 1; i <= MaxClients; i++)
+	{
+		if (!is_user_alive(i))
+			continue;
+
+		alivePlayers[aliveCount++] = i;
+	}
+	randomPlayer = alivePlayers[random(aliveCount)];
+	return randomPlayer;
 }
