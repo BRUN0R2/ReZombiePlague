@@ -514,7 +514,7 @@ public plugin_natives()
 			cachedAlivesNum++;
 		}
 	}
-	
+
 	return cachedAlivesNum;
 }
 
