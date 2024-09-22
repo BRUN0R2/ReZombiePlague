@@ -54,7 +54,7 @@ public plugin_init()
 	RegisterHookChain(RG_CBasePlayer_Spawn, "@CBasePlayer_Spawn_Post", true);
 	RegisterHookChain(RG_CBasePlayer_TakeDamage, "@CBasePlayer_TakeDamage_Pre", false);
 	RegisterHookChain(RG_CBasePlayer_TakeDamage, "@CBasePlayer_TakeDamage_Post", true);
-	RegisterHookChain(RG_CBasePlayer_Killed, "@CBasePlayer_Killed_Post", true);
+	RegisterHookChain(RG_CBasePlayer_Killed, "@CBasePlayer_Killed_Post", .post = true);
 	RegisterHookChain(RG_CBasePlayer_ResetMaxSpeed, "@CBasePlayer_ResetMaxSpeed_Pre", false);
 	RegisterHookChain(RG_CBasePlayer_GiveDefaultItems, "@CBasePlayer_GiveDefaultItems_Pre", false);
 	RegisterHookChain(RG_CBasePlayer_AddAccount, "@CBasePlayer_AddAccount_Pre", false);
@@ -488,19 +488,20 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 
 @CBasePlayer_Killed_Post(victim, attacker, gib)
 {
-	if (rg_is_player_can_respawn(victim))
+	if (!rg_is_player_can_respawn(victim)) {
+		return;
+	}
+
+	new gameMode = rz_gamemodes_get(RZ_GAMEMODES_CURRENT);
+
+	if (gameMode && rz_gamemode_get(gameMode, RZ_GAMEMODE_DEATHMATCH))
 	{
-		new gameMode = rz_gamemodes_get(RZ_GAMEMODES_CURRENT);
+		set_member(victim, m_flRespawnPending, get_gametime() + float(RESPAWN_TIME));
 
-		if (gameMode && rz_gamemode_get(gameMode, RZ_GAMEMODE_DEATHMATCH))
-		{
-			set_member(victim, m_flRespawnPending, get_gametime() + float(RESPAWN_TIME));
+		message_begin(MSG_ONE, gmsgBarTime, _, victim);
+		SendBarTime(RESPAWN_TIME);
 
-			message_begin(MSG_ONE, gmsgBarTime, _, victim);
-			SendBarTime(RESPAWN_TIME);
-			
-			client_print(victim, print_center, "%L", LANG_PLAYER, "RZ_NOTICE_RESPAWN_TIME", RESPAWN_TIME);
-		}
+		client_print(victim, print_center, "%L", LANG_PLAYER, "RZ_NOTICE_RESPAWN_TIME", RESPAWN_TIME);
 	}
 }
 
@@ -545,8 +546,9 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 
 @CBasePlayer_AddAccount_Pre(id, amount, RewardType:type, bool:trackChange)
 {
-	if (type == RT_NONE || type == RT_ENEMY_KILLED)
+	if (type == RT_NONE || type == RT_ENEMY_KILLED) {
 		return HC_CONTINUE;
+	}
 
 	if (type == RT_PLAYER_JOIN && rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
 	{
@@ -566,18 +568,15 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	return HC_SUPERCEDE;
 }
 
-@CBasePlayer_OnSpawnEquip_Pre(id, bool:addDefault, bool:equipGame)
-{
+@CBasePlayer_OnSpawnEquip_Pre(id, bool:addDefault, bool:equipGame) {
 	SetHookChainArg(3, ATYPE_BOOL, false);
 }
 
-@CBasePlayer_Radio_Pre(id, msgId[], msgVerbose[], pitch, bool:showIcon)
-{
+@CBasePlayer_Radio_Pre(id, msgId[], msgVerbose[], pitch, bool:showIcon) {
 	return HC_SUPERCEDE;
 }
 
-@CBasePlayer_StartObserver_Post(id, Float:vecPosition[3], Float:vecViewAngle[3])
-{
+@CBasePlayer_StartObserver_Post(id, Float:vecPosition[3], Float:vecViewAngle[3]) {
 	g_bNightVision[id] = true;
 	set_member(id, m_bHasNightVision, true);
 }

@@ -255,6 +255,18 @@ public plugin_init()
 		return HC_SUPERCEDE;
 	}
 
+	if (get_member(id, m_iTeam) == TEAM_SPECTATOR)
+	{
+		SetHookChainReturn(ATYPE_INTEGER, false);
+		return HC_SUPERCEDE;
+	}
+
+	if (get_member(id, m_flRespawnPending) > get_gametime())
+	{
+		SetHookChainReturn(ATYPE_INTEGER, false);
+		return HC_SUPERCEDE;
+	}
+
 	if (g_bIsWarmup)
 	{
 		if (get_member(id, m_iJoiningState) != JOINED)
