@@ -35,6 +35,9 @@ public plugin_cfg()
 
 	new entity = rg_create_entity("info_target");
 
+	if (is_nullent(entity))
+		return;
+
 	set_entvar(entity, var_effects, EF_NODRAW);
 	set_entvar(entity, var_nextthink, get_gametime() + 1.0);
 
