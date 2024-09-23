@@ -91,6 +91,7 @@ new lastChanceMod = 0;
     else modSortIndex = rz_gamemodes_get(RZ_GAMEMODES_DEFAULT);
 
     rz_gamemodes_change(modSortIndex);
+    set_member_game(m_bCompleteReset, true);
 }
 
 public xRandomMod() {

@@ -125,14 +125,19 @@ GameMenu_Show(id)
 		{
 			if (get_member(id, m_iTeam) == TEAM_SPECTATOR)
 			{
-				rg_set_user_team(id, TEAM_CT, MODEL_UNASSIGNED, .check_win_conditions = true);
+				if (rz_game_is_warmup() || get_member_game(m_bFreezePeriod)) {
+					rg_set_user_team(id, TEAM_CT, MODEL_UNASSIGNED, .check_win_conditions = true);
+					set_member(id, m_flRespawnPending, get_gametime());
+				}
+				else {
+					rg_set_user_team(id, TEAM_TERRORIST, MODEL_UNASSIGNED, .check_win_conditions = true);
+					set_member(id, m_flRespawnPending, get_gametime());
+				}
 			}
 			else
 			{
-				if (is_user_alive(id))
-				{
+				if (is_user_alive(id)) {
 					new Float:frags = get_entvar(id, var_frags);
-					
 					ExecuteHamB(Ham_Killed, id, id, GIB_NEVER);
 					set_entvar(id, var_frags, frags);
 				}
