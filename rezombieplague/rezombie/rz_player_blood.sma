@@ -26,7 +26,7 @@ public plugin_init() {
 @Player_TraceAttack_Pre(player, attacker, Float:damage, Float:direction[3], trace, bitsDamageType) {
 	new bool:shouldBleed = true
 	new bool:shouldSpark = false
-	new pNewAmount = 0
+	new pNewAmount = 1
 	if (is_user_connected(attacker)) {
 		if (GetProtectionState(player)) {
 			return HC_CONTINUE
@@ -57,7 +57,6 @@ public plugin_init() {
 			}
 		}
 		case HITGROUP_CHEST: {
-			pNewAmount = 1
 			damage *= 1.0
 			if (get_member(player, m_iKevlar) != ARMOR_NONE) {
 				shouldBleed = false
@@ -67,7 +66,6 @@ public plugin_init() {
 			}
 		}
 		case HITGROUP_STOMACH: {
-			pNewAmount = 1
 			damage *= 1.25
 			if (get_member(player, m_iKevlar) != ARMOR_NONE) {
 				shouldBleed = false
@@ -77,13 +75,11 @@ public plugin_init() {
 			}
 		}
 		case HITGROUP_LEFTARM, HITGROUP_RIGHTARM: {
-			pNewAmount = 1
 			if (get_member(player, m_iKevlar) != ARMOR_NONE) {
 				shouldBleed = false
 			}
 		}
 		case HITGROUP_LEFTLEG, HITGROUP_RIGHTLEG: {
-			pNewAmount = 1
 			damage *= 0.75
 		}
 	}
