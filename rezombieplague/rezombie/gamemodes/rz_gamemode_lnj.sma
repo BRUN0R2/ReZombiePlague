@@ -23,7 +23,7 @@ public plugin_precache()
 	rz_gamemode_set(gameMode, RZ_GAMEMODE_HUD_COLOR, { 181, 62, 244 });
 	rz_gamemode_set(gameMode, RZ_GAMEMODE_CHANCE, 20);
 	rz_gamemode_set(gameMode, RZ_GAMEMODE_MIN_ALIVES, 16);
-	rz_gamemode_set(gameMode, RZ_GAMEMODE_DEATHMATCH, RZ_GM_DEATHMATCH_ONLY_CT);
+	rz_gamemode_set(gameMode, RZ_GAMEMODE_DEATHMATCH, RZ_GM_DEATHMATCH_ONLY_TR);
 }
 
 public rz_gamemodes_change_post(mode, Array:alivesArray)
@@ -34,10 +34,10 @@ public rz_gamemodes_change_post(mode, Array:alivesArray)
 	new alivesNum = ArraySize(alivesArray);
 	new maxNemeses = floatround(alivesNum * 0.5, floatround_ceil);
 	new Float:health;
-	
+
 	new item;
 	new player;
-	
+
 	for (new i = 0; i < maxNemeses; i++)
 	{
 		item = random_num(0, ArraySize(alivesArray) - 1);

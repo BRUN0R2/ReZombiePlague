@@ -115,7 +115,7 @@ public rz_class_change_post(id, attacker, class, bool:preSpawn) {
 
 		set_entvar(pVictim, var_armorvalue, armorValue);
 		SetHookChainArg(4, ATYPE_FLOAT, 0.0);
-		
+
 		rh_emit_sound2(pVictim, 0, CHAN_BODY, ARMOR_HIT_SOUND);
 	}
 

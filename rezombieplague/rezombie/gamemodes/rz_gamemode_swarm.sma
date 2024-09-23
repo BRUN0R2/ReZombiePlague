@@ -19,6 +19,8 @@ public plugin_precache()
 	rz_gamemode_set(gameMode, RZ_GAMEMODE_NOTICE, "RZ_GAMEMODE_NOTICE_SWARM");
 	rz_gamemode_set(gameMode, RZ_GAMEMODE_HUD_COLOR, { 20, 255, 20 });
 	rz_gamemode_set(gameMode, RZ_GAMEMODE_CHANCE, 20);
+	rz_gamemode_set(gameMode, RZ_GAMEMODE_MIN_ALIVES, 12);
+	rz_gamemode_set(gameMode, RZ_GAMEMODE_DEATHMATCH, RZ_GM_DEATHMATCH_ONLY_TR);
 }
 
 public rz_gamemodes_change_post(gamemode, Array:alivesArray)

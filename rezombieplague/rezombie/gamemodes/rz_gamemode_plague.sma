@@ -25,6 +25,7 @@ public plugin_precache()
 	rz_gamemode_set(gameMode, RZ_GAMEMODE_HUD_COLOR, { 0, 50, 200 });
 	rz_gamemode_set(gameMode, RZ_GAMEMODE_CHANCE, 20);
 	rz_gamemode_set(gameMode, RZ_GAMEMODE_MIN_ALIVES, 8);
+	rz_gamemode_set(gameMode, RZ_GAMEMODE_DEATHMATCH, RZ_GM_DEATHMATCH_ONLY_TR);
 }
 
 public rz_gamemodes_change_post(mode, Array:alivesArray)
