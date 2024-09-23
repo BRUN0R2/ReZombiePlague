@@ -9,8 +9,6 @@ new ModelIndex_BloodDrop
 
 new Array:BloodDecals
 
-new bool:xHeadshot[MAX_PLAYERS + 1]
-
 public plugin_precache() {
 	register_plugin("[RZ] Player Blood", "1.0", "fl0wer")
 	ModelIndex_BloodSpray = precache_model("sprites/bloodspray.spr")
@@ -28,8 +26,8 @@ public plugin_init() {
 @Player_TraceAttack_Pre(player, attacker, Float:damage, Float:direction[3], trace, bitsDamageType) {
 	new bool:shouldBleed = true
 	new bool:shouldSpark = false
+	new pNewAmount = 0
 	if (is_user_connected(attacker)) {
-		xHeadshot[attacker] = false
 		if (GetProtectionState(player)) {
 			return HC_CONTINUE
 		}
@@ -46,7 +44,7 @@ public plugin_init() {
 	set_member(player, m_LastHitGroup, hitBoxGroup)
 	switch (hitBoxGroup) {
 		case HITGROUP_HEAD: {
-			xHeadshot[attacker] = true
+			pNewAmount = random_num(2, 3)
 			if (get_member(player, m_iKevlar) == ARMOR_VESTHELM) {
 				shouldBleed = false
 				shouldSpark = true
@@ -59,6 +57,7 @@ public plugin_init() {
 			}
 		}
 		case HITGROUP_CHEST: {
+			pNewAmount = 1
 			damage *= 1.0
 			if (get_member(player, m_iKevlar) != ARMOR_NONE) {
 				shouldBleed = false
@@ -68,6 +67,7 @@ public plugin_init() {
 			}
 		}
 		case HITGROUP_STOMACH: {
+			pNewAmount = 1
 			damage *= 1.25
 			if (get_member(player, m_iKevlar) != ARMOR_NONE) {
 				shouldBleed = false
@@ -77,11 +77,13 @@ public plugin_init() {
 			}
 		}
 		case HITGROUP_LEFTARM, HITGROUP_RIGHTARM: {
+			pNewAmount = 1
 			if (get_member(player, m_iKevlar) != ARMOR_NONE) {
 				shouldBleed = false
 			}
 		}
 		case HITGROUP_LEFTLEG, HITGROUP_RIGHTLEG: {
+			pNewAmount = 1
 			damage *= 0.75
 		}
 	}
@@ -91,7 +93,7 @@ public plugin_init() {
 	get_tr2(trace, TR_vecEndPos, endPosition)
 	get_tr2(trace, TR_vecPlaneNormal, planeNormal)
 	if (shouldBleed) {
-		SpawnBlood(endPosition, bloodColor, /*damage,*/ attacker)
+		SpawnBlood(endPosition, bloodColor, /*damage,*/ pNewAmount)
 		TraceBleed(player, bloodColor, damage, endPosition, direction, bitsDamageType)
 	} else if (hitBoxGroup == HITGROUP_HEAD && shouldSpark) {
 		message_begin_f(MSG_PVS, SVC_TEMPENTITY, endPosition)
@@ -112,7 +114,7 @@ public plugin_init() {
 	return HC_SUPERCEDE
 }
 
-SpawnBlood(Float:position[3], bloodColor, /*Float:damage, */const attacker) {
+SpawnBlood(Float:position[3], bloodColor, /*Float:damage, */const pNewAmount) {
 	//new amount = floatround(damage, floatround_floor)
 	if (bloodColor == DONT_BLEED/* || !amount*/) {
 		return
@@ -120,11 +122,11 @@ SpawnBlood(Float:position[3], bloodColor, /*Float:damage, */const attacker) {
 	/*amount *= 1
 	if (amount > 255) {
 		amount = 255
-	}
+	}*/
 
-	TE_BloodSprite(position, ModelIndex_BloodSpray, ModelIndex_BloodDrop, bloodColor, clamp(amount / 10, 3, 16))*/ //Original
+	//TE_BloodSprite(position, ModelIndex_BloodSpray, ModelIndex_BloodDrop, bloodColor, clamp(amount / 10, 3, 16))*/ //Original
 
-	TE_BloodSprite(position, ModelIndex_BloodDrop, ModelIndex_BloodSpray, bloodColor, xHeadshot[attacker] ? random_num(2, 3) : 1)
+	TE_BloodSprite(position, ModelIndex_BloodDrop, ModelIndex_BloodSpray, bloodColor, pNewAmount)
 }
 
 TraceBleed(player, bloodColor, Float:damage, Float:src[3], Float:direction[3], bitsDamageType) {
