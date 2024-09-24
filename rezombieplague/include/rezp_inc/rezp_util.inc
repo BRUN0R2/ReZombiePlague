@@ -198,3 +198,27 @@ stock rz_util_te_beamcylinder(Float:position[3] = NULL_VECTOR, Float:axis[3] = N
 	write_byte(scrollSpeed); // scroll speed in 0.1's
 	message_end();
 }
+// By Jean
+stock rz_util_getGlobalTrace() {
+    new tr = create_tr2();
+    new Float:allsolid, Float:startsolid, Float:inopen, Float:inwater, Float:fraction, Float:plane_dist, Float:endpos[3], Float:plane_normal[3];
+    global_get(glb_trace_allsolid, allsolid);
+    global_get(glb_trace_startsolid, startsolid);
+    global_get(glb_trace_inopen, inopen);
+    global_get(glb_trace_inwater, inwater);
+    global_get(glb_trace_fraction, fraction);
+    global_get(glb_trace_plane_dist, plane_dist);
+    global_get(glb_trace_endpos, endpos);
+    global_get(glb_trace_plane_normal, plane_normal);
+    set_tr2(tr, TR_AllSolid, floatround(allsolid));
+    set_tr2(tr, TR_StartSolid, floatround(startsolid));
+    set_tr2(tr, TR_InOpen, floatround(inopen));
+    set_tr2(tr, TR_InWater, floatround(inwater));
+    set_tr2(tr, TR_flFraction, fraction);
+    set_tr2(tr, TR_flPlaneDist, plane_dist);
+    set_tr2(tr, TR_pHit, global_get(glb_trace_ent));
+    set_tr2(tr, TR_vecEndPos, endpos);
+    set_tr2(tr, TR_vecPlaneNormal, plane_normal);
+    set_tr2(tr, TR_iHitgroup, global_get(glb_trace_hitgroup));
+    return tr;
+}

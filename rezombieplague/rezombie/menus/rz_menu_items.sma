@@ -173,6 +173,8 @@ Items_Show(id, page = 0)
 		return PLUGIN_HANDLED;
 	}
 
+	SetGlobalTransTarget(id);
+
 	new cost = rz_item_get(item, RZ_ITEM_COST);
 	new name[RZ_MAX_LANGKEY_LENGTH];
 	
@@ -180,14 +182,15 @@ Items_Show(id, page = 0)
 
 	if (get_member(id, m_iAccount) < cost)
 	{
-		rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_ITEMS_INSUFFICIENT_FUNDS",
-			LANG_PLAYER, name,
-			LANG_PLAYER, rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED) ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
+		rz_print_chat(id, print_team_grey, "%l", "RZ_ITEMS_INSUFFICIENT_FUNDS", name,
+		rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED) ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
 		return PLUGIN_HANDLED;
 	}
 
 	rg_add_account(id, -cost);
 	rz_items_player_give(id, item);
-	
+
+	rz_print_chat(0, print_team_grey, "%l", "RZ_ITEMS_PLAYER_BOUGHT", id, name);
+
 	return PLUGIN_HANDLED;
 }

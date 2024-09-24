@@ -1,6 +1,6 @@
 [en]
 RZ_ITEMS_INSUFFICIENT_FUNDS = Insufficient funds to purchase! ^3%L^1 cost: ^4%L
-RZ_ITEMS_PLAYER_BOUGHT = Player ^3%n ^1bought ^4%l
+RZ_ITEMS_PLAYER_BOUGHT = Player ^4%n ^3bought ^4%l
 RZ_ITEMS_TITLE = Extra Items
 RZ_ITEM_MADNESS = Madness
 RZ_ITEM_ANTIDOTE = Antidote
