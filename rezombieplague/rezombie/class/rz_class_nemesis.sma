@@ -28,6 +28,7 @@ public plugin_precache()
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_GRAVITY, 0.5);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_SPEED, 265.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_FOOTSTEPS, false);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_NO_IMPACT, true);
 
 	rz_playermodel_add(model, "rz_source", .defaultHitboxes = true);
 

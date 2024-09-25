@@ -410,24 +410,28 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	get_entvar(id, var_velocity, g_vecOldVelocity);
 }
 
-@CBasePlayer_TakeDamage_Post(id, inflictor, attacker, Float:damage, bitsDamageType)
+@CBasePlayer_TakeDamage_Post(const victim, const inflictor, const attacker, Float:damage, bitsDamageType)
 {
-	if (!(bitsDamageType & (DMG_NEVERGIB | DMG_BULLET)))
-		return;
+	if (!(bitsDamageType & (DMG_BULLET) | (DMG_NEVERGIB)) || victim == attacker || !is_user_connected(attacker) || !is_user_alive(victim)) {
+		return HC_CONTINUE;
+	}
 
-	if (id == attacker || !is_user_connected(attacker))
-		return;
+	if (!rg_is_player_can_takedamage(victim, attacker)) {
+		return HC_CONTINUE;
+	}
 
-	if (!rg_is_player_can_takedamage(id, attacker))
-		return;
-
-	new props = rz_player_get(id, RZ_PLAYER_PROPS);
-
+	new props = rz_player_get(victim, RZ_PLAYER_PROPS);
 	if (!rz_playerprops_valid(props))
-		return;
+		return HC_CONTINUE;
+
+	// First non-impact zombie And also if the class has props activated NO_IMPACT
+	if (bool:rz_playerprops_get(props, RZ_PLAYER_PROPS_NO_IMPACT)) {
+		set_member(victim, m_flVelocityModifier, 1.0);
+		return HC_CONTINUE;
+	}
 
 	new activeItem = get_member(attacker, m_pActiveItem);
-	new lastHitGroup = get_member(id, m_LastHitGroup);
+	new lastHitGroup = get_member(victim, m_LastHitGroup);
 	new Float:playerKnockback = Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_KNOCKBACK);
 	new i;
 	new Float:weaponKnockbackPower = 1.0;
@@ -438,10 +442,11 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	new Float:vecVelocity[3];
 	new Float:vecAttack[3];
 
-	if (HITGROUP_KNOCBACK_MULTIPLIER[lastHitGroup] > 0.0)
+	if (HITGROUP_KNOCBACK_MULTIPLIER[lastHitGroup] > 0.0) {
 		damage *= HITGROUP_KNOCBACK_MULTIPLIER[lastHitGroup];
+	}
 
-	get_entvar(id, var_origin, vecOrigin);
+	get_entvar(victim, var_origin, vecOrigin);
 	get_entvar(attacker, var_origin, vecOrigin2);
 
 	for (i = 0; i < 3; i++)
@@ -453,37 +458,43 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	{
 		length = 1.0 / length;
 
-		for (i = 0; i < 3; i++)
+		for (i = 0; i < 3; i++) {
 			vecAttack[i] *= length;
+		}
 	}
-	else
+	else {
 		vecAttack = Float:{ 0.0, 0.0, 1.0 };
+	}
 
 	if (!is_nullent(activeItem))
 	{
 		new impulse = get_entvar(activeItem, var_impulse);
 
-		if (impulse && rz_weapons_valid(impulse))
+		if (impulse && rz_weapons_valid(impulse)) {
 			weaponKnockbackPower = Float:get_weapon_var(impulse, RZ_WEAPON_KNOCKBACK_POWER);
-		else
-			weaponKnockbackPower = Float:rz_weapon_default_get(get_member(activeItem, m_iId), RZ_DEFAULT_WEAPON_KNOCKBACK_POWER);
-
-		if (weaponKnockbackPower <= 0.0)
-			weaponKnockbackPower = 1.0;
+		}
+		if (weaponKnockbackPower <= 0.0) weaponKnockbackPower = 1.0;
 	}
-	
-	if (get_entvar(id, var_flags) & (FL_DUCKING | FL_ONGROUND) == (FL_DUCKING | FL_ONGROUND))
+
+	if (get_entvar(victim, var_flags) & (FL_DUCKING | FL_ONGROUND) == (FL_DUCKING | FL_ONGROUND)) {
 		ducking = 0.5;
+	}
 
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < 3; i++) {
 		vecVelocity[i] = g_vecOldVelocity[i] + vecAttack[i] * damage * weaponKnockbackPower * playerKnockback * ducking;
+	}
 
-	set_entvar(id, var_velocity, vecVelocity);
+	vecVelocity[2] = g_vecOldVelocity[2];
 
-	if (lastHitGroup == HIT_HEAD)
-		set_member(id, m_flVelocityModifier, Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_VELMOD_HEAD));
-	else
-		set_member(id, m_flVelocityModifier, Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_VELMOD));
+	set_entvar(victim, var_velocity, vecVelocity);
+
+	if (lastHitGroup == HIT_HEAD) {
+		set_member(victim, m_flVelocityModifier, Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_VELMOD_HEAD));
+	} else {
+		set_member(victim, m_flVelocityModifier, Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_VELMOD));
+	}
+
+	return HC_CONTINUE;
 }
 
 @CBasePlayer_Killed_Post(victim, attacker, gib)

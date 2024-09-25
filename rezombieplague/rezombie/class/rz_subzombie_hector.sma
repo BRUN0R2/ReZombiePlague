@@ -22,7 +22,7 @@ public plugin_precache()
 	new model = rz_subclass_get(pSubclass, RZ_SUBCLASS_MODEL);
 	new sound = rz_subclass_get(pSubclass, RZ_SUBCLASS_SOUND);
 	new knife = rz_knife_create("knife_hector");
-	
+
 	rz_subclass_set(pSubclass, RZ_SUBCLASS_NAME, "RZ_SUBZOMBIE_HECTOR_NAME");
 	rz_subclass_set(pSubclass, RZ_SUBCLASS_DESC, "RZ_SUBZOMBIE_HECTOR_DESC");
 	rz_subclass_set(pSubclass, RZ_SUBCLASS_PROPS, props);
@@ -34,7 +34,11 @@ public plugin_precache()
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_HEALTH, 2500.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_SPEED, 250.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_GRAVITY, 1.0);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_KNOCKBACK, 1.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_FOOTSTEPS, false);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_NO_IMPACT, false);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_VELMOD_HEAD, 1.0);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_VELMOD, 0.6);
 
 	rz_playermodel_add(model, "rz_source", .defaultHitboxes = true);
 

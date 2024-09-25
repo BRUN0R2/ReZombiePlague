@@ -18,6 +18,7 @@ enum _:PlayerPropData
 	Float:PlayerProp_VelModHead,
 	Float:PlayerProp_Knockback,
 	PlayerProp_BloodColor,
+	bool:PlayerProp_Impacts,
 	/*bool:PlayerProp_SelfGib,
 	bool:PlayerProp_EnemyGib,
 	bool:PlayerProp_CanBurn,
@@ -62,8 +63,9 @@ public plugin_natives()
 	data[PlayerProp_Footsteps] = true;
 	data[PlayerProp_VelMod] = 0.65;
 	data[PlayerProp_VelModHead] = 0.5;
-	data[PlayerProp_Knockback] = 0.0;
+	data[PlayerProp_Knockback] = 1.0;
 	data[PlayerProp_BloodColor] = 247;
+	data[PlayerProp_Impacts] = false;
 
 	return ArrayPushArray(g_aPlayerProps, data) + rz_module_get_offset(g_iModule);
 }
@@ -130,6 +132,10 @@ public plugin_natives()
 		case RZ_PLAYER_PROPS_BLOOD_COLOR:
 		{
 			return gPlayerPropsData[PlayerProp_BloodColor];
+		}
+		case RZ_PLAYER_PROPS_NO_IMPACT:
+		{
+			return gPlayerPropsData[PlayerProp_Impacts];
 		}
 		default:
 		{
@@ -203,6 +209,10 @@ public plugin_natives()
 		case RZ_PLAYER_PROPS_BLOOD_COLOR:
 		{
 			gPlayerPropsData[PlayerProp_BloodColor] = get_param_byref(arg_3);
+		}
+		case RZ_PLAYER_PROPS_NO_IMPACT:
+		{
+			gPlayerPropsData[PlayerProp_Impacts] = bool:get_param_byref(arg_3);
 		}
 		default:
 		{
