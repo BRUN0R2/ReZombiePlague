@@ -63,7 +63,7 @@ public plugin_natives()
 	data[PlayerProp_Footsteps] = true;
 	data[PlayerProp_VelMod] = 0.65;
 	data[PlayerProp_VelModHead] = 0.5;
-	data[PlayerProp_Knockback] = 1.0;
+	data[PlayerProp_Knockback] = 0.0;
 	data[PlayerProp_BloodColor] = 247;
 	data[PlayerProp_Impacts] = false;
 
