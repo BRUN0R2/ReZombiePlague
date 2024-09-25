@@ -319,23 +319,14 @@ Flame_Destroy(pTarget, bool:smoke = false)
 
 			xs_vec_normalize(velocity, velocity);
 
-			new Ptr = rz_util_getGlobalTrace();
 
 			g_bFireDamage[pTarget] = true;
+		
+			set_member(pTarget, m_LastHitGroup, HITGROUP_GENERIC);
 
 			rg_multidmg_clear();
-
-			if (pTarget >= 1 && pTarget <= MaxClients)
-				ExecuteHam(Ham_TraceAttack, pTarget, pAttacker, Float:get_entvar(pEntity, var_dmg_take), velocity, Ptr, DMG_NEVERGIB);
-			else
-				ExecuteHamB(Ham_TraceAttack, pTarget, pAttacker, Float:get_entvar(pEntity, var_dmg_take), velocity, Ptr, DMG_BULLET | DMG_NEVERGIB);
-		
-			//set_member(pTarget, m_LastHitGroup, HITGROUP_GENERIC);
-
-			//rg_multidmg_add(pEntity, pTarget, Float:get_entvar(pEntity, var_dmg_take), DMG_BURN | DMG_NEVERGIB);
+			rg_multidmg_add(pEntity, pTarget, Float:get_entvar(pEntity, var_dmg_take), DMG_BURN | DMG_NEVERGIB);
 			rg_multidmg_apply(pEntity, pAttacker);
-
-			free_tr2(Ptr);
 	
 			g_bFireDamage[pTarget] = false;
 
