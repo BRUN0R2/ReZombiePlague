@@ -412,7 +412,7 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 
 @CBasePlayer_TakeDamage_Post(const victim, const inflictor, const attacker, Float:damage, bitsDamageType)
 {
-	if (!(bitsDamageType & (DMG_BULLET) | (DMG_NEVERGIB)) || victim == attacker || !is_user_connected(attacker) || !is_user_alive(victim)) {
+	if (!(bitsDamageType & DMG_BULLET) || victim == attacker || !is_user_connected(attacker) || !is_user_alive(victim)) {
 		return HC_CONTINUE;
 	}
 
