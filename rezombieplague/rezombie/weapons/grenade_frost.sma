@@ -352,7 +352,7 @@ IceCube_Destroy(pTarget, bool:breakGlass = false)
 			set_member(pTarget, m_LastHitGroup, HITGROUP_GENERIC);
 
 			rg_multidmg_clear();
-			rg_multidmg_add(pEntity, pTarget, Float:get_entvar(pEntity, var_dmg_take), DMG_FREEZE);
+			rg_multidmg_add(pEntity, pTarget, Float:get_entvar(pEntity, var_dmg_take), DMG_FREEZE | DMG_NEVERGIB);
 			rg_multidmg_apply(pEntity, pAttacker);
 	
 			g_bFrostDamage[pTarget] = false;
