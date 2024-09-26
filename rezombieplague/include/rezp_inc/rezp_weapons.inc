@@ -264,3 +264,28 @@ stock bool:rz_find_weapon_by_handler(const id, const handler[]) {
 
     return false;
 }
+
+stock rz_send_weapon_animation(const pWeapon, const pPlayer, const pAnim = 0)
+{
+	new pBody = get_entvar(pWeapon, var_body);
+	set_entvar(pPlayer, var_weaponanim, pAnim);
+
+	message_begin(MSG_ONE, SVC_WEAPONANIM, {0,0,0}, pPlayer);
+	write_byte(pAnim);
+	write_byte(pBody);
+	message_end();
+
+	for (new pObserver = 1; pObserver <= MaxClients; pObserver++)
+	{
+		if (pObserver == pPlayer || !is_user_connected(pObserver) || is_user_alive(pObserver) || is_nullent(pObserver) 
+	 	|| get_entvar(pObserver, var_iuser1) != OBS_IN_EYE || get_entvar(pObserver, var_iuser2) != pPlayer)
+			continue;
+
+		set_entvar(pObserver, var_weaponanim, pAnim);
+
+		message_begin(MSG_ONE, SVC_WEAPONANIM, {0,0,0}, pObserver);
+		write_byte(pAnim);
+		write_byte(pBody);
+		message_end();
+	}
+}
