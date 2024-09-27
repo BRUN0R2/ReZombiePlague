@@ -20,4 +20,6 @@ public plugin_precache()
 
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_HEALTH, 600.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_ARMOR, 350.0);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_WEAPON_INTERACT, true);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_WEAPON_CANDROP, true);
 }

@@ -34,6 +34,7 @@ public plugin_precache()
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_GRAVITY, 0.8);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_SPEED, 270.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_FOOTSTEPS, false);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_WEAPON_INTERACT, false);
 
 	rz_playermodel_add(model, "rz_source", .defaultHitboxes = true);
 
@@ -78,7 +79,7 @@ public rz_class_change_post(id, attacker, class, bool:preSpawn) {
 }
 
 @CBasePlayer_TakeDamage_Pre(pVictim, inflictor, pAttacker, Float:damage, bitsDamageType)
-{	
+{
 	if (pVictim == pAttacker || !is_user_connected(pAttacker)) {
 		return HC_CONTINUE;
 	}
@@ -106,7 +107,7 @@ public rz_class_change_post(id, attacker, class, bool:preSpawn) {
 	if (is_nullent(activeItem) || get_member(activeItem, m_iId) != WEAPON_KNIFE) {
 		return HC_CONTINUE;
 	}
-	
+
 	new Float:armorValue = get_entvar(pVictim, var_armorvalue);
 
 	if (armorValue > 0.0)
