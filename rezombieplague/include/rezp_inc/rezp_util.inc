@@ -110,6 +110,11 @@ stock bool:rz_util_similar_team(const player, const target) {
 	} return false;
 }
 
+stock rz_util_get_vector_aiming(const ePlayer, Float:vecAiming[3]) {
+	static Float:vecViewAngle[3]; get_entvar(ePlayer, var_v_angle, vecViewAngle);
+	angle_vector(vecViewAngle, ANGLEVECTOR_FORWARD, vecAiming);
+}
+
 stock rz_util_precache_sprites_from_txt(const szTextFile[])
 {
 	new szTxtDir[64], szSprDir[64]; 
