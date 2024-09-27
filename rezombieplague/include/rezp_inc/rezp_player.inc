@@ -105,6 +105,8 @@ enum RZPlayerPropsProp
 	RZ_PLAYER_PROPS_KNOCKBACK,		// Float
 	RZ_PLAYER_PROPS_BLOOD_COLOR,	// cell
 	RZ_PLAYER_PROPS_NO_IMPACT,		// bool
+	RZ_PLAYER_PROPS_WEAPON_INTERACT,// bool
+	RZ_PLAYER_PROPS_WEAPON_CANDROP,	// bool
 };
 
 native rz_playerprops_create(const handle[]);

@@ -25,6 +25,8 @@ public plugin_precache()
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_BASE_HEALTH, 50.0);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_GRAVITY, 0.75);
 	rz_playerprops_set(props, RZ_PLAYER_PROPS_NO_IMPACT, false);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_WEAPON_INTERACT, false);
+	rz_playerprops_set(props, RZ_PLAYER_PROPS_WEAPON_CANDROP, false);
 
 	rz_playermodel_add(model, "gign", .defaultHitboxes = false);
 	rz_playermodel_add(model, "leet", .defaultHitboxes = false);

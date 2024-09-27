@@ -40,6 +40,8 @@ public plugin_precache()
 
 public plugin_init()
 {
+	register_clcmd("drop", "@Player_Command_Drop");
+
 	register_message(get_user_msgid("ScreenFade"), "@MSG_ScreenFade");
 	register_message(get_user_msgid("Fog"), "@MSG_PlayerFog");
 
@@ -570,13 +572,45 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	return HC_SUPERCEDE;
 }
 
-@CBasePlayer_HasRestrictItem_Pre(id, ItemID:item, ItemRestType:type)
+@CBasePlayer_HasRestrictItem_Pre(const ePlayer, ItemID:item, ItemRestType:type)
 {
-	if (get_member(id, m_iTeam) != TEAM_TERRORIST)
+	if (!is_user_alive(ePlayer)) {
 		return HC_CONTINUE;
+	}
+
+	new props = rz_player_get(ePlayer, RZ_PLAYER_PROPS);
+
+	if (!rz_playerprops_valid(props)) {
+		return HC_CONTINUE;
+	}
+
+	// Defines who cannot interact with weapons
+	if (bool:rz_playerprops_get(props, RZ_PLAYER_PROPS_WEAPON_INTERACT)) {
+		return HC_CONTINUE;
+	}
 
 	SetHookChainReturn(ATYPE_BOOL, true);
 	return HC_SUPERCEDE;
+}
+
+@Player_Command_Drop(const ePlayer)
+{
+	if (!is_user_alive(ePlayer)) {
+		return PLUGIN_HANDLED;
+	}
+
+	new props = rz_player_get(ePlayer, RZ_PLAYER_PROPS);
+
+	if (!rz_playerprops_valid(props)) {
+		return PLUGIN_HANDLED;
+	}
+
+	// Defines who cannot drop weapons
+	if (!bool:rz_playerprops_get(props, RZ_PLAYER_PROPS_WEAPON_CANDROP)) {
+		return PLUGIN_HANDLED;
+	}
+
+	return PLUGIN_CONTINUE;
 }
 
 @CBasePlayer_OnSpawnEquip_Pre(id, bool:addDefault, bool:equipGame) {

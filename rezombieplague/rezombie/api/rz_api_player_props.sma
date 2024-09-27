@@ -19,6 +19,8 @@ enum _:PlayerPropData
 	Float:PlayerProp_Knockback,
 	PlayerProp_BloodColor,
 	bool:PlayerProp_Impacts,
+	bool:PlayerProp_WeaponInteract,
+	bool:PlayerProp_WeaponCanDrop,
 	/*bool:PlayerProp_SelfGib,
 	bool:PlayerProp_EnemyGib,
 	bool:PlayerProp_CanBurn,
@@ -66,6 +68,8 @@ public plugin_natives()
 	data[PlayerProp_Knockback] = 0.0;
 	data[PlayerProp_BloodColor] = 247;
 	data[PlayerProp_Impacts] = false;
+	data[PlayerProp_WeaponInteract] = false;
+	data[PlayerProp_WeaponCanDrop] = false;
 
 	return ArrayPushArray(g_aPlayerProps, data) + rz_module_get_offset(g_iModule);
 }
@@ -136,6 +140,14 @@ public plugin_natives()
 		case RZ_PLAYER_PROPS_NO_IMPACT:
 		{
 			return gPlayerPropsData[PlayerProp_Impacts];
+		}
+		case RZ_PLAYER_PROPS_WEAPON_INTERACT:
+		{
+			return gPlayerPropsData[PlayerProp_WeaponInteract];
+		}
+		case RZ_PLAYER_PROPS_WEAPON_CANDROP:
+		{
+			return gPlayerPropsData[PlayerProp_WeaponCanDrop];
 		}
 		default:
 		{
@@ -213,6 +225,14 @@ public plugin_natives()
 		case RZ_PLAYER_PROPS_NO_IMPACT:
 		{
 			gPlayerPropsData[PlayerProp_Impacts] = bool:get_param_byref(arg_3);
+		}
+		case RZ_PLAYER_PROPS_WEAPON_INTERACT:
+		{
+			gPlayerPropsData[PlayerProp_WeaponInteract] = bool:get_param_byref(arg_3);
+		}
+		case RZ_PLAYER_PROPS_WEAPON_CANDROP:
+		{
+			gPlayerPropsData[PlayerProp_WeaponCanDrop] = bool:get_param_byref(arg_3);
 		}
 		default:
 		{
