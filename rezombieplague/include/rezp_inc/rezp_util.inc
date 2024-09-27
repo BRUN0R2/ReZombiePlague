@@ -34,16 +34,6 @@ stock rz_util_send_lightstyle(id, index, const style[])
 	message_end();
 }
 
-stock rz_util_send_weaponanim(id, anim, body = 0)
-{
-	set_entvar(id, var_weaponanim, anim);
-
-	message_begin(MSG_ONE, SVC_WEAPONANIM, _, id);
-	write_byte(anim);
-	write_byte(body);
-	message_end();
-}
-
 stock rz_util_send_screenfade(id, color[3], Float:fadeTime, Float:fadeHold = 0.0, alpha = 0, fadeFlags = 0)
 {
 	static pMsg;
@@ -85,6 +75,39 @@ stock rz_util_send_player_fog(id, color[3], Float:pRange = 0.0)
 		write_long(_:flDensity);
 		message_end();
 	}
+}
+
+stock Float:rz_util_entity_range(const pEntityA, const pEntityB)
+{
+    static Float:originA[3]; rz_util_get_entity_center(pEntityA, originA);
+    static Float:originB[3]; rz_util_get_entity_center(pEntityB, originB);
+    static Float:delta[3]; xs_vec_sub(originA, originB, delta);
+
+    return xs_vec_len(delta);
+}
+/**
+ * Getting the center of the entities :)
+ */
+stock rz_util_get_entity_center(const this, Float:output[3])
+{
+    if (this >= 1 && this <= MaxClients) {
+        get_entvar(this, var_origin, output);
+    }
+    else if (this > MaxClients && this <= 2265)
+    {
+        static Float:absmin[3]; get_entvar(this, var_absmin, absmin);
+        static Float:absmax[3]; get_entvar(this, var_absmax, absmax);
+
+        output[0] = (absmin[0] + absmax[0]) * 0.5;
+        output[1] = (absmin[1] + absmax[1]) * 0.5;
+        output[2] = (absmin[2] + absmax[2]) * 0.5;
+    }
+}
+
+stock bool:rz_util_similar_team(const player, const target) {
+	if (get_member(player, m_iTeam) == get_member(target, m_iTeam)) {
+		return true;
+	} return false;
 }
 
 stock rz_util_precache_sprites_from_txt(const szTextFile[])
