@@ -250,3 +250,17 @@ stock rz_util_getGlobalTrace() {
     set_tr2(tr, TR_iHitgroup, global_get(glb_trace_hitgroup));
     return tr;
 }
+
+stock rz_util_te_explosion(Float:position[3], spriteIndex, scale, frameRate, flags)
+{
+	message_begin_f(MSG_PAS, SVC_TEMPENTITY, position);
+	write_byte(TE_EXPLOSION);
+	write_coord_f(position[0]); // position.x
+	write_coord_f(position[1]); // position.y
+	write_coord_f(position[2]); // position.z
+	write_short(spriteIndex); // sprite index
+	write_byte(scale); // scale in 0.1's
+	write_byte(frameRate); // framerate
+	write_byte(flags); // flags
+	message_end();
+}
