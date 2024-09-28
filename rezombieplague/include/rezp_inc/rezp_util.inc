@@ -115,6 +115,38 @@ stock rz_util_get_vector_aiming(const ePlayer, Float:vecAiming[3]) {
 	angle_vector(vecViewAngle, ANGLEVECTOR_FORWARD, vecAiming);
 }
 
+stock bool:rz_util_entity_visible(const pEntity, const pTarget)
+{
+    if (is_nullent(pEntity) || is_nullent(pTarget))
+        return false;
+
+    static Float:vecStart[3], Float:vecEnd[3];
+    
+    // Obtém os centros dos dois objetos
+    rz_util_get_entity_center(pEntity, vecStart);
+    rz_util_get_entity_center(pTarget, vecEnd);
+    
+    // Cria um traçado para verificar visibilidade
+    static pTrace; 
+    pTrace = create_tr2();
+    engfunc(EngFunc_TraceLine, vecStart, vecEnd, IGNORE_MONSTERS, pEntity, pTrace);
+    
+    // Obtém a posição do final do traçado
+    static Float:vecEndPos[3]; 
+    get_tr2(pTrace, TR_vecEndPos, vecEndPos);
+    
+    // Libere a memória alocada para o traçado
+    free_tr2(pTrace);
+    
+    // Verifica se a posição final do traçado é igual à posição do alvo
+    // Isso indica que não houve obstrução
+    if (!xs_vec_equal(vecEnd, vecEndPos)) {
+        return false; // Há uma obstrução
+    }
+
+    return true; // O alvo é visível
+}
+
 stock rz_util_precache_sprites_from_txt(const szTextFile[])
 {
 	new szTxtDir[64], szSprDir[64]; 
@@ -149,6 +181,60 @@ stock rz_util_precache_sprites_from_txt(const szTextFile[])
 	}
 
 	if (iFile) fclose(iFile);
+}
+
+stock Float:rz_util_WaterLevel(const Float:position[3], Float:minz, Float:maxz)
+{
+	new Float:midUp[3], Float:diff;
+	xs_vec_copy(position, midUp);
+
+	midUp[2] = minz;
+
+	if (engfunc(EngFunc_PointContents, midUp) != CONTENTS_WATER)
+		return minz;
+
+	midUp[2] = maxz;
+
+	if (engfunc(EngFunc_PointContents, midUp) == CONTENTS_WATER)
+		return maxz;
+
+	diff = maxz - minz;
+
+	while (diff > 1.0)
+	{
+		midUp[2] = minz + diff / 2.0;
+
+		if (engfunc(EngFunc_PointContents, midUp) == CONTENTS_WATER)
+			minz = midUp[2];
+		else
+			maxz = midUp[2];
+
+		diff = maxz - minz;
+	}
+
+	return midUp[2];
+}
+
+stock rz_util_bubbles(Float:mins[3], Float:maxs[3], count, const ModelIndex)
+{
+	new Float:mid[3];
+	xs_vec_add_scaled(mins, maxs, 0.5, mid);
+
+	new Float:flHeight = rz_util_WaterLevel(mid, mid[2], mid[2] + 1024.0) - mins[2];
+
+	message_begin_f(MSG_PAS, SVC_TEMPENTITY, mid);
+	write_byte(TE_BUBBLES);
+	write_coord_f(mins[0]);
+	write_coord_f(mins[1]);
+	write_coord_f(mins[2]);
+	write_coord_f(maxs[0]);
+	write_coord_f(maxs[1]);
+	write_coord_f(maxs[2]);
+	write_coord_f(flHeight);
+	write_short(ModelIndex);
+	write_byte(count);
+	write_coord_f(8.0);
+	message_end();
 }
 
 // All stocks are from tempentities.inc and messages.inc
@@ -238,5 +324,18 @@ stock rz_util_te_explosion(Float:position[3], spriteIndex, scale, frameRate, con
 	write_byte(scale); // scale in 0.1's
 	write_byte(frameRate); // framerate
 	write_byte(flags); // flags
+	message_end();
+}
+
+stock rz_util_te_smoke(Float:position[3], spriteIndex, scale, frameRate)
+{
+	message_begin_f(MSG_PVS, SVC_TEMPENTITY, position);
+	write_byte(TE_SMOKE);
+	write_coord_f(position[0]); // position.x
+	write_coord_f(position[1]); // position.y
+	write_coord_f(position[2]); // position.z
+	write_short(spriteIndex); // sprite index
+	write_byte(scale); // scale in 0.1's
+	write_byte(frameRate); // framerate
 	message_end();
 }
