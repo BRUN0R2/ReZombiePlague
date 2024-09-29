@@ -289,6 +289,25 @@ stock rz_util_te_beamentoint(startEntity, Float:end[3] = {0.0, 0.0, 0.0}, sprite
 	message_end();
 }
 
+stock rz_util_beaments(const iDest, const pPlayer, const pTarget, const iszModelIndex, const iStartFrame = 0, const iFrameRate = 1, const iLife = 1, const iWidth = 1, const iNoise = 0, const RGBA[4] = { 255, 255, 255, 255 }, const iScroll = 0) {
+	message_begin_f(iDest, SVC_TEMPENTITY);
+	write_byte(TE_BEAMENTS);
+	write_short(pPlayer);
+	write_short(pTarget);
+	write_short(iszModelIndex);	// Model Index
+	write_byte(iStartFrame);	// Start Frame
+	write_byte(iFrameRate);		// FrameRate
+	write_byte(iLife);			// Life in 0.1's
+	write_byte(iWidth);			// Width
+	write_byte(iNoise);			// Noise
+	write_byte(RGBA[0]);		// Red
+	write_byte(RGBA[1]);		// Green
+	write_byte(RGBA[2]);		// Blue
+	write_byte(RGBA[3]);		// Brightness
+	write_byte(iScroll);		// Scroll speed in 0.1's
+	message_end();
+}
+
 stock rz_util_te_beamcylinder(Float:position[3] = NULL_VECTOR, Float:axis[3] = NULL_VECTOR, spriteIndex = 0, startingFrame = 0, frameRate = 0, life = 1, lineWidth = 3, noiseAmplitude = 0, RGBA[4] = {255, 255, 255, 255}, scrollSpeed = 0)
 {
 	message_begin_f(MSG_PVS, SVC_TEMPENTITY, position);
@@ -344,13 +363,13 @@ stock rz_util_make_beamfollow(const this, const spriteIndex, const life, const w
 {
 	message_begin(MSG_ALL, SVC_TEMPENTITY);
 	write_byte(TE_BEAMFOLLOW);
-	write_short(this);
-	write_short(spriteIndex);
-	write_byte(life);
-	write_byte(width);
-	write_byte(RGBA[0]);
-	write_byte(RGBA[1]);
-	write_byte(RGBA[2]);
-	write_byte(RGBA[3]);
+	write_short(this);			// entity:attachment to follow
+	write_short(spriteIndex);	// sprite index
+	write_byte(life);			// life in 0.1's
+	write_byte(width);			// line width in 0.1's
+	write_byte(RGBA[0]);		// red
+	write_byte(RGBA[1]);		// green
+	write_byte(RGBA[2]);		// blue
+	write_byte(RGBA[3]);		// brightness
 	message_end();
 }
