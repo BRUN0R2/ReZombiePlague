@@ -231,9 +231,9 @@ LoadMainConfig()
 		rz_print("Configuration file '%s' was created", filePath);
 	}
 
-	ConfigField_String(creating, configJson, "server_browser_info", RZ_MAIN_GAME_DESC, 64, "rezombie");
-	ConfigField_String(creating, configJson, "sky_name", RZ_MAIN_SKY_NAME, 32, "rezombie/night");
-	ConfigField_String(creating, configJson, "global_lighting", RZ_MAIN_GLOBAL_LIGHTING, 2, "c");
+	ConfigField_String(creating, configJson, "server_browser_info", RZ_MAIN_GAME_DESC, 32, "rezombie");
+	ConfigField_String(creating, configJson, "sky_name", RZ_MAIN_SKY_NAME, 64, "rezombie/night");
+	ConfigField_String(creating, configJson, "global_lighting", RZ_MAIN_GLOBAL_LIGHTING, 2, "b");
 	ConfigField_String(creating, configJson, "nightvision_lighting", RZ_MAIN_NVG_LIGHTING, 2, "z");
 	ConfigField_Boolean(creating, configJson, "roundover_ct_win", RZ_MAIN_ROUNDOVER_CT_WIN, false);
 	ConfigField_Boolean(creating, configJson, "award_notice", RZ_MAIN_AWARD_NOTICE, true);
@@ -241,7 +241,7 @@ LoadMainConfig()
 	ConfigField_Number(creating, configJson, "prepare_time", RZ_MAIN_PREPARE_TIME, 20);
 	ConfigField_Number(creating, configJson, "round_time", RZ_MAIN_ROUND_TIME, 360);
 	ConfigField_Number(creating, configJson, "warmup_time", RZ_MAIN_WARMUP_TIME, 40);
-	ConfigField_AmmoPacks(creating, configJson);
+	ConfigField_Credits(creating, configJson);
 	ConfigField_UselessEntities(creating, configJson);
 
 	if (creating)
@@ -311,7 +311,7 @@ ConfigField_Boolean(bool:creating, JSON:object, value[], RZMainProp:prop, bool:d
 	}
 }
 
-ConfigField_AmmoPacks(creating, JSON:configJson, value[] = "ammopacks")
+ConfigField_Credits(creating, JSON:configJson, value[] = "credits")
 {
 	new const enabledField[] = "enabled";
 	new const joinAmountField[] = "join_amount";
