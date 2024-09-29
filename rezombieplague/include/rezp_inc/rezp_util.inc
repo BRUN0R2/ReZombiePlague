@@ -339,3 +339,18 @@ stock rz_util_te_smoke(Float:position[3], spriteIndex, scale, frameRate)
 	write_byte(frameRate); // framerate
 	message_end();
 }
+
+stock rz_util_make_beamfollow(const this, const spriteIndex, const life, const width, const RGBA[4])
+{
+	message_begin(MSG_ALL, SVC_TEMPENTITY);
+	write_byte(TE_BEAMFOLLOW);
+	write_short(this);
+	write_short(spriteIndex);
+	write_byte(life);
+	write_byte(width);
+	write_byte(RGBA[0]);
+	write_byte(RGBA[1]);
+	write_byte(RGBA[2]);
+	write_byte(RGBA[3]);
+	message_end();
+}
