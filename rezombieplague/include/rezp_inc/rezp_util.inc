@@ -121,30 +121,21 @@ stock bool:rz_util_entity_visible(const pEntity, const pTarget)
         return false;
 
     static Float:vecStart[3], Float:vecEnd[3];
-    
-    // Obtém os centros dos dois objetos
     rz_util_get_entity_center(pEntity, vecStart);
     rz_util_get_entity_center(pTarget, vecEnd);
-    
-    // Cria um traçado para verificar visibilidade
-    static pTrace; 
-    pTrace = create_tr2();
+
+    new pTrace = create_tr2();
     engfunc(EngFunc_TraceLine, vecStart, vecEnd, IGNORE_MONSTERS, pEntity, pTrace);
-    
-    // Obtém a posição do final do traçado
+
     static Float:vecEndPos[3]; 
     get_tr2(pTrace, TR_vecEndPos, vecEndPos);
-    
-    // Libere a memória alocada para o traçado
     free_tr2(pTrace);
-    
-    // Verifica se a posição final do traçado é igual à posição do alvo
-    // Isso indica que não houve obstrução
+
     if (!xs_vec_equal(vecEnd, vecEndPos)) {
-        return false; // Há uma obstrução
+        return false;
     }
 
-    return true; // O alvo é visível
+    return true;
 }
 
 stock rz_util_precache_sprites_from_txt(const szTextFile[])
@@ -183,118 +174,65 @@ stock rz_util_precache_sprites_from_txt(const szTextFile[])
 	if (iFile) fclose(iFile);
 }
 
-stock Float:rz_util_WaterLevel(const Float:position[3], Float:minz, Float:maxz)
-{
-	new Float:midUp[3], Float:diff;
-	xs_vec_copy(position, midUp);
-
-	midUp[2] = minz;
-
-	if (engfunc(EngFunc_PointContents, midUp) != CONTENTS_WATER)
-		return minz;
-
-	midUp[2] = maxz;
-
-	if (engfunc(EngFunc_PointContents, midUp) == CONTENTS_WATER)
-		return maxz;
-
-	diff = maxz - minz;
-
-	while (diff > 1.0)
-	{
-		midUp[2] = minz + diff / 2.0;
-
-		if (engfunc(EngFunc_PointContents, midUp) == CONTENTS_WATER)
-			minz = midUp[2];
-		else
-			maxz = midUp[2];
-
-		diff = maxz - minz;
-	}
-
-	return midUp[2];
-}
-
-stock rz_util_bubbles(Float:mins[3], Float:maxs[3], count, const ModelIndex)
-{
-	new Float:mid[3];
-	xs_vec_add_scaled(mins, maxs, 0.5, mid);
-
-	new Float:flHeight = rz_util_WaterLevel(mid, mid[2], mid[2] + 1024.0) - mins[2];
-
-	message_begin_f(MSG_PAS, SVC_TEMPENTITY, mid);
-	write_byte(TE_BUBBLES);
-	write_coord_f(mins[0]);
-	write_coord_f(mins[1]);
-	write_coord_f(mins[2]);
-	write_coord_f(maxs[0]);
-	write_coord_f(maxs[1]);
-	write_coord_f(maxs[2]);
-	write_coord_f(flHeight);
-	write_short(ModelIndex);
-	write_byte(count);
-	write_coord_f(8.0);
-	message_end();
-}
-
 // All stocks are from tempentities.inc and messages.inc
 // I just did it to make things easier
 
-stock rz_util_te_worlddecal(Float:position[3], textureIndex)
+stock rz_util_te_worlddecal(Float:position[3] = NULL_VECTOR, textureIndex)
 {
 	message_begin(MSG_BROADCAST, SVC_TEMPENTITY);
 	write_byte(TE_WORLDDECAL);
-	write_coord_f(position[0]); // position.x
-	write_coord_f(position[1]); // position.y
-	write_coord_f(position[2]); // position.z
-	write_byte(textureIndex); // texture index of precached decal texture name
+	write_coord_f(position[0]);	// position.x
+	write_coord_f(position[1]);	// position.y
+	write_coord_f(position[2]);	// position.z
+	write_byte(textureIndex);	// texture index of precached decal texture name
 	message_end();
 }
 
-stock rz_util_te_dlight(Float:position[3], radius, color[3], life, decayRate)
+stock rz_util_te_dlight(Float:position[3] = NULL_VECTOR, radius, color[3], life, decayRate)
 {
 	message_begin_f(MSG_PVS, SVC_TEMPENTITY, position);
 	write_byte(TE_DLIGHT);
-	write_coord_f(position[0]); // position.x
-	write_coord_f(position[1]); // position.y
-	write_coord_f(position[2]); // position.z
-	write_byte(radius); // radius in 10's
-	write_byte(color[0]); // red
-	write_byte(color[1]); // green
-	write_byte(color[2]); // blue
-	write_byte(life); // life in 10's
-	write_byte(decayRate); // decay rate in 10's
+	write_coord_f(position[0]);	// position.x
+	write_coord_f(position[1]);	// position.y
+	write_coord_f(position[2]);	// position.z
+	write_byte(radius);			// radius in 10's
+	write_byte(color[0]);		// red
+	write_byte(color[1]);		// green
+	write_byte(color[2]);		// blue
+	write_byte(life);			// life in 10's
+	write_byte(decayRate);		// decay rate in 10's
 	message_end();
 }
 
-stock rz_util_te_beamentoint(startEntity, Float:end[3] = {0.0, 0.0, 0.0}, spriteIndex = 0, startingFrame = 0, frameRate = 0, life = 1, lineWidth = 1, noiseAmplitude = 0, RGBA[4] = {255, 255, 255, 255}, scrollSpeed = 0)
+stock rz_util_te_beamentoint(startEntity, Float:end[3] = NULL_VECTOR, spriteIndex = 0, startingFrame = 0, frameRate = 0, life = 1, lineWidth = 1, noiseAmplitude = 0, RGBA[4] = {255, 255, 255, 255}, scrollSpeed = 0)
 {
 	message_begin_f(MSG_BROADCAST, SVC_TEMPENTITY);
 	write_byte(TE_BEAMENTPOINT);
-	write_short(startEntity); // start entity
-	write_coord_f(end[0]); // endposition.x
-	write_coord_f(end[1]); // endposition.y
-	write_coord_f(end[2]); // endposition.z
-	write_short(spriteIndex); // sprite index
-	write_byte(startingFrame); // starting frame
-	write_byte(frameRate); // frame rate in 0.1's
-	write_byte(life); // life in 0.1's
-	write_byte(lineWidth); // line width in 0.1's
-	write_byte(noiseAmplitude); // noise amplitude in 0.01's
-	write_byte(RGBA[0]); // red
-	write_byte(RGBA[1]); // green
-	write_byte(RGBA[2]); // blue
-	write_byte(RGBA[3]); // brightness
-	write_byte(scrollSpeed); // scroll speed in 0.1's
+	write_short(startEntity);	// start entity
+	write_coord_f(end[0]);		// endposition.x
+	write_coord_f(end[1]);		// endposition.y
+	write_coord_f(end[2]);		// endposition.z
+	write_short(spriteIndex);	// sprite index
+	write_byte(startingFrame);	// starting frame
+	write_byte(frameRate);		// frame rate in 0.1's
+	write_byte(life);			// life in 0.1's
+	write_byte(lineWidth);		// line width in 0.1's
+	write_byte(noiseAmplitude);	// noise amplitude in 0.01's
+	write_byte(RGBA[0]);		// red
+	write_byte(RGBA[1]);		// green
+	write_byte(RGBA[2]);		// blue
+	write_byte(RGBA[3]);		// brightness
+	write_byte(scrollSpeed);	// scroll speed in 0.1's
 	message_end();
 }
 
-stock rz_util_beaments(const iDest, const pPlayer, const pTarget, const iszModelIndex, const iStartFrame = 0, const iFrameRate = 1, const iLife = 1, const iWidth = 1, const iNoise = 0, const RGBA[4] = { 255, 255, 255, 255 }, const iScroll = 0) {
+stock rz_util_beaments(const iDest, const startEntity, const endEntity, const spriteIndex, const iStartFrame = 0, const iFrameRate = 1, const iLife = 1, const iWidth = 1, const iNoise = 0, const RGBA[4] = { 255, 255, 255, 255 }, const iScroll = 0)
+{
 	message_begin_f(iDest, SVC_TEMPENTITY);
 	write_byte(TE_BEAMENTS);
-	write_short(pPlayer);
-	write_short(pTarget);
-	write_short(iszModelIndex);	// Model Index
+	write_short(startEntity);	// start entity
+	write_short(endEntity);		// end entity
+	write_short(spriteIndex);	// sprite index
 	write_byte(iStartFrame);	// Start Frame
 	write_byte(iFrameRate);		// FrameRate
 	write_byte(iLife);			// Life in 0.1's
@@ -312,58 +250,58 @@ stock rz_util_te_beamcylinder(Float:position[3] = NULL_VECTOR, Float:axis[3] = N
 {
 	message_begin_f(MSG_PVS, SVC_TEMPENTITY, position);
 	write_byte(TE_BEAMCYLINDER);
-	write_coord_f(position[0]); // position.x
-	write_coord_f(position[1]); // position.y
-	write_coord_f(position[2]); // position.z
-	write_coord_f(axis[0]); // axis.x
-	write_coord_f(axis[1]); // axis.y
-	write_coord_f(axis[2]); // axis.z
-	write_short(spriteIndex); // sprite index
-	write_byte(startingFrame); // starting frame
-	write_byte(frameRate); // frame rate in 0.1's
-	write_byte(life); // life in 0.1's
-	write_byte(lineWidth); // line width in 0.1's
-	write_byte(noiseAmplitude); // noise amplitude in 0.01's
-	write_byte(RGBA[0]); // red
-	write_byte(RGBA[1]); // green
-	write_byte(RGBA[2]); // blue
-	write_byte(RGBA[3]); // brightness
-	write_byte(scrollSpeed); // scroll speed in 0.1's
+	write_coord_f(position[0]);	// position.x
+	write_coord_f(position[1]);	// position.y
+	write_coord_f(position[2]);	// position.z
+	write_coord_f(axis[0]);		// axis.x
+	write_coord_f(axis[1]);		// axis.y
+	write_coord_f(axis[2]);		// axis.z
+	write_short(spriteIndex);	// sprite index
+	write_byte(startingFrame);	// starting frame
+	write_byte(frameRate);		// frame rate in 0.1's
+	write_byte(life);			// life in 0.1's
+	write_byte(lineWidth);		// line width in 0.1's
+	write_byte(noiseAmplitude);	// noise amplitude in 0.01's
+	write_byte(RGBA[0]);		// red
+	write_byte(RGBA[1]);		// green
+	write_byte(RGBA[2]);		// blue
+	write_byte(RGBA[3]);		// brightness
+	write_byte(scrollSpeed);	// scroll speed in 0.1's
 	message_end();
 }
 
-stock rz_util_te_explosion(Float:position[3], spriteIndex, scale, frameRate, const flags = TE_EXPLFLAG_NODLIGHTS|TE_EXPLFLAG_NOSOUND|TE_EXPLFLAG_NOPARTICLES)
+stock rz_util_te_explosion(Float:position[3] = NULL_VECTOR, spriteIndex, scale, frameRate, const flags = TE_EXPLFLAG_NODLIGHTS|TE_EXPLFLAG_NOSOUND|TE_EXPLFLAG_NOPARTICLES)
 {
 	message_begin_f(MSG_PAS, SVC_TEMPENTITY, position);
 	write_byte(TE_EXPLOSION);
-	write_coord_f(position[0]); // position.x
-	write_coord_f(position[1]); // position.y
-	write_coord_f(position[2]); // position.z
-	write_short(spriteIndex); // sprite index
-	write_byte(scale); // scale in 0.1's
-	write_byte(frameRate); // framerate
-	write_byte(flags); // flags
+	write_coord_f(position[0]);	// position.x
+	write_coord_f(position[1]);	// position.y
+	write_coord_f(position[2]);	// position.z
+	write_short(spriteIndex);	// sprite index
+	write_byte(scale);			// scale in 0.1's
+	write_byte(frameRate);		// framerate
+	write_byte(flags);			// flags
 	message_end();
 }
 
-stock rz_util_te_smoke(Float:position[3], spriteIndex, scale, frameRate)
+stock rz_util_te_smoke(Float:position[3] = NULL_VECTOR, spriteIndex, scale, frameRate)
 {
 	message_begin_f(MSG_PVS, SVC_TEMPENTITY, position);
 	write_byte(TE_SMOKE);
-	write_coord_f(position[0]); // position.x
-	write_coord_f(position[1]); // position.y
+	write_coord_f(position[0]);	// position.x
+	write_coord_f(position[1]);	// position.y
 	write_coord_f(position[2]); // position.z
-	write_short(spriteIndex); // sprite index
-	write_byte(scale); // scale in 0.1's
-	write_byte(frameRate); // framerate
+	write_short(spriteIndex);	// sprite index
+	write_byte(scale);			// scale in 0.1's
+	write_byte(frameRate);		// framerate
 	message_end();
 }
 
-stock rz_util_make_beamfollow(const this, const spriteIndex, const life, const width, const RGBA[4])
+stock rz_util_te_beamfollow(const entity, const spriteIndex, const life, const width, const RGBA[4] = {255, 255, 255, 255})
 {
 	message_begin(MSG_ALL, SVC_TEMPENTITY);
 	write_byte(TE_BEAMFOLLOW);
-	write_short(this);			// entity:attachment to follow
+	write_short(entity);		// entity:attachment to follow
 	write_short(spriteIndex);	// sprite index
 	write_byte(life);			// life in 0.1's
 	write_byte(width);			// line width in 0.1's
