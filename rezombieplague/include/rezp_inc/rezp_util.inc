@@ -34,7 +34,7 @@ stock rz_util_send_lightstyle(id, index, const style[])
 	message_end();
 }
 
-stock rz_util_send_screenfade(id, color[3], Float:fadeTime, Float:fadeHold = 0.0, alpha = 0, fadeFlags = 0)
+stock rz_util_send_screenfade(const id, color[3] = {255, 255, 255}, Float:fadeTime = 1.0, Float:fadeHold = 0.0, alpha = 0, fadeFlags = 0)
 {
 	static pMsg;
 
@@ -54,7 +54,7 @@ stock rz_util_send_screenfade(id, color[3], Float:fadeTime, Float:fadeHold = 0.0
 	message_end();
 }
 
-stock rz_util_send_player_fog(id, color[3], Float:pRange = 0.0)
+stock rz_util_send_player_fog(const id, color[3] = {255, 255, 255}, Float:pRange = 0.0)
 {
 	if (pRange >= 0.0)
 	{
