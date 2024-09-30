@@ -123,33 +123,20 @@ public plugin_init()
 	gForwards[Fw_Grenades_Explode_Post] = CreateMultiForward("rz_grenades_explode_post", ET_IGNORE, FP_CELL, FP_CELL);
 }
 
-@Command_SelectWeapon(id, impulse)
-{
-	new index = rz_module_get_valid_index(g_iModule_Weapons, impulse);
-
-	if (index == -1)
-		return PLUGIN_CONTINUE;
-
-	ArrayGetArray(g_aWeapons, index, gWeaponData);
-	engclient_cmd(id, gWeaponData[Weapon_Reference]);
+@Command_SelectWeapon(id, impulse) {
+	ArrayGetArray(g_aWeapons, impulse, gWeaponData);
+	rg_internal_cmd(id, gWeaponData[Weapon_Reference]);
 	return PLUGIN_HANDLED;
 }
 
-@Command_SelectKnife(id)
-{
-	engclient_cmd(id, "weapon_knife");
+@Command_SelectKnife(id) {
+	rg_internal_cmd(id, "weapon_knife");
 	return PLUGIN_HANDLED;
 }
 
-@Command_SelectGrenade(id, impulse)
-{
-	new index = rz_module_get_valid_index(g_iModule_Grenades, impulse);
-
-	if (index == -1)
-		return PLUGIN_CONTINUE;
-
-	ArrayGetArray(g_aGrenades, index, gGrenadeData);
-	engclient_cmd(id, gGrenadeData[Grenade_Reference]);
+@Command_SelectGrenade(id, impulse) {
+	ArrayGetArray(g_aGrenades, impulse, gGrenadeData);
+	rg_internal_cmd(id, gGrenadeData[Grenade_Reference]);
 	return PLUGIN_HANDLED;
 }
 
