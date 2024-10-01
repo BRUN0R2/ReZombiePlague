@@ -117,6 +117,9 @@ stock rz_util_get_vector_aiming(const ePlayer, Float:vecAiming[3]) {
 	angle_vector(vecViewAngle, ANGLEVECTOR_FORWARD, vecAiming);
 }
 
+/**
+ * Checking for entities behind walls :)
+ */
 stock bool:rz_util_entity_visible(const pEntity, const pTarget)
 {
     if (is_nullent(pEntity) || is_nullent(pTarget))
