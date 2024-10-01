@@ -112,9 +112,10 @@ public plugin_natives()
 	get_string(arg_model_name, header[PlayerModel_ModelName], charsmax(header[PlayerModel_ModelName]));
 	header[PlayerModel_Body] = get_param(arg_body);
 
-	if (get_param(arg_default_hitboxes)) {
+	if (get_param(arg_default_hitboxes))
+	{
 		header[PlayerModel_ModelIndex] = precache_model("models/player.mdl");
-		header[PlayerModel_ModelIndex] = precache_player_model(header[PlayerModel_ModelName]);
+		precache_player_model(header[PlayerModel_ModelName]);
 	} else {
 		header[PlayerModel_ModelIndex] = precache_player_model(header[PlayerModel_ModelName]);
 	}
