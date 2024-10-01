@@ -104,8 +104,9 @@ stock rz_util_get_entity_center(const this, Float:output[3])
     }
 }
 
-stock bool:rz_util_similar_team(const player, const target) {
-	if (get_member(player, m_iTeam) == get_member(target, m_iTeam)) {
+stock bool:rz_util_similar_team(const pPlayer, const pTarget)
+{
+	if (get_member(pPlayer, m_iTeam) == get_member(pTarget, m_iTeam)) {
 		return true;
 	}
 
