@@ -114,13 +114,27 @@ public plugin_natives()
 
 	if (get_param(arg_default_hitboxes)) {
 		header[PlayerModel_ModelIndex] = precache_model("models/player.mdl");
-		precache_model(fmt("models/player/%s/%s.mdl", header[PlayerModel_ModelName], header[PlayerModel_ModelName]));
+		header[PlayerModel_ModelIndex] = precache_player_model(header[PlayerModel_ModelName]);
 	} else {
-		header[PlayerModel_ModelIndex] = precache_model(fmt("models/player/%s/%s.mdl", header[PlayerModel_ModelName], header[PlayerModel_ModelName]));
+		header[PlayerModel_ModelIndex] = precache_player_model(header[PlayerModel_ModelName]);
 	}
 
 	ArrayPushArray(gLocalData[PlayerModel_Models], header);
 	return true;
+}
+// Code copied from zombie plague next by Willian
+public precache_player_model(const modelname[])
+{
+	static longname[128], index;
+	formatex(longname, charsmax(longname), "models/player/%s/%s.mdl", modelname, modelname);
+	index = precache_model(longname);
+
+	copy(longname[strlen(longname)-4], charsmax(longname) - (strlen(longname)-4), "T.mdl");
+
+	if(file_exists(longname))
+		precache_model(longname);
+
+	return index;
 }
 
 @native_playermodel_player_change(plugin, argc)
@@ -170,7 +184,6 @@ public plugin_natives()
 	else
 	{
 		rg_set_user_model(player, header[PlayerModel_ModelName]);
-		
 		set_member(player, m_modelIndexPlayer, header[PlayerModel_ModelIndex]);
 		set_entvar(player, var_body, header[PlayerModel_Body]);
 	}
