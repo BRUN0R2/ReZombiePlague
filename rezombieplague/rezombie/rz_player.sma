@@ -10,16 +10,17 @@
 new const RESPAWN_TIME = 3;
 new const INFECTION_DEATHMSG[] = "infection"; //teammate
 
-new const Float:HITGROUP_KNOCBACK_MULTIPLIER[MAX_BODYHITS] =
+new const Float:HITGROUP_KNOCBACK_MULTIPLIER[MAX_BODYHITS + 1] =
 {
-	-1.0, // HIT_GENERIC
-	1.5, // HIT_HEAD
-	-1.0, // HIT_CHEST
-	1.25, // HIT_STOMACH
-	-1.0, // HIT_LEFTARM
-	-1.0, // HIT_RIGHTARM
-	0.75, // HIT_LEFTLEG
-	0.75, // HIT_RIGHTLEG
+	-1.0,	// HITGROUP_GENERIC
+	1.5,	// HITGROUP_HEAD
+	-1.0,	// HITGROUP_CHEST
+	1.25,	// HITGROUP_STOMACH
+	-1.0,	// HITGROUP_LEFTARM
+	-1.0,	// HITGROUP_RIGHTARM
+	0.75,	// HITGROUP_LEFTLEG
+	0.75,	// HITGROUP_RIGHTLEG
+	-1.0,	// HITGROUP_SHIELD
 };
 
 new g_iIntoGameNVG;
@@ -414,7 +415,7 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 
 @CBasePlayer_TakeDamage_Post(const victim, const inflictor, const attacker, Float:damage, bitsDamageType)
 {
-	if (!(bitsDamageType & DMG_BULLET) || victim == attacker || !is_user_connected(attacker) || !is_user_alive(victim)) {
+	if (!(bitsDamageType & DMG_BULLET) || victim == attacker || !is_user_connected(attacker)) {
 		return HC_CONTINUE;
 	}
 
@@ -433,7 +434,7 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	}
 
 	new activeItem = get_member(attacker, m_pActiveItem);
-	new lastHitGroup = get_member(victim, m_LastHitGroup);
+	new HitBoxGroup:lastHitGroup = any:get_member(victim, m_LastHitGroup);
 	new Float:playerKnockback = Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_KNOCKBACK);
 	new i;
 	new Float:weaponKnockbackPower = 1.0;
@@ -444,8 +445,8 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	new Float:vecVelocity[3];
 	new Float:vecAttack[3];
 
-	if (HITGROUP_KNOCBACK_MULTIPLIER[lastHitGroup] > 0.0) {
-		damage *= HITGROUP_KNOCBACK_MULTIPLIER[lastHitGroup];
+	if (HITGROUP_KNOCBACK_MULTIPLIER[any:lastHitGroup] > 0.0) {
+		damage *= HITGROUP_KNOCBACK_MULTIPLIER[any:lastHitGroup];
 	}
 
 	get_entvar(victim, var_origin, vecOrigin);
@@ -490,7 +491,7 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 
 	set_entvar(victim, var_velocity, vecVelocity);
 
-	if (lastHitGroup == HIT_HEAD) {
+	if (lastHitGroup == HITGROUP_HEAD) {
 		set_member(victim, m_flVelocityModifier, Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_VELMOD_HEAD));
 	} else {
 		set_member(victim, m_flVelocityModifier, Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_VELMOD));

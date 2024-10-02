@@ -4,6 +4,8 @@
 
 #define _rezp_included
 
+#define rz_is_null_string(%0) bool:(%0[0] == EOS)
+
 /**
  * Constants.
  */
