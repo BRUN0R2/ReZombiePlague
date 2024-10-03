@@ -37,8 +37,8 @@ public plugin_natives()
 	register_native("set_player_camera_mode", "@native_set_player_camera_mode")
 	register_native("get_player_camera_mode", "@native_get_player_camera_mode")
 
-	//register_native("set_camera_distance", "@native_set_camera_distance")
-	//register_native("get_camera_distance", "@native_get_camera_distance")
+	//register_native("set_player_camera_distance", "@native_set_player_camera_distance")
+	//register_native("get_player_camera_distance", "@native_get_player_camera_distance")
 }
 
 public client_putinserver(pPlayer) {
@@ -47,12 +47,12 @@ public client_putinserver(pPlayer) {
 }
 
 @CBasePlayer_Spawn_Post(const pPlayer) {
+	if (!is_user_alive(pPlayer))
+		return
+
 	if (!pVars[pPlayer][CAM_HAVE]) {
 		return
 	}
-
-	if (!is_user_alive(pPlayer))
-		return
 
 	@Create_Player_Camera(pPlayer)
 }
