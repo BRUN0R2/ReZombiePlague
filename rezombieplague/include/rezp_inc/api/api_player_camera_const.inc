@@ -25,13 +25,3 @@ enum _:CameraType
 	CAMERA_RIGHT,
 	CAMERA_FRONT,
 };
-
-enum _:PlayerVars
-{
-	CAM_ENT,
-	CAM_LAST,
-	bool:CAM_HAVE,
-	Float:CAM_DIST,
-};
-
-new pVars[MAX_PLAYERS+1][PlayerVars];

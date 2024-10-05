@@ -30,7 +30,7 @@ native breaks_player_camera(const target);
  * @param target	Player index
  * @param type		Camera mode: normal, right, front and last! Located in: api_player_camera_const
  */
-native set_player_camera_mode(const target, const CameraType:type);
+native set_camera_mode(const target, const CameraType:type);
 
 /**
  * Get camera mode.
@@ -38,7 +38,7 @@ native set_player_camera_mode(const target, const CameraType:type);
  * @param target	Player index
  * @return			Camera type
  */
-native get_player_camera_mode(const target);
+native get_camera_mode(const target);
 
 /**
  * Set camera Distance.
@@ -46,7 +46,7 @@ native get_player_camera_mode(const target);
  * @param target	Player index
  * @param distance	Camera distance
  */
-native set_player_camera_distance(const target, const Float:distance = 90.0);
+native set_camera_distance(const target, const Float:distance = 90.0);
 
 /**
  * Get camera Distance.
@@ -54,7 +54,7 @@ native set_player_camera_distance(const target, const Float:distance = 90.0);
  * @param target	Player index
  * @return			Camera distance
  */
-native Float:get_player_camera_distance(const target);
+native Float:get_camera_distance(const target);
 
 /**
  * Set camera have.
@@ -62,7 +62,7 @@ native Float:get_player_camera_distance(const target);
  * @param target	Player index
  * @param have		Camera have
  */
-native set_player_camera_have(const target, const bool:have = true);
+native set_camera_have(const target, const bool:have = true);
 
 /**
  * Get camera have.
@@ -70,4 +70,4 @@ native set_player_camera_have(const target, const bool:have = true);
  * @param target	Player index
  * @return			Have true or false
  */
-native get_player_camera_have(const target);
+native get_camera_have(const target);

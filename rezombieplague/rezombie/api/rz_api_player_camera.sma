@@ -14,6 +14,16 @@ new gl_pModelIndex
 new gl_pCameraMode
 new gl_pClassName
 
+enum _:PlayerVars
+{
+	CAM_ENT,
+	CAM_LAST,
+	bool:CAM_HAVE,
+	Float:CAM_DIST,
+};
+
+new pVars[MAX_PLAYERS+1][PlayerVars];
+
 public plugin_precache()
 {
 	register_plugin(PLUGIN, VERSION, AUTHOR)
@@ -37,14 +47,14 @@ public plugin_natives()
 	register_native("create_player_camera", "@native_create_player_camera")
 	register_native("breaks_player_camera", "@native_breaks_player_camera")
 
-	register_native("set_player_camera_mode", "@native_set_player_camera_mode")
-	register_native("get_player_camera_mode", "@native_get_player_camera_mode")
+	register_native("set_camera_mode", "@native_set_camera_mode")
+	register_native("get_camera_mode", "@native_get_camera_mode")
 
-	register_native("set_player_camera_distance", "@native_set_player_camera_distance")
-	register_native("get_player_camera_distance", "@native_get_player_camera_distance")
+	register_native("set_camera_distance", "@native_set_camera_distance")
+	register_native("get_camera_distance", "@native_get_camera_distance")
 
-	register_native("set_player_camera_have", "@native_set_player_camera_have")
-	register_native("get_player_camera_have", "@native_get_player_camera_have")
+	register_native("set_camera_have", "@native_set_camera_have")
+	register_native("get_camera_have", "@native_get_camera_have")
 }
 
 public client_putinserver(pPlayer) {
@@ -222,7 +232,7 @@ public client_putinserver(pPlayer) {
 	return true
 }
 
-@native_set_player_camera_mode(plugin_id, num_params) {
+@native_set_camera_mode(plugin_id, num_params) {
 	enum { ArgpTarget = 1, ArgpMode = 2 }
 
 	new pTarget = get_param(ArgpTarget)
@@ -235,7 +245,7 @@ public client_putinserver(pPlayer) {
 	return true
 }
 
-@native_get_player_camera_mode(plugin_id, num_params) {
+@native_get_camera_mode(plugin_id, num_params) {
 	enum { ArgpTarget = 1 }
 
 	new pTarget = get_param(ArgpTarget)
@@ -247,7 +257,7 @@ public client_putinserver(pPlayer) {
 	return any:pVars[pTarget][CAM_LAST]
 }
 
-@native_set_player_camera_distance(plugin_id, num_params) {
+@native_set_camera_distance(plugin_id, num_params) {
 	enum { ArgpTarget = 1, ArgpDistance = 2 }
 
 	new pTarget = get_param(ArgpTarget)
@@ -264,7 +274,7 @@ public client_putinserver(pPlayer) {
 	return true
 }
 
-@native_get_player_camera_distance(plugin_id, num_params) {
+@native_get_camera_distance(plugin_id, num_params) {
 	enum { ArgpTarget = 1 }
 
 	new pTarget = get_param(ArgpTarget)
@@ -275,7 +285,7 @@ public client_putinserver(pPlayer) {
 	return any:pVars[pTarget][CAM_DIST]
 }
 
-@native_set_player_camera_have(plugin_id, num_params)
+@native_set_camera_have(plugin_id, num_params)
 {
 	enum { ArgpTarget = 1, ArgpCamHave = 2 }
 
@@ -290,7 +300,7 @@ public client_putinserver(pPlayer) {
 	return true
 }
 
-@native_get_player_camera_have(plugin_id, num_params)
+@native_get_camera_have(plugin_id, num_params)
 {
 	enum { ArgpTarget = 1 }
 

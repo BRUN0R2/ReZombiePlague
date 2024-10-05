@@ -6,6 +6,15 @@
 new gl_pMenu_Camera
 new pPlayerMsgCount[MAX_PLAYERS + 1]
 
+enum _:PlayerVars
+{
+	CAM_LAST,
+	bool:CAM_HAVE,
+	Float:CAM_DIST,
+};
+
+new pVars[MAX_PLAYERS+1][PlayerVars];
+
 public plugin_precache() {
 	register_plugin("[REZP] Camera menu", "1.0", "BRUN0")
 	rz_add_translate("menu/camera")
@@ -48,8 +57,8 @@ public client_putinserver(id) {
 
 	ADD_FORMATEX("%l^n^n", "RZ_MENU_CAM_TITLE")
 
-	pVars[id][CAM_LAST] = get_player_camera_mode(id)
-	pVars[id][CAM_DIST] = get_player_camera_distance(id)
+	pVars[id][CAM_LAST] = get_camera_mode(id)
+	pVars[id][CAM_DIST] = get_camera_distance(id)
 
 	ADD_FORMATEX("%l \d[\w%0.f \r<< \y%0.f\r >> \w%0.f\d]^n^n", "RZ_MENU_CAM_DISTANCE", MINIMUN_DISTANCE, pVars[id][CAM_DIST], MAXIMUM_DISTANCE)
 
@@ -103,19 +112,19 @@ public client_putinserver(id) {
 			}
 		}
 		case 1: {
-			set_player_camera_mode(id, any:CAMERA_NORMAL)
+			set_camera_mode(id, any:CAMERA_NORMAL)
 		}
 		case 2: {
-			set_player_camera_mode(id, any:CAMERA_RIGHT)
+			set_camera_mode(id, any:CAMERA_RIGHT)
 		}
 		case 3: {
-			set_player_camera_mode(id, any:CAMERA_FRONT)
+			set_camera_mode(id, any:CAMERA_FRONT)
 		}
 		case 4: {
-			set_player_camera_distance(id, pVars[id][CAM_DIST] + 5.0)
+			set_camera_distance(id, pVars[id][CAM_DIST] + 5.0)
 		}
 		case 5: {
-			set_player_camera_distance(id, pVars[id][CAM_DIST] - 5.0)
+			set_camera_distance(id, pVars[id][CAM_DIST] - 5.0)
 		}
 		case 8: {
 			amxclient_cmd(id, "options")
