@@ -4,6 +4,7 @@
 #include <rezp_inc/api/api_player_camera>
 
 new gl_pMenu_Camera
+new pPlayerMsgCount[MAX_PLAYERS + 1]
 
 public plugin_precache() {
 	register_plugin("[REZP] Camera menu", "1.0", "BRUN0")
@@ -33,6 +34,7 @@ public plugin_init()
 public client_putinserver(id) {
 	pVars[id][CAM_LAST] = 0
 	pVars[id][CAM_HAVE] = false
+	pPlayerMsgCount[id] = 0
 }
 
 @Camera_show_menu(const id) {
@@ -44,13 +46,12 @@ public client_putinserver(id) {
 
 	SetGlobalTransTarget(id)
 
-	// Título do menu
 	ADD_FORMATEX("%l^n^n", "RZ_MENU_CAM_TITLE")
 
-	// Se você estiver usando distância, descomente a linha abaixo
-	// ADD_FORMATEX("%l \d[\y%0.f\d]^n", "RZ_MENU_CAM_DISTANCE", xDistance[id]);
-
 	pVars[id][CAM_LAST] = get_player_camera_mode(id)
+	pVars[id][CAM_DIST] = get_player_camera_distance(id)
+
+	ADD_FORMATEX("%l \d[\w%0.f \r<< \y%0.f\r >> \w%0.f\d]^n^n", "RZ_MENU_CAM_DISTANCE", MINIMUN_DISTANCE, pVars[id][CAM_DIST], MAXIMUM_DISTANCE)
 
 	ADD_FORMATEX("%l %s^n", "RZ_MENU_CAM_ACTIVE", pVars[id][CAM_HAVE] ? "\w[\yON\w]":"\w[\rOFF\w]")
 	keys |= MENU_KEY_1;
@@ -110,17 +111,22 @@ public client_putinserver(id) {
 		case 3: {
 			set_player_camera_mode(id, any:CAMERA_FRONT)
 		}
-		case 4: {}
+		case 4: {
+			set_player_camera_distance(id, pVars[id][CAM_DIST] + 5.0)
+		}
+		case 5: {
+			set_player_camera_distance(id, pVars[id][CAM_DIST] - 5.0)
+		}
 		case 8: {
 			amxclient_cmd(id, "options")
 		}
 	}
 
-	/*if(key == 0 || key == 1) { // Anti bug & Flood de mensagens
-		if(++xMsgCount[id] <= 2) rz_print_chat(id, print_team_grey, "%L", id, "RZ_MENU_CAM_ALERT");
-	}*/
+	if (key == 0) {
+		if(++pPlayerMsgCount[id] <= 2) rz_print_chat(id, print_team_grey, "%L", id, "RZ_MENU_CAM_ALERT")
+	}
 
-	if (key != 8) { // Se a key for diferente de 8 @Camera_show_menu(id);
+	if (key != 8) {
 		@Camera_show_menu(id)
 	}
 

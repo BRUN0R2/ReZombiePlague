@@ -39,3 +39,35 @@ native set_player_camera_mode(const target, const CameraType:type);
  * @return			Camera type
  */
 native get_player_camera_mode(const target);
+
+/**
+ * Set camera Distance.
+ *
+ * @param target	Player index
+ * @param distance	Camera distance
+ */
+native set_player_camera_distance(const target, const Float:distance = 90.0);
+
+/**
+ * Get camera Distance.
+ *
+ * @param target	Player index
+ * @return			Camera distance
+ */
+native Float:get_player_camera_distance(const target);
+
+/**
+ * Set camera have.
+ *
+ * @param target	Player index
+ * @param have		Camera have
+ */
+native set_player_camera_have(const target, const bool:have = true);
+
+/**
+ * Get camera have.
+ *
+ * @param target	Player index
+ * @return			Have true or false
+ */
+native get_player_camera_have(const target);

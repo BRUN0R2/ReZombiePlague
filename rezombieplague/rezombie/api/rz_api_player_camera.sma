@@ -12,6 +12,7 @@
 new gl_pMaxEntities
 new gl_pModelIndex
 new gl_pCameraMode
+new gl_pClassName
 
 public plugin_precache()
 {
@@ -19,6 +20,8 @@ public plugin_precache()
 
 	gl_pMaxEntities = global_get(glb_maxEntities)
 	gl_pModelIndex = precache_model("models/rpgrocket.mdl")
+
+	gl_pClassName = engfunc(EngFunc_AllocString, "info_target")
 }
 
 public plugin_init()
@@ -37,13 +40,17 @@ public plugin_natives()
 	register_native("set_player_camera_mode", "@native_set_player_camera_mode")
 	register_native("get_player_camera_mode", "@native_get_player_camera_mode")
 
-	//register_native("set_player_camera_distance", "@native_set_player_camera_distance")
-	//register_native("get_player_camera_distance", "@native_get_player_camera_distance")
+	register_native("set_player_camera_distance", "@native_set_player_camera_distance")
+	register_native("get_player_camera_distance", "@native_get_player_camera_distance")
+
+	register_native("set_player_camera_have", "@native_set_player_camera_have")
+	register_native("get_player_camera_have", "@native_get_player_camera_have")
 }
 
 public client_putinserver(pPlayer) {
 	pVars[pPlayer][CAM_ENT] = NULLENT
 	pVars[pPlayer][CAM_HAVE] = false
+	pVars[pPlayer][CAM_DIST] = 0.0
 }
 
 @CBasePlayer_Spawn_Post(const pPlayer) {
@@ -70,12 +77,12 @@ public client_putinserver(pPlayer) {
 
 	gl_pCameraMode = pVars[pPlayer][CAM_LAST]
 
-	if ((pVars[pPlayer][CAM_ENT] = rg_create_entity("trigger_camera")))
+	if ((pVars[pPlayer][CAM_ENT] = engfunc(EngFunc_CreateNamedEntity, gl_pClassName)))
 	{
 		if (is_nullent(pVars[pPlayer][CAM_ENT]))
 			return NULLENT
 
-		set_entvar(pVars[pPlayer][CAM_ENT], var_classname, "trigger_camera")
+		set_entvar(pVars[pPlayer][CAM_ENT], var_classname, "ent_cam2")
 		set_entvar(pVars[pPlayer][CAM_ENT], var_modelindex, gl_pModelIndex)
 
 		set_entvar(pVars[pPlayer][CAM_ENT], var_owner, pPlayer)
@@ -197,8 +204,6 @@ public client_putinserver(pPlayer) {
 		return false
 	}
 
-	pVars[pTarget][CAM_DIST] = 90.0
-
 	@Create_Player_Camera(pTarget)
 	return true
 }
@@ -240,6 +245,62 @@ public client_putinserver(pPlayer) {
 	}
 
 	return any:pVars[pTarget][CAM_LAST]
+}
+
+@native_set_player_camera_distance(plugin_id, num_params) {
+	enum { ArgpTarget = 1, ArgpDistance = 2 }
+
+	new pTarget = get_param(ArgpTarget)
+	if (!is_user_alive(pTarget)) {
+		return false
+	}
+
+	pVars[pTarget][CAM_DIST] = floatclamp(
+		get_param_f(ArgpDistance),
+		MINIMUN_DISTANCE,
+		MAXIMUM_DISTANCE
+	)
+
+	return true
+}
+
+@native_get_player_camera_distance(plugin_id, num_params) {
+	enum { ArgpTarget = 1 }
+
+	new pTarget = get_param(ArgpTarget)
+	if (!is_user_alive(pTarget)) {
+		return false
+	}
+
+	return any:pVars[pTarget][CAM_DIST]
+}
+
+@native_set_player_camera_have(plugin_id, num_params)
+{
+	enum { ArgpTarget = 1, ArgpCamHave = 2 }
+
+	new pTarget = get_param(ArgpTarget)
+	new pCamHave = get_param(ArgpCamHave)
+
+	if (!is_user_connected(pTarget)) {
+		return false
+	}
+
+	pVars[pTarget][CAM_HAVE] = any:pCamHave
+	return true
+}
+
+@native_get_player_camera_have(plugin_id, num_params)
+{
+	enum { ArgpTarget = 1 }
+
+	new pTarget = get_param(ArgpTarget)
+
+	if (!is_user_connected(pTarget)) {
+		return false
+	}
+
+	return bool:pVars[pTarget][CAM_HAVE]
 }
 
 @Player_Set_Camera_Mode(const pTarget, CameraType:cameraMode) {

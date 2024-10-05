@@ -6,6 +6,9 @@
 const ENTITY_INTOLERANCE = 100;
 const MAX_CAMERA_LENGH = 32;
 
+const Float:MINIMUN_DISTANCE = 60.0;
+const Float:MAXIMUM_DISTANCE = 250.0;
+
 #define var_camera_mode var_gamestate
 
 enum _:PlayerZoom
@@ -30,4 +33,5 @@ enum _:PlayerVars
 	bool:CAM_HAVE,
 	Float:CAM_DIST,
 };
-new pVars[MAX_PLAYERS+1][PlayerVars]
+
+new pVars[MAX_PLAYERS+1][PlayerVars];
