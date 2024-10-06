@@ -27,7 +27,7 @@ public plugin_cfg()
 	if (mp_infinite_ammo == 2)
 		return PLUGIN_CONTINUE;
 
-	if (!rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
+	if (!rz_main_get(RZ_MAIN_CREDITS_ENABLED))
 		return PLUGIN_CONTINUE;
 
 	if (!is_user_alive(id))
@@ -80,7 +80,7 @@ public plugin_cfg()
 	if (mp_infinite_ammo == 2)
 		return;
 
-	if (!rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
+	if (!rz_main_get(RZ_MAIN_CREDITS_ENABLED))
 		return;
 
 	if (!is_user_alive(id))

@@ -316,23 +316,89 @@ ConfigField_Credits(creating, JSON:configJson, value[] = "credits")
 	new const enabledField[] = "enabled";
 	new const joinAmountField[] = "join_amount";
 
-	new joinAmount = 1800;
+	new const AwardPer_Killed_Field[] = "award_per_killed";
+	new const AwardPer_Infect_Field[] = "award_per_infect";
+
+	new const AwardTeam_Win_Field[] = "award_team_win";
+	new const AwardTeam_Loser_Field[] = "award_team_loser";
+	new const AwardTeam_Draw_Field[] = "award_team_draw";
+
+	new const AwardPer_Damage_Field[] = "award_per_damage";
+	new const AwardNeed_Damage_Field[] = "award_need_damage";
+
 	new bool:enabled = true;
+	new joinAmount = 1800;
+
+	new AwardPer_Killed = 1;
+	new AwardPer_Infect = 2;
+
+	new AwardTeam_Win = 3;
+	new AwardTeam_Loser = 1;
+	new AwardTeam_Draw = 0;
+
+	new AwardPer_Damage = 1;
+
+	new Float:AwardNeed_Damage = 2000.0;
+
 	new JSON:jsonHandle;
 
 	if (!creating && json_object_has_value(configJson, value, JSONObject))
 	{
 		jsonHandle = json_object_get_value(configJson, value);
 
-		if (json_object_has_value(jsonHandle, enabledField, JSONBoolean))
+		if (json_object_has_value(jsonHandle, enabledField, JSONBoolean)) {
 			enabled = json_object_get_bool(jsonHandle, enabledField);
-		else
+		} else {
 			json_object_set_bool(jsonHandle, enabledField, enabled);
+		}
 
-		if (json_object_has_value(jsonHandle, joinAmountField, JSONNumber))
+		if (json_object_has_value(jsonHandle, joinAmountField, JSONNumber)) {
 			joinAmount = json_object_get_number(jsonHandle, joinAmountField);
-		else
+		} else {
 			json_object_set_number(jsonHandle, joinAmountField, joinAmount);
+		}
+
+		if (json_object_has_value(jsonHandle, AwardPer_Killed_Field, JSONNumber)) {
+			AwardPer_Killed = json_object_get_number(jsonHandle, AwardPer_Killed_Field);
+		} else {
+			json_object_set_number(jsonHandle, AwardPer_Killed_Field, AwardPer_Killed);
+		}
+
+		if (json_object_has_value(jsonHandle, AwardPer_Infect_Field, JSONNumber)) {
+			AwardPer_Infect = json_object_get_number(jsonHandle, AwardPer_Infect_Field);
+		} else {
+			json_object_set_number(jsonHandle, AwardPer_Infect_Field, AwardPer_Infect);
+		}
+
+		if (json_object_has_value(jsonHandle, AwardTeam_Win_Field, JSONNumber)) {
+			AwardTeam_Win = json_object_get_number(jsonHandle, AwardTeam_Win_Field);
+		} else {
+			json_object_set_number(jsonHandle, AwardTeam_Win_Field, AwardTeam_Win);
+		}
+
+		if (json_object_has_value(jsonHandle, AwardTeam_Loser_Field, JSONNumber)) {
+			AwardTeam_Loser = json_object_get_number(jsonHandle, AwardTeam_Loser_Field);
+		} else {
+			json_object_set_number(jsonHandle, AwardTeam_Loser_Field, AwardTeam_Loser);
+		}
+
+		if (json_object_has_value(jsonHandle, AwardTeam_Draw_Field, JSONNumber)) {
+			AwardTeam_Draw = json_object_get_number(jsonHandle, AwardTeam_Draw_Field);
+		} else {
+			json_object_set_number(jsonHandle, AwardTeam_Draw_Field, AwardTeam_Draw);
+		}
+
+		if (json_object_has_value(jsonHandle, AwardPer_Damage_Field, JSONNumber)) {
+			AwardPer_Damage = json_object_get_number(jsonHandle, AwardPer_Damage_Field);
+		} else {
+			json_object_set_number(jsonHandle, AwardPer_Damage_Field, AwardPer_Damage);
+		}
+
+		if (json_object_has_value(jsonHandle, AwardNeed_Damage_Field, JSONNumber)) {
+			AwardNeed_Damage = json_object_get_real(jsonHandle, AwardNeed_Damage_Field);
+		} else {
+			json_object_set_real(jsonHandle, AwardNeed_Damage_Field, AwardNeed_Damage);
+		}
 	}
 	else
 	{
@@ -340,10 +406,30 @@ ConfigField_Credits(creating, JSON:configJson, value[] = "credits")
 
 		json_object_set_bool(jsonHandle, enabledField, enabled);
 		json_object_set_number(jsonHandle, joinAmountField, joinAmount);
+	
+		json_object_set_number(jsonHandle, AwardPer_Killed_Field, AwardPer_Killed);
+		json_object_set_number(jsonHandle, AwardPer_Infect_Field, AwardPer_Infect);
+
+		json_object_set_number(jsonHandle, AwardTeam_Win_Field, AwardTeam_Win);
+		json_object_set_number(jsonHandle, AwardTeam_Loser_Field, AwardTeam_Loser);
+		json_object_set_number(jsonHandle, AwardTeam_Draw_Field, AwardTeam_Draw);
+
+		json_object_set_number(jsonHandle, AwardPer_Damage_Field, AwardPer_Damage);
+		json_object_set_real(jsonHandle, AwardNeed_Damage_Field, AwardNeed_Damage);
 	}
 
-	rz_main_set(RZ_MAIN_AMMOPACKS_ENABLED, enabled);
-	rz_main_set(RZ_MAIN_AMMOPACKS_JOIN_AMOUNT, joinAmount);
+	rz_main_set(RZ_MAIN_CREDITS_ENABLED, enabled);
+	rz_main_set(RZ_MAIN_CREDITS_JOIN_AMOUNT, joinAmount);
+
+	rz_main_set(RZ_MAIN_CREDITS_PER_KILLED, AwardPer_Killed);
+	rz_main_set(RZ_MAIN_CREDITS_PER_INFECT, AwardPer_Infect);
+
+	rz_main_set(RZ_MAIN_CREDITS_TEAM_WIN, AwardTeam_Win);
+	rz_main_set(RZ_MAIN_CREDITS_TEAM_LOSER, AwardTeam_Loser);
+	rz_main_set(RZ_MAIN_CREDITS_TEAM_DRAW, AwardTeam_Draw);
+
+	rz_main_set(RZ_MAIN_CREDITS_PER_DAMAGE, AwardPer_Damage);
+	rz_main_set(RZ_MAIN_CREDITS_NEED_DAMAGE, AwardNeed_Damage);
 
 	json_object_set_value(configJson, value, jsonHandle);
 	json_free(jsonHandle);

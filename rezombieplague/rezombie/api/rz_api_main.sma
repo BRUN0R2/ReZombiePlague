@@ -19,8 +19,15 @@ enum MainData
 	Main_PrepareTime,
 	Main_RoundTime,
 	Main_WarmupTime,
-	bool:Main_AmmoPacksEnabled,
-	Main_AmmoPacksJoinAmount,
+	bool:Main_CreditsEnabled,
+	Main_CreditsJoinAmount,
+	Main_AwardPer_Killed,
+	Main_AwardPer_Infect,
+	Main_Award_Team_Win,
+	Main_Award_Team_Loser,
+	Main_Award_Team_Draw,
+	Main_AwardPer_Damage,
+	Float:Main_AwardNeed_Damage,
 
 }; new gMainData[MainData];
 
@@ -67,7 +74,6 @@ public plugin_natives()
 	register_native("rz_sys_error", "@native_sys_error");
 
 	register_native("rz_print_chat", "@native_print_chat");
-	register_native("rz_give_bonus", "@native_give_bonus");
 
 	register_native("rz_main_get", "@native_main_get");
 	register_native("rz_main_set", "@native_main_set");
@@ -175,34 +181,6 @@ public plugin_natives()
 	client_print_color(player, sender, "%s%s", gMainData[Main_ChatPrefix], buffer);
 }
 
-@native_give_bonus(plugin, argc)
-{
-	enum { arg_player = 1, arg_amount, arg_text, arg_arguments };
-
-	if (!gMainData[Main_AwardNotice])
-		return;
-	
-	new player = get_param(arg_player);
-	new amount = get_param(arg_amount);
-	new buffer[190];
-
-	vdformat(buffer, charsmax(buffer), arg_text, arg_arguments);
-
-	if (amount)
-		rg_add_account(player, amount);
-
-	if (!buffer[0])
-		return;
-
-	new sender = print_team_grey;
-
-	if (amount < 0)
-		sender = print_team_red;
-
-	client_print_color(player, sender, amount >= 0 ? "%s^4+%L^1: %s" : "%s^3-%L^1: %s",
-		gMainData[Main_ChatPrefix], LANG_PLAYER, gMainData[Main_AmmoPacksEnabled] ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", amount, buffer);
-}
-
 @native_main_get(plugin, argc)
 {
 	enum { arg_prop = 1, arg_2, arg_3 };
@@ -251,13 +229,41 @@ public plugin_natives()
 		{
 			return gMainData[Main_WarmupTime];
 		}
-		case RZ_MAIN_AMMOPACKS_ENABLED:
+		case RZ_MAIN_CREDITS_ENABLED:
 		{
-			return gMainData[Main_AmmoPacksEnabled];
+			return gMainData[Main_CreditsEnabled];
 		}
-		case RZ_MAIN_AMMOPACKS_JOIN_AMOUNT:
+		case RZ_MAIN_CREDITS_JOIN_AMOUNT:
 		{
-			return gMainData[Main_AmmoPacksJoinAmount];
+			return gMainData[Main_CreditsJoinAmount];
+		}
+		case RZ_MAIN_CREDITS_PER_KILLED:
+		{
+			return gMainData[Main_AwardPer_Killed];
+		}
+		case RZ_MAIN_CREDITS_PER_INFECT:
+		{
+			return gMainData[Main_AwardPer_Infect];
+		}
+		case RZ_MAIN_CREDITS_TEAM_WIN:
+		{
+			return gMainData[Main_Award_Team_Win];
+		}
+		case RZ_MAIN_CREDITS_TEAM_LOSER:
+		{
+			return gMainData[Main_Award_Team_Loser];
+		}
+		case RZ_MAIN_CREDITS_TEAM_DRAW:
+		{
+			return gMainData[Main_Award_Team_Draw];
+		}
+		case RZ_MAIN_CREDITS_PER_DAMAGE:
+		{
+			return gMainData[Main_AwardPer_Damage];
+		}
+		case RZ_MAIN_CREDITS_NEED_DAMAGE:
+		{
+			return any:gMainData[Main_AwardNeed_Damage];
 		}
 		default:
 		{
@@ -317,13 +323,41 @@ public plugin_natives()
 		{
 			gMainData[Main_WarmupTime] = get_param_byref(arg_2);
 		}
-		case RZ_MAIN_AMMOPACKS_ENABLED:
+		case RZ_MAIN_CREDITS_ENABLED:
 		{
-			gMainData[Main_AmmoPacksEnabled] = any:get_param_byref(arg_2);
+			gMainData[Main_CreditsEnabled] = any:get_param_byref(arg_2);
 		}
-		case RZ_MAIN_AMMOPACKS_JOIN_AMOUNT:
+		case RZ_MAIN_CREDITS_JOIN_AMOUNT:
 		{
-			gMainData[Main_AmmoPacksJoinAmount] = get_param_byref(arg_2);
+			gMainData[Main_CreditsJoinAmount] = get_param_byref(arg_2);
+		}
+		case RZ_MAIN_CREDITS_PER_KILLED:
+		{
+			gMainData[Main_AwardPer_Killed] = get_param_byref(arg_2);
+		}
+		case RZ_MAIN_CREDITS_PER_INFECT:
+		{
+			gMainData[Main_AwardPer_Infect] = get_param_byref(arg_2);
+		}
+		case RZ_MAIN_CREDITS_TEAM_WIN:
+		{
+			gMainData[Main_Award_Team_Win] = get_param_byref(arg_2);
+		}
+		case RZ_MAIN_CREDITS_TEAM_LOSER:
+		{
+			gMainData[Main_Award_Team_Loser] = get_param_byref(arg_2);
+		}
+		case RZ_MAIN_CREDITS_TEAM_DRAW:
+		{
+			gMainData[Main_Award_Team_Draw] = get_param_byref(arg_2);
+		}
+		case RZ_MAIN_CREDITS_PER_DAMAGE:
+		{
+			gMainData[Main_AwardPer_Damage] = get_param_byref(arg_2);
+		}
+		case RZ_MAIN_CREDITS_NEED_DAMAGE:
+		{
+			gMainData[Main_AwardNeed_Damage] = get_float_byref(arg_2);
 		}
 		default:
 		{

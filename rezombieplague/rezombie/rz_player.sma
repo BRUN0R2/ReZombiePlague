@@ -398,8 +398,9 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 		set_member(id, m_bCanShootOverride, true);
 	}
 
-	/*if (rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
-		set_member(id, m_iHideHUD, get_member(id, m_iHideHUD) | HIDEHUD_MONEY);*/
+	/*if (rz_main_get(RZ_MAIN_CREDITS_ENABLED)) {
+		set_member(id, m_iHideHUD, get_member(id, m_iHideHUD) | HIDEHUD_MONEY);
+	}*/
 
 	if (get_member(id, m_iNumSpawns) == 1)
 	{
@@ -564,9 +565,9 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 		return HC_CONTINUE;
 	}
 
-	if (type == RT_PLAYER_JOIN && rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
+	if (type == RT_PLAYER_JOIN && rz_main_get(RZ_MAIN_CREDITS_ENABLED))
 	{
-		SetHookChainArg(2, ATYPE_INTEGER, rz_main_get(RZ_MAIN_AMMOPACKS_JOIN_AMOUNT));
+		SetHookChainArg(2, ATYPE_INTEGER, rz_main_get(RZ_MAIN_CREDITS_JOIN_AMOUNT));
 		return HC_CONTINUE;
 	}
 

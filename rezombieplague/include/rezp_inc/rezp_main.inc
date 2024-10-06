@@ -37,18 +37,25 @@ enum
 
 enum RZMainProp
 {
-	RZ_MAIN_GAME_DESC, // [64]
-	RZ_MAIN_SKY_NAME, // [32]
-	RZ_MAIN_GLOBAL_LIGHTING, // [2]
-	RZ_MAIN_NVG_LIGHTING, // [2]
-	RZ_MAIN_ROUNDOVER_CT_WIN, // bool
-	RZ_MAIN_AWARD_NOTICE, // bool
-	RZ_MAIN_CHAT_PREFIX, // [32]
-	RZ_MAIN_PREPARE_TIME, // cell
-	RZ_MAIN_ROUND_TIME, // cell
-	RZ_MAIN_WARMUP_TIME, // cell
-	RZ_MAIN_AMMOPACKS_ENABLED, // bool
-	RZ_MAIN_AMMOPACKS_JOIN_AMOUNT, // cell
+	RZ_MAIN_GAME_DESC,				// [64]
+	RZ_MAIN_SKY_NAME,				// [32]
+	RZ_MAIN_GLOBAL_LIGHTING,		// [2]
+	RZ_MAIN_NVG_LIGHTING,			// [2]
+	RZ_MAIN_ROUNDOVER_CT_WIN,		// bool
+	RZ_MAIN_AWARD_NOTICE,			// bool
+	RZ_MAIN_CHAT_PREFIX,			// [32]
+	RZ_MAIN_PREPARE_TIME,			// cell
+	RZ_MAIN_ROUND_TIME,				// cell
+	RZ_MAIN_WARMUP_TIME,			// cell
+	RZ_MAIN_CREDITS_ENABLED,		// bool
+	RZ_MAIN_CREDITS_JOIN_AMOUNT,	// cell
+	RZ_MAIN_CREDITS_PER_KILLED,		// cell
+	RZ_MAIN_CREDITS_PER_INFECT,		// cell
+	RZ_MAIN_CREDITS_TEAM_WIN,		// cell
+	RZ_MAIN_CREDITS_TEAM_LOSER,		// cell
+	RZ_MAIN_CREDITS_TEAM_DRAW,		// cell
+	RZ_MAIN_CREDITS_PER_DAMAGE,		// cell
+	RZ_MAIN_CREDITS_NEED_DAMAGE,	// float
 };
 
 /**
@@ -70,7 +77,6 @@ native rz_log(bool:isError, text[], any:...);
 native rz_sys_error(const error[], any:...);
 
 native rz_print_chat(id, sender = print_team_grey, text[], any:...);
-native rz_give_bonus(id, amount, text[] = "", any:...);
 
 native any:rz_main_get(RZMainProp:prop, any:...);
 native rz_main_set(RZMainProp:prop, any:...);

@@ -6,10 +6,6 @@
 
 new g_iClass_Human;
 
-new Float:g_flDamageDealt[MAX_PLAYERS + 1];
-
-new Float:cvar_account_damaged_hp = 50.0;
-
 public plugin_precache()
 {
 	register_plugin("[ReZP] Class: Human", REZP_VERSION_STR, "fl0wer");
@@ -26,42 +22,8 @@ public plugin_precache()
 	rz_playermodel_add(model, "gign", .defaultHitboxes = false);
 }
 
-public plugin_init()
-{
-	RegisterHookChain(RG_CBasePlayer_TakeDamage, "@CBasePlayer_TakeDamage_Post", true);
+public plugin_init() {
 	RegisterHookChain(RG_CBasePlayer_GiveDefaultItems, "@CBasePlayer_GiveDefaultItems_Post", true);
-}
-
-public client_putinserver(id)
-{
-	g_flDamageDealt[id] = 0.0;
-}
-
-@CBasePlayer_TakeDamage_Post(id, inflictor, attacker, Float:damage, bitsDamageType)
-{
-	if (id == attacker || !is_user_connected(attacker))
-		return;
-
-	if (!rg_is_player_can_takedamage(id, attacker))
-		return;
-
-	if (rz_player_get(attacker, RZ_PLAYER_CLASS) != g_iClass_Human)
-		return;
-
-	g_flDamageDealt[attacker] += damage;
-
-	new addMoney;
-	new dealtBonus = 1;
-	new Float:dealt = cvar_account_damaged_hp;
-
-	while (g_flDamageDealt[attacker] > dealt)
-	{
-		g_flDamageDealt[attacker] -= dealt;
-		addMoney += dealtBonus;
-	}
-
-	if (addMoney)
-		rg_add_account(attacker, addMoney);
 }
 
 @CBasePlayer_GiveDefaultItems_Post(id)

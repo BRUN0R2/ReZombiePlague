@@ -64,7 +64,7 @@ public plugin_init()
 	{
 		rz_print_chat(id, print_team_grey, "%L", LANG_PLAYER, "RZ_ITEMS_INSUFFICIENT_FUNDS",
 			LANG_PLAYER, gItemData[Item_Name],
-			LANG_PLAYER, rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED) ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
+			LANG_PLAYER, rz_main_get(RZ_MAIN_CREDITS_ENABLED) ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
 		return false;
 	}
 

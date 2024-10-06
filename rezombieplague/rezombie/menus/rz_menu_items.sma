@@ -72,7 +72,7 @@ Items_Show(id, page = 0)
 	g_iMenuPage[id] = start / itemPerPage;
 
 	new account = get_member(id, m_iAccount);
-	new bool:ammoPacksEnabled = bool:rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED);
+	new bool:pCreditsEnabled = bool:rz_main_get(RZ_MAIN_CREDITS_ENABLED);
 	new keys;
 	new len;
 	new index;
@@ -103,12 +103,12 @@ Items_Show(id, page = 0)
 
 			if (account >= cost && rz_items_player_get_status(id, index) == RZ_CONTINUE)
 			{
-				ADD_FORMATEX("\r%d. \w%l \y%l^n", item + 1, name, ammoPacksEnabled ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
+				ADD_FORMATEX("\r%d. \w%l \y%l^n", item + 1, name, pCreditsEnabled ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
 				keys |= (1<<item);
 			}
 			else
 			{
-				ADD_FORMATEX("\r%d. \d%l \y%l^n", item + 1, name, ammoPacksEnabled ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
+				ADD_FORMATEX("\r%d. \d%l \y%l^n", item + 1, name, pCreditsEnabled ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
 			}
 
 			item++;
@@ -183,7 +183,7 @@ Items_Show(id, page = 0)
 	if (get_member(id, m_iAccount) < cost)
 	{
 		rz_print_chat(id, print_team_grey, "%l", "RZ_ITEMS_INSUFFICIENT_FUNDS", name,
-		rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED) ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
+		rz_main_get(RZ_MAIN_CREDITS_ENABLED) ? "RZ_FMT_AMMOPACKS" : "RZ_FMT_DOLLARS", cost);
 		return PLUGIN_HANDLED;
 	}
 

@@ -95,7 +95,7 @@ public client_putinserver(id) {
 
 @CBasePlayer_AddAccount_Post(id, amount, RewardType:type, bool:trackChange)
 {
-	if (!rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
+	if (!rz_main_get(RZ_MAIN_CREDITS_ENABLED))
 		return;
 
 	message_begin(MSG_ONE, gmsgMoney, _, id);

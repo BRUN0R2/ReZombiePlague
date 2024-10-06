@@ -156,7 +156,7 @@ UpdateStatusBar(id)
 
 					ADD_FORMATEX("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(hit, var_health)));
 
-					if (rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
+					if (rz_main_get(RZ_MAIN_CREDITS_ENABLED))
 						ADD_FORMATEX("^n[%l: %d]", "RZ_AMMOPACKS", get_member(hit, m_iAccount));
 				}
 				else if (mp_playerid != PLAYERID_MODE_TEAMONLY)
@@ -202,7 +202,7 @@ UpdateStatusBar(id)
 				
 				ADD_FORMATEX("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(hit, var_health)));
 
-				if (rz_main_get(RZ_MAIN_AMMOPACKS_ENABLED))
+				if (rz_main_get(RZ_MAIN_CREDITS_ENABLED))
 					ADD_FORMATEX("^n[%l: %d]", "RZ_AMMOPACKS", get_member(hit, m_iAccount));
 			}
 			else
@@ -299,7 +299,7 @@ UpdateStatusBar(id)
 
 			ADD_FORMATEX("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(target, var_health)));
 
-			if (rz_main_ammopacks_enabled())
+			if (rz_main_credits_enabled())
 				ADD_FORMATEX("^n[%l: %d]", "RZ_AMMOPACKS", get_member(target, m_iAccount));
 		}
 		else if (mp_playerid != PLAYERID_MODE_TEAMONLY)
@@ -332,7 +332,7 @@ UpdateStatusBar(id)
 		
 		ADD_FORMATEX("^n[%l: %d]", "RZ_HEALTH", floatround(get_entvar(target, var_health)));
 
-		if (rz_main_ammopacks_enabled())
+		if (rz_main_credits_enabled())
 			ADD_FORMATEX("^n[%l: %d]", "RZ_AMMOPACKS", get_member(target, m_iAccount));
 	}
 	else
