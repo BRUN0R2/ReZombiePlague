@@ -92,7 +92,11 @@ public client_putinserver(pPlayer) {
 		if (is_nullent(pVars[pPlayer][CAM_ENT]))
 			return NULLENT
 
-		set_entvar(pVars[pPlayer][CAM_ENT], var_classname, "ent_cam2")
+		if (pVars[pPlayer][CAM_DIST] <= 0.0) {
+			pVars[pPlayer][CAM_DIST] = 90.0
+		}
+
+		set_entvar(pVars[pPlayer][CAM_ENT], var_classname, "ent_camera_api2")
 		set_entvar(pVars[pPlayer][CAM_ENT], var_modelindex, gl_pModelIndex)
 
 		set_entvar(pVars[pPlayer][CAM_ENT], var_owner, pPlayer)
