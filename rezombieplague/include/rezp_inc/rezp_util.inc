@@ -317,3 +317,15 @@ stock rz_util_te_beamfollow(const entity, const spriteIndex, const life, const w
 	write_byte(RGBA[3]);		// brightness
 	message_end();
 }
+
+stock rz_util_te_tracer(const Float:start[3] = NULL_VECTOR, const Float:end[3] = NULL_VECTOR) {
+	message_begin_f(MSG_BROADCAST, SVC_TEMPENTITY);
+	write_byte(TE_TRACER);
+	write_coord_f(start[0]);	// startposition.x
+	write_coord_f(start[1]);	// startposition.y
+	write_coord_f(start[2]);	// startposition.z
+	write_coord_f(end[0]);		// endposition.x
+	write_coord_f(end[1]);		// endposition.y
+	write_coord_f(end[2]);		// endposition.z
+	message_end();
+}

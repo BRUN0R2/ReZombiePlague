@@ -107,6 +107,7 @@ public client_putinserver(id) {
 				pVars[id][CAM_HAVE] = !pVars[id][CAM_HAVE]
 			}
 			else {
+				set_camera_have(id, false)
 				breaks_player_camera(id)
 				pVars[id][CAM_HAVE] = !pVars[id][CAM_HAVE]
 			}

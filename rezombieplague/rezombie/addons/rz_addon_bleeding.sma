@@ -33,25 +33,21 @@ public plugin_cfg()
 		return;
 	}
 
-	new entity = rg_create_entity("info_target");
+	new pEntity = rg_create_entity("info_target");
 
-	if (is_nullent(entity))
+	if (is_nullent(pEntity))
 		return;
 
-	set_entvar(entity, var_effects, EF_NODRAW);
-	set_entvar(entity, var_nextthink, get_gametime() + 1.0);
+	set_entvar(pEntity, var_effects, EF_NODRAW);
+	set_entvar(pEntity, var_nextthink, get_gametime() + 1.0);
 
-	SetThink(entity, "@Bleeding_Think");
+	SetThink(pEntity, "@Bleeding_Think");
 }
 
-@Bleeding_Think(id)
+@Bleeding_Think(const pEntity)
 {
-	set_entvar(id, var_nextthink, get_gametime() + rz_bleeding_frequency);
-
-	new textureIndex;
-	new Float:vecOrigin[3];
-	new Float:vecVelocity[3];
-	new Float:vecMins[3];
+	set_entvar(pEntity, var_nextthink, get_gametime() + rz_bleeding_frequency);
+	new textureIndex, Float:vecOrigin[3], Float:vecVelocity[3], Float:vecMins[3];
 
 	for (new i = 1; i <= MaxClients; i++)
 	{
