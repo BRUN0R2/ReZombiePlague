@@ -5,10 +5,6 @@
 #include <reapi>
 #include <rezp_inc/rezp_main>
 
-const AWARD_TEAM_WIN = 3;
-const AWARD_TEAM_LOSER = 1;
-const AWARD_TEAM_DRAW = 0;
-
 new Float:g_flDamageDealt[MAX_PLAYERS + 1];
 
 new g_pClass_Human;
