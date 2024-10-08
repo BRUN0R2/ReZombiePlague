@@ -23,7 +23,7 @@ public plugin_precache()
 public plugin_init() {
 	RegisterHookChain(RG_RoundEnd, "@RoundEnd_Post", .post = true);
 	RegisterHookChain(RG_CBasePlayer_AddAccount, "@CBasePlayer_AddAccount_Pre", .post = false);
-	RegisterHookChain(RG_CBasePlayer_TakeDamage, "@CBasePlayer_TakeDamage_Post", .post = true);
+	RegisterHookChain(RG_CBasePlayer_TakeDamage, "@CBasePlayer_TakeDamage_Pre", .post = false);
 }
 
 public client_putinserver(id) {
@@ -87,13 +87,16 @@ public rz_class_change_post(id, attacker)
 
 @CBasePlayer_AddAccount_Pre(id, amount, RewardType:type, bool:trackChange)
 {
-	if (type != RT_ENEMY_KILLED && !rz_main_get(RZ_MAIN_CREDITS_ENABLED))
+	if (type != RT_ENEMY_KILLED)
+		return;
+
+	if (!rz_main_get(RZ_MAIN_CREDITS_ENABLED))
 		return;
 
 	SetHookChainArg(2, ATYPE_INTEGER, rz_main_get(RZ_MAIN_CREDITS_PER_KILLED));
 }
 
-@CBasePlayer_TakeDamage_Post(const victim, const inflictor, const attacker, const Float:xDamage, const bitsDamageType) {
+@CBasePlayer_TakeDamage_Pre(const victim, const inflictor, const attacker, const Float:xDamage, const bitsDamageType) {
 	if (!rz_main_get(RZ_MAIN_CREDITS_ENABLED) || victim == attacker || !is_user_connected(attacker)) {
 		return HC_CONTINUE;
 	}

@@ -338,7 +338,7 @@ ConfigField_Credits(creating, JSON:configJson, value[] = "credits")
 
 	new AwardPer_Damage = 1;
 
-	new Float:AwardNeed_Damage = 2000.1;
+	new Float:AwardNeed_Damage = 2000.0;
 
 	new JSON:jsonHandle;
 
