@@ -5,13 +5,9 @@
 #include <reapi>
 #include <rezp_inc/rezp_main>
 
-const AWARD_PLAYER_KILLED = 1;
-const AWARD_PLAYER_INFECT = 2;
 const AWARD_TEAM_WIN = 3;
 const AWARD_TEAM_LOSER = 1;
 const AWARD_TEAM_DRAW = 0;
-const AWARD_PER_DAMAGE = 1;
-const Float:AWARD_NEED_DAMAGE = 2000.0;
 
 new Float:g_flDamageDealt[MAX_PLAYERS + 1];
 
@@ -36,13 +32,11 @@ public client_putinserver(id) {
 
 public rz_class_change_post(id, attacker)
 {
-	if (id == attacker || !attacker)
+	if (!rz_main_get(RZ_MAIN_CREDITS_ENABLED) || id == attacker || !attacker)
 		return;
 
-	new bonus = AWARD_PLAYER_INFECT;
-
+	new bonus = rz_main_get(RZ_MAIN_CREDITS_PER_INFECT);
 	if (!bonus) return;
-
 	rg_add_account(attacker, bonus);
 }
 
@@ -52,6 +46,9 @@ public rz_class_change_post(id, attacker)
 		return;
 
 	if (rz_game_is_warmup())
+		return;
+
+	if (!rz_main_get(RZ_MAIN_CREDITS_ENABLED))
 		return;
 
 	new TeamName:winTeam = TEAM_UNASSIGNED;
@@ -79,25 +76,25 @@ public rz_class_change_post(id, attacker)
 		}
 
 		if (winTeam == TEAM_UNASSIGNED) {
-			rg_add_account(i, AWARD_TEAM_DRAW);
+			rg_add_account(i, rz_main_get(RZ_MAIN_CREDITS_TEAM_DRAW));
 		} else if (winTeam == team) {
-			rg_add_account(i, AWARD_TEAM_WIN);
+			rg_add_account(i, rz_main_get(RZ_MAIN_CREDITS_TEAM_WIN));
 		} else {
-			rg_add_account(i, AWARD_TEAM_LOSER);
+			rg_add_account(i, rz_main_get(RZ_MAIN_CREDITS_TEAM_LOSER));
 		}
 	}
 }
 
 @CBasePlayer_AddAccount_Pre(id, amount, RewardType:type, bool:trackChange)
 {
-	if (type != RT_ENEMY_KILLED)
+	if (type != RT_ENEMY_KILLED && !rz_main_get(RZ_MAIN_CREDITS_ENABLED))
 		return;
 
-	SetHookChainArg(2, ATYPE_INTEGER, AWARD_PLAYER_KILLED);
+	SetHookChainArg(2, ATYPE_INTEGER, rz_main_get(RZ_MAIN_CREDITS_PER_KILLED));
 }
 
 @CBasePlayer_TakeDamage_Post(const victim, const inflictor, const attacker, const Float:xDamage, const bitsDamageType) {
-	if (victim == attacker || !is_user_connected(attacker)) {
+	if (!rz_main_get(RZ_MAIN_CREDITS_ENABLED) || victim == attacker || !is_user_connected(attacker)) {
 		return HC_CONTINUE;
 	}
 	if (!rg_is_player_can_takedamage(victim, attacker)) {
@@ -106,13 +103,17 @@ public rz_class_change_post(id, attacker)
 	if (rz_player_get(attacker, RZ_PLAYER_CLASS) != g_pClass_Human) {
 		return HC_CONTINUE;
 	}
+
+	new Float:pNeedDamage = Float:rz_main_get(RZ_MAIN_CREDITS_NEED_DAMAGE);
+
 	g_flDamageDealt[attacker] += xDamage;
 	new pCredits = 0;
-	while(g_flDamageDealt[attacker] > AWARD_NEED_DAMAGE)
+	while(g_flDamageDealt[attacker] > pNeedDamage)
 	{
-		g_flDamageDealt[attacker] -= AWARD_NEED_DAMAGE;
-		pCredits += AWARD_PER_DAMAGE;
+		g_flDamageDealt[attacker] -= pNeedDamage;
+		pCredits += rz_main_get(RZ_MAIN_CREDITS_PER_DAMAGE);
 	}
+
 	if(pCredits)rg_add_account(attacker, pCredits);
 	return HC_CONTINUE;
 }
