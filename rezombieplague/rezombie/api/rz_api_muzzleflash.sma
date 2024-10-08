@@ -86,6 +86,8 @@ stock Create_weapon_muzzleflash(const pPlayer, const Float:life = 0.1, const att
 
 	new pEntity = @Find_Active_Entity(pPlayer)
 	if (pEntity != NULLENT) {
+		set_entvar(pEntity, var_frame, 0.0)
+		set_entvar(pEntity, var_pitch_speed, life)
 		return pEntity
 	}
 
@@ -141,9 +143,11 @@ stock Create_weapon_muzzleflash(const pPlayer, const Float:life = 0.1, const att
 
 @Destroy_MuzzleFlash(const pPlayer) {
 	new pEntity = @Find_Active_Entity(pPlayer)
-	if (pEntity != NULLENT) {
-	rg_remove_entity(pEntity)
+	if (pEntity == NULLENT) {
+		return
 	}
+
+	rg_remove_entity(pEntity)
 }
 
 @Find_Active_Entity(const pPlayer)
