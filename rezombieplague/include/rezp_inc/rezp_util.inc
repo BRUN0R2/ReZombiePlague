@@ -34,6 +34,12 @@ stock rz_util_send_lightstyle(id, index, const style[])
 	message_end();
 }
 
+stock bool:rz_util_is_steam(const id)
+{
+	static auth[64]; get_user_authid(id, auth, charsmax(auth))
+	return (strfind(auth, "STEAM", true) != -1)
+}
+
 stock rz_util_send_screenfade(const id, color[3] = {255, 255, 255}, Float:fadeTime = 1.0, Float:fadeHold = 0.0, alpha = 0, fadeFlags = 0)
 {
 	static pMsg;
@@ -77,6 +83,36 @@ stock rz_util_send_player_fog(const id, color[3] = {255, 255, 255}, Float:pRange
 	}
 }
 
+stock rz_util_find_target(const pEntity, const pPlayer, const Float:pRange = 8162.0)
+{
+	new Float:closestDistance = pRange;
+	new pClosestEnemy = NULLENT;
+
+	for (new pTarget = 1; pTarget <= engfunc(EngFunc_NumberOfEntities); pTarget++)
+	{
+		if (get_entvar(pTarget, var_takedamage) == DAMAGE_NO)
+			continue;
+
+		if (!rz_util_entity_visible(pEntity, pTarget))
+			continue;
+
+		new Float:pDistance = rz_util_entity_range(pEntity, pTarget);
+
+		if (!is_user_alive(pTarget))
+			continue;
+
+		if (!rz_util_valid_enemy(pTarget, pPlayer))
+			continue;
+
+		if (pDistance < closestDistance) {
+			closestDistance = pDistance;
+			pClosestEnemy = pTarget;
+		}
+	}
+
+	return pClosestEnemy;
+}
+
 stock Float:rz_util_entity_range(const pEntityA, const pEntityB)
 {
     static Float:originA[3]; rz_util_get_entity_center(pEntityA, originA);
@@ -104,6 +140,20 @@ stock rz_util_get_entity_center(const this, Float:output[3])
     }
 }
 
+stock bool:rz_util_valid_enemy(const pTarget, const pPlayer)
+{
+	if (GetProtectionState(pTarget))
+		return false
+
+	if (rz_util_similar_team(pTarget, pPlayer))
+		return false
+
+	if (!rg_is_player_can_takedamage(pTarget, pPlayer))
+		return false
+
+	return true
+}
+
 stock bool:rz_util_similar_team(const pPlayer, const pTarget)
 {
 	if (get_member(pPlayer, m_iTeam) == get_member(pTarget, m_iTeam)) {
@@ -111,6 +161,19 @@ stock bool:rz_util_similar_team(const pPlayer, const pTarget)
 	}
 
 	return false;
+}
+
+// Function for linear interpolation between two values
+stock Float:rz_util_floatlerp(Float:start, Float:end, Float:percent) {
+	return start + (end - start) * percent
+}
+
+stock rz_util_entity_animation(const pEntity, const iSequence = 0, const Float:Frame = 0.0, const Float:FrameRate = 1.0)
+{
+	set_entvar(pEntity, var_frame, Frame);
+	set_entvar(pEntity, var_framerate, FrameRate);
+	set_entvar(pEntity, var_animtime, get_gametime());
+	set_entvar(pEntity, var_sequence, iSequence);
 }
 
 stock rz_util_get_vector_aiming(const ePlayer, Float:vecAiming[3]) {
@@ -142,6 +205,25 @@ stock bool:rz_util_entity_visible(const pEntity, const pTarget)
     }
 
     return true;
+}
+
+stock bool:rz_util_play_timing_sound(const pThis, const pEntity, const pChannel = CHAN_WEAPON, const pSound[], const Float:pTime)
+{
+	static Float:flGameTime; flGameTime = get_gametime();
+	static Float:flNextSound; get_entvar(pEntity, var_impacttime, flNextSound);
+	if (flNextSound > flGameTime) {
+		return false;
+	}
+
+	rh_emit_sound2(pThis, 0, pChannel, pSound);
+	set_entvar(pEntity, var_impacttime, flGameTime + pTime);
+	return true;
+}
+
+stock rz_util_reset_timing_sound(const pThis, const pEntity, const pChannel = CHAN_WEAPON, const pSound[] = "common/null.wav")
+{
+	set_entvar(pEntity, var_impacttime, get_gametime());
+	rh_emit_sound2(pThis, 0, pChannel, pSound);
 }
 
 stock rz_util_precache_sprites_from_txt(const szTextFile[])
