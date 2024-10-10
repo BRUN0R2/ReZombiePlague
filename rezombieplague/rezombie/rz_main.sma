@@ -67,9 +67,9 @@ public plugin_init()
 	if (skyName[0])
 	{
 		set_cvar_string("sv_skyname", skyName);
-		set_cvar_string("sv_skycolor_r", "0");
-		set_cvar_string("sv_skycolor_g", "0");
-		set_cvar_string("sv_skycolor_b", "0");
+		set_cvar_string("sv_skycolor_r", "255");
+		set_cvar_string("sv_skycolor_g", "255");
+		set_cvar_string("sv_skycolor_b", "255");
 	}
 
 	RegisterHookChain(RG_CGib_Spawn, "@CGib_Spawn_Post", true);
