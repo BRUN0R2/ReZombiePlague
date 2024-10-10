@@ -1,7 +1,6 @@
 #include <amxmodx>
 #include <reapi>
 #include <fakemeta>
-#include <xs>
 
 #define PLUGIN  "[REAPI] Drop effect"
 #define VERSION "1.0"
@@ -24,14 +23,26 @@ public plugin_precache()
 }
 
 public plugin_init() {
-	RegisterHookChain(RG_CWeaponBox_SetModel, "@CWeaponBox_SetModel_Pre", .post = false)
+	RegisterHookChain(RG_CWeaponBox_SetModel, "@CWeaponBox_SetModel_Post", .post = true)
 }
 
-@CWeaponBox_SetModel_Pre(const pEntity) {
+@CWeaponBox_SetModel_Post(const pEntity) {
 	if (is_nullent(pEntity))
-		return
+		return HC_CONTINUE;
+
+	for (new i = 0, weapon; i < MAX_ITEM_TYPES; i++) {
+		weapon = get_member(pEntity, m_WeaponBox_rgpPlayerItems, i);
+		if (is_nullent(weapon)) {
+			continue;
+		}
+		new WeaponIdType:weaponId = get_member(weapon, m_iId);
+		if (weaponId == WEAPON_C4) {
+			return HC_CONTINUE;
+		}
+	}
 
 	@Create_weapon_effect(pEntity)
+	return HC_CONTINUE
 }
 
 @Create_weapon_effect(const pEntity)
