@@ -83,7 +83,7 @@ stock rz_util_send_player_fog(const id, color[3] = {255, 255, 255}, Float:pRange
 	}
 }
 
-stock rz_util_find_target(const pEntity, const pPlayer, const Float:pRange = 8162.0)
+stock rz_util_find_target(const pEntity, const pPlayer, const Float:pRange = 8162.0, bool:pVerifePlayerDistance = false)
 {
 	new Float:closestDistance = pRange;
 	new pClosestEnemy = NULLENT;
@@ -95,6 +95,12 @@ stock rz_util_find_target(const pEntity, const pPlayer, const Float:pRange = 816
 
 		if (!rz_util_entity_visible(pEntity, pTarget))
 			continue;
+
+		if (pVerifePlayerDistance) {
+			if (rz_util_entity_range(pPlayer, pTarget) > pRange) {
+				continue;
+			}
+		}
 
 		new Float:pDistance = rz_util_entity_range(pEntity, pTarget);
 
@@ -143,15 +149,15 @@ stock rz_util_get_entity_center(const this, Float:output[3])
 stock bool:rz_util_valid_enemy(const pTarget, const pPlayer)
 {
 	if (GetProtectionState(pTarget))
-		return false
+		return false;
 
 	if (rz_util_similar_team(pTarget, pPlayer))
-		return false
+		return false;
 
 	if (!rg_is_player_can_takedamage(pTarget, pPlayer))
-		return false
+		return false;
 
-	return true
+	return true;
 }
 
 stock bool:rz_util_similar_team(const pPlayer, const pTarget)
