@@ -503,20 +503,15 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 
 @CBasePlayer_Killed_Post(victim, attacker, gib)
 {
-	if (!rg_is_player_can_respawn(victim)) {
+	if (!rg_is_player_can_respawn(victim))
 		return HC_CONTINUE;
-	}
 
-	new pGameMode = rz_gamemodes_get(RZ_GAMEMODES_CURRENT);
-	if (pGameMode || rz_gamemode_get(pGameMode, RZ_GAMEMODE_DEATHMATCH))
-	{
-		set_member(victim, m_flRespawnPending, get_gametime() + float(RESPAWN_TIME));
+	set_member(victim, m_flRespawnPending, get_gametime() + float(RESPAWN_TIME));
 
-		message_begin(MSG_ONE, gmsgBarTime, _, victim);
-		SendBarTime(RESPAWN_TIME);
+	message_begin(MSG_ONE, gmsgBarTime, _, victim);
+	SendBarTime(RESPAWN_TIME);
 
-		client_print(victim, print_center, "%L", LANG_PLAYER, "RZ_NOTICE_RESPAWN_TIME", RESPAWN_TIME);
-	}
+	client_print(victim, print_center, "%L", LANG_PLAYER, "RZ_NOTICE_RESPAWN_TIME", RESPAWN_TIME);
 
 	return HC_CONTINUE;
 }

@@ -255,6 +255,17 @@ public plugin_init()
 		return HC_SUPERCEDE;
 	}
 
+	new pGameMode = rz_gamemodes_get(RZ_GAMEMODES_CURRENT);
+
+	if (pGameMode)
+	{
+		if (rz_gamemode_get(pGameMode, RZ_GAMEMODE_DEATHMATCH) == RZ_GM_DEATHMATCH_DISABLED)
+		{
+			SetHookChainReturn(ATYPE_INTEGER, false);
+			return HC_SUPERCEDE;
+		}
+	}
+
 	if (get_member(id, m_flRespawnPending) > get_gametime())
 	{
 		SetHookChainReturn(ATYPE_INTEGER, false);
