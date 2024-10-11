@@ -93,9 +93,9 @@ GameMenu_Show(id)
 	{
 		ADD_FORMATEX("\r9. \w%l^n", "RZ_MENU_GAME_ADMIN");
 		keys |= MENU_KEY_9;
-	}
-	else
+	} else {
 		ADD_FORMATEX("\d9. %l^n", "RZ_MENU_GAME_ADMIN");
+	}
 
 	ADD_FORMATEX("\r0. \w%l", "RZ_CLOSE");
 	keys |= MENU_KEY_0;
@@ -103,11 +103,10 @@ GameMenu_Show(id)
 	show_menu(id, keys, text, -1, GAME_MENU_ID);
 }
 
-@HandleMenu_Game(id, key)
+@HandleMenu_Game(const id, const key)
 {
-	if (key == 9)
-		return PLUGIN_HANDLED;
-	
+	if (key == 9) return PLUGIN_HANDLED;
+
 	switch (key)
 	{
 		case 0:
@@ -126,14 +125,17 @@ GameMenu_Show(id)
 		{
 			if (get_member(id, m_iTeam) == TEAM_SPECTATOR)
 			{
-				if (rz_game_is_warmup() || get_member_game(m_bFreezePeriod)) {
+				if (rz_game_is_warmup() || get_member_game(m_bFreezePeriod))
+				{
 					rg_set_user_team(id, TEAM_CT, MODEL_UNASSIGNED, .check_win_conditions = true);
-					rg_round_respawn(id);
-				} else {
-					rg_set_user_team(id, TEAM_TERRORIST, MODEL_UNASSIGNED, .check_win_conditions = true);
-					rg_round_respawn(id);
 				}
-			} else {
+				else
+				{
+					rg_set_user_team(id, TEAM_TERRORIST, MODEL_UNASSIGNED, .check_win_conditions = true);
+				}
+			}
+			else
+			{
 				if (is_user_alive(id)) 
 				{
 					new Float:frags = get_entvar(id, var_frags);
@@ -151,6 +153,6 @@ GameMenu_Show(id)
 			amxclient_cmd(id, "adminmenu");
 		}
 	}
-	
+
 	return PLUGIN_HANDLED;
 }

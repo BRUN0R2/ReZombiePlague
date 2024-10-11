@@ -122,7 +122,7 @@ native rz_playermodel_get_handle(playerModel, handle[], len);
 native rz_playermodel_find(const handle[]);
 native rz_playermodel_add(playerModel, const modelName[], bool:defaultHitboxes = false, body = 0);
 
-native rz_playermodel_player_change(id, playerModel, bool:preSpawn = false);
+native rz_playermodel_player_change(id, playerModel);
 
 enum RZPainSound
 {

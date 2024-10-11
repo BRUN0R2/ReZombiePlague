@@ -126,7 +126,7 @@ public rz_class_change_post(id, attacker, class, bool:preSpawn)
 	if (preSpawn)
 	{
 		set_member(id, m_iTeam, rz_class_get(class, RZ_CLASS_TEAM));
-		rz_playermodel_player_change(id, rz_player_get(id, RZ_PLAYER_MODEL), true);
+		rz_playermodel_player_change(id, rz_player_get(id, RZ_PLAYER_MODEL));
 	}
 	else
 	{

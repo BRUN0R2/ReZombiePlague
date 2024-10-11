@@ -140,7 +140,7 @@ public precache_player_model(const modelname[])
 
 @native_playermodel_player_change(plugin, argc)
 {
-	enum { arg_player = 1, arg_player_model, arg_pre_spawn };
+	enum { arg_player = 1, arg_player_model };
 
 	new player = get_param(arg_player);
 	RZ_CHECK_CONNECTED(player, false)
@@ -170,24 +170,14 @@ public precache_player_model(const modelname[])
 		ArrayGetArray(g_aPlayerModels, index, gLocalData);
 	}
 
-	new bool:preSpawn = any:get_param(arg_pre_spawn);
 	new header[PlayerModelHeader];
 
 	ArrayGetArray(gLocalData[PlayerModel_Models], headerId, header);
 
-	if (preSpawn)
-	{
-		set_member(player, m_szModel, header[PlayerModel_ModelName]);
-		set_member(player, m_modelIndexPlayer, header[PlayerModel_ModelIndex]);
-		set_entvar(player, var_modelindex, header[PlayerModel_ModelIndex]);
-		set_entvar(player, var_body, header[PlayerModel_Body]);
-	}
-	else
-	{
-		rg_set_user_model(player, header[PlayerModel_ModelName]);
-		set_member(player, m_modelIndexPlayer, header[PlayerModel_ModelIndex]);
-		set_entvar(player, var_body, header[PlayerModel_Body]);
-	}
+	set_member(player, m_szModel, header[PlayerModel_ModelName]);
+	set_member(player, m_modelIndexPlayer, header[PlayerModel_ModelIndex]);
+	set_entvar(player, var_modelindex, header[PlayerModel_ModelIndex]);
+	set_entvar(player, var_body, header[PlayerModel_Body]);
 
 	return true;
 }
