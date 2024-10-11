@@ -4,6 +4,7 @@
 #include <hamsandwich>
 #include <reapi>
 #include <rezp_inc/rezp_main>
+#include <rezp_inc/util_messages>
 
 const ADMINMENU_FLAGS = ADMIN_MENU;
 
@@ -127,19 +128,19 @@ GameMenu_Show(id)
 			{
 				if (rz_game_is_warmup() || get_member_game(m_bFreezePeriod)) {
 					rg_set_user_team(id, TEAM_CT, MODEL_UNASSIGNED, .check_win_conditions = true);
-					set_member(id, m_flRespawnPending, get_gametime());
-				}
-				else {
+					rg_round_respawn(id);
+				} else {
 					rg_set_user_team(id, TEAM_TERRORIST, MODEL_UNASSIGNED, .check_win_conditions = true);
-					set_member(id, m_flRespawnPending, get_gametime());
+					rg_round_respawn(id);
 				}
-			}
-			else
-			{
-				if (is_user_alive(id)) {
+			} else {
+				if (is_user_alive(id)) 
+				{
 					new Float:frags = get_entvar(id, var_frags);
 					ExecuteHamB(Ham_Killed, id, id, GIB_NEVER);
 					set_entvar(id, var_frags, frags);
+					message_begin(MSG_ONE, gmsgBarTime, _, id);
+					SendBarTime(0);
 				}
 
 				rg_set_user_team(id, TEAM_SPECTATOR, MODEL_UNASSIGNED, .check_win_conditions = true);
