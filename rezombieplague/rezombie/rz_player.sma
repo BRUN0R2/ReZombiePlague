@@ -57,7 +57,7 @@ public plugin_init()
 	RegisterHookChain(RG_CBasePlayer_Spawn, "@CBasePlayer_Spawn_Post", true);
 	RegisterHookChain(RG_CBasePlayer_TakeDamage, "@CBasePlayer_TakeDamage_Pre", false);
 	RegisterHookChain(RG_CBasePlayer_TakeDamage, "@CBasePlayer_TakeDamage_Post", true);
-	//RegisterHookChain(RG_CBasePlayer_Killed, "@CBasePlayer_Killed_Post", .post = true);
+	RegisterHookChain(RG_CBasePlayer_Killed, "@CBasePlayer_Killed_Post", .post = true);
 	RegisterHookChain(RG_CBasePlayer_ResetMaxSpeed, "@CBasePlayer_ResetMaxSpeed_Pre", false);
 	RegisterHookChain(RG_CBasePlayer_GiveDefaultItems, "@CBasePlayer_GiveDefaultItems_Pre", false);
 	RegisterHookChain(RG_CBasePlayer_AddAccount, "@CBasePlayer_AddAccount_Pre", false);
@@ -504,12 +504,11 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 @CBasePlayer_Killed_Post(victim, attacker, gib)
 {
 	if (!rg_is_player_can_respawn(victim)) {
-		return;
+		return HC_CONTINUE;
 	}
 
-	new gameMode = rz_gamemodes_get(RZ_GAMEMODES_CURRENT);
-
-	if (gameMode && rz_gamemode_get(gameMode, RZ_GAMEMODE_DEATHMATCH))
+	new pGameMode = rz_gamemodes_get(RZ_GAMEMODES_CURRENT);
+	if (pGameMode || rz_gamemode_get(pGameMode, RZ_GAMEMODE_DEATHMATCH))
 	{
 		set_member(victim, m_flRespawnPending, get_gametime() + float(RESPAWN_TIME));
 
@@ -518,6 +517,8 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 
 		client_print(victim, print_center, "%L", LANG_PLAYER, "RZ_NOTICE_RESPAWN_TIME", RESPAWN_TIME);
 	}
+
+	return HC_CONTINUE;
 }
 
 @CBasePlayer_ResetMaxSpeed_Pre(id)
