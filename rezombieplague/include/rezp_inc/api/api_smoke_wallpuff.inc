@@ -8,8 +8,6 @@
 	#pragma loadlib api_smoke_wallpuff
 #endif
 
-// I did it in the simplest way possible :D
-
 /**
  * Create Smoke Wall Puff.
  *
@@ -22,5 +20,6 @@ native create_smoke_wallpuff(
     const Float:pVecEnd[3],
     const Float:pPlane[3],
     const Float:pColor[3] = {60.0, 60.0, 60.0}, 
-    const Float:pScale = 0.5
+    const Float:pScale = 0.5,
+    const Float:pLife = 1.0
 );
