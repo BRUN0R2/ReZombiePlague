@@ -131,8 +131,7 @@ public precache_player_model(const modelname[])
 
 	copy(longname[strlen(longname)-4], charsmax(longname) - (strlen(longname)-4), "T.mdl");
 
-	if (file_exists(longname))
-		precache_model(longname);
+	if (file_exists(longname)) precache_model(longname);
 
 	return index;
 }
