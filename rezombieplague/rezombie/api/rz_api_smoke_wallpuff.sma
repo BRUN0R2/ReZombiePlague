@@ -45,7 +45,6 @@ public plugin_natives()
 		ArgpPlane,
 		ArgpColor,
 		ArgpScale,
-		ArgpLife,
 	};
 
 	new Float:pVecEnd[3];get_array_f(ArgpVecEnd,pVecEnd,3)
@@ -57,12 +56,11 @@ public plugin_natives()
 		.pVecEnd = pVecEnd, 
 		.pPlane = pPlane, 
 		.pColor = pColor,
-		.pScale = get_param_f(ArgpScale),
-		.pLife = get_param_f(ArgpLife)
+		.pScale = get_param_f(ArgpScale)
 	)
 }
 
-stock Create_Smoke_WallPuff(const Float:pVecEnd[3], const Float:pPlane[3], const Float:pColor[3] = {60.0, 60.0, 60.0}, const Float:pScale = 0.5, const Float:pLife = 1.0) {
+stock Create_Smoke_WallPuff(const Float:pVecEnd[3], const Float:pPlane[3], const Float:pColor[3] = {60.0, 60.0, 60.0}, const Float:pScale = 0.5) {
 	if (gl_pMaxEntities - engfunc(EngFunc_NumberOfEntities) <= ENTITY_INTOLERANCE) {
 		return NULLENT
 	}
@@ -93,7 +91,6 @@ stock Create_Smoke_WallPuff(const Float:pVecEnd[3], const Float:pPlane[3], const
 	set_entvar(pEntity, var_origin, pEndPosition)
 
 	set_entvar(pEntity, var_pitch_speed, pGameTime)
-	set_entvar(pEntity, var_idealpitch, pLife)
 	set_entvar(pEntity, var_nextthink, pGameTime)
 
 	new pSpriteIndex = random_num(0, sizeof(SPRITES) - 1)
@@ -106,55 +103,49 @@ stock Create_Smoke_WallPuff(const Float:pVecEnd[3], const Float:pPlane[3], const
 
 @Smoke_WallPuff_think(const pEntity)
 {
-	if (is_nullent(pEntity)) {
-		SetThink(pEntity, NULL_STRING)
-		return
-	}
+    if (is_nullent(pEntity)) {
+        SetThink(pEntity, NULL_STRING)
+        return
+    }
 
-	static Float:pGameTime; pGameTime = get_gametime()
-	static Float:pFrame; pFrame = get_entvar(pEntity, var_frame)
-	static Float:pFrameRate; pFrameRate = get_entvar(pEntity, var_framerate)
-	static Float:pLastTime; pLastTime = get_entvar(pEntity, var_pitch_speed)
-	static Float:pLife; pLife = get_entvar(pEntity, var_idealpitch)
+    static Float:pGameTime; pGameTime = get_gametime()
+    static Float:pFrame; pFrame = get_entvar(pEntity, var_frame)
+    static Float:pFrameRate; pFrameRate = get_entvar(pEntity, var_framerate)
+    static Float:pLastTime; pLastTime = get_entvar(pEntity, var_pitch_speed)
 
-	static Float:elapsedTime; elapsedTime = pGameTime - pLastTime
-	static Float:remainingLife; remainingLife = pLife - elapsedTime
+    pFrame += pFrameRate * (pGameTime - pLastTime)
+    set_entvar(pEntity, var_frame, pFrame)
 
-	new Float:frameIncrementRate = (remainingLife > 0) ? (pFrameRate / pLife) : pFrameRate
+    if (pFrame >= pFrameRate) {
+        SetThink(pEntity, NULL_STRING)
+        rg_remove_entity(pEntity)
+        return
+    }
 
-	pFrame += frameIncrementRate * (pGameTime - pLastTime)
-	set_entvar(pEntity, var_frame, pFrame)
+    static Float:pVelocity[3]
+    get_entvar(pEntity, var_velocity, pVelocity)
 
-	if (pFrame >= pFrameRate) {
-		SetThink(pEntity, NULL_STRING)
-		rg_remove_entity(pEntity)
-		return
-	}
+    if (pFrame > 7.0) {
+        xs_vec_mul_scalar(pVelocity, 0.97, pVelocity)
+        pVelocity[2] = floatmin(pVelocity[2] + 0.7, 70.0)
+    }
 
-	static Float:pVelocity[3]
-	get_entvar(pEntity, var_velocity, pVelocity)
+    if (pFrame > 6.0) {
+        static Float:magnitude[2]
+        static bool:direction[2] = { true, true }
 
-	if (pFrame > 7.0) {
-		xs_vec_mul_scalar(pVelocity, 0.97, pVelocity)
-		pVelocity[2] = floatmin(pVelocity[2] + 0.7, 70.0)
-	}
+        for (new i = 0; i < 2; i++) {
+            magnitude[i] = floatmin(magnitude[i] + 0.075, 5.0)
+            pVelocity[i] += direction[i] ? magnitude[i] : -magnitude[i]
 
-	if (pFrame > 6.0) {
-		static Float:magnitude[2]
-		static bool:direction[2] = { true, true }
+            if (!random(10) && magnitude[i] > 3.0) {
+                magnitude[i] = 0.0
+                direction[i] = !direction[i]
+            }
+        }
+    }
 
-		for (new i = 0; i < 2; i++) {
-			magnitude[i] = floatmin(magnitude[i] + 0.075, 5.0)
-			pVelocity[i] += direction[i] ? magnitude[i] : -magnitude[i]
-
-			if (!random(10) && magnitude[i] > 3.0) {
-				magnitude[i] = 0.0
-				direction[i] = !direction[i]
-			}
-		}
-	}
-
-	set_entvar(pEntity, var_velocity, pVelocity)
-	set_entvar(pEntity, var_pitch_speed, pGameTime)
-	set_entvar(pEntity, var_nextthink, pGameTime + 0.05)
+    set_entvar(pEntity, var_velocity, pVelocity)
+    set_entvar(pEntity, var_pitch_speed, pGameTime)
+    set_entvar(pEntity, var_nextthink, pGameTime + 0.05)
 }

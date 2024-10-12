@@ -20,6 +20,5 @@ native create_smoke_wallpuff(
     const Float:pVecEnd[3],
     const Float:pPlane[3],
     const Float:pColor[3] = {60.0, 60.0, 60.0}, 
-    const Float:pScale = 0.5,
-    const Float:pLife = 1.0
+    const Float:pScale = 0.5
 );
