@@ -112,8 +112,7 @@ public plugin_natives()
 	get_string(arg_model_name, header[PlayerModel_ModelName], charsmax(header[PlayerModel_ModelName]));
 	header[PlayerModel_Body] = get_param(arg_body);
 
-	if (get_param(arg_default_hitboxes))
-	{
+	if (get_param(arg_default_hitboxes)) {
 		header[PlayerModel_ModelIndex] = precache_model("models/player.mdl");
 		precache_player_model(header[PlayerModel_ModelName]);
 	} else {
@@ -123,7 +122,7 @@ public plugin_natives()
 	ArrayPushArray(gLocalData[PlayerModel_Models], header);
 	return true;
 }
-// Code copied from zombie plague next by Willian
+
 public precache_player_model(const modelname[])
 {
 	static longname[128], index;
@@ -132,7 +131,7 @@ public precache_player_model(const modelname[])
 
 	copy(longname[strlen(longname)-4], charsmax(longname) - (strlen(longname)-4), "T.mdl");
 
-	if(file_exists(longname))
+	if (file_exists(longname))
 		precache_model(longname);
 
 	return index;
@@ -174,7 +173,7 @@ public precache_player_model(const modelname[])
 
 	ArrayGetArray(gLocalData[PlayerModel_Models], headerId, header);
 
-	set_member(player, m_szModel, header[PlayerModel_ModelName]);
+	rg_set_user_model(player, header[PlayerModel_ModelName]);
 	set_member(player, m_modelIndexPlayer, header[PlayerModel_ModelIndex]);
 	set_entvar(player, var_modelindex, header[PlayerModel_ModelIndex]);
 	set_entvar(player, var_body, header[PlayerModel_Body]);
