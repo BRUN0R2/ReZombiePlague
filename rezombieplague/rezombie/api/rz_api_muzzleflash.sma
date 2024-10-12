@@ -119,7 +119,10 @@ stock Create_weapon_muzzleflash(const pPlayer, const Float:life = 0.1, const att
 
 @Weapon_muzzleflash_think(const pEntity)
 {
-	if (is_nullent(pEntity)) return
+	if (is_nullent(pEntity)) {
+		SetThink(pEntity, NULL_STRING)
+		return
+	}
 
 	new Float:flFrame; get_entvar(pEntity, var_frame, flFrame)
 	new Float:flNextThink; get_entvar(pEntity, var_pitch_speed, flNextThink)
@@ -147,6 +150,7 @@ stock Create_weapon_muzzleflash(const pPlayer, const Float:life = 0.1, const att
 		return
 	}
 
+	SetThink(pEntity, NULL_STRING)
 	rg_remove_entity(pEntity)
 }
 

@@ -7,11 +7,18 @@
 #if !defined AMXMODX_NOAUTOLOAD
 	#pragma loadlib api_muzzleflash
 #endif
+
 // I did it in the simplest way possible :D
 /**
  * Create muzzleflash.
  *
- * @param target	Player index
+ * @param target            Player index
+ * @param life              Effect duration
+ * @param attachment        Point index
+ * @param color             Muzzleflash color
+ * @param renderamt         Muzzleflash opacity
+ * @param scale             Effect size
+ * @param model             Sprite model
  */
 native create_muzzleflash(
     const target,
