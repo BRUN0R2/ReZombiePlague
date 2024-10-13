@@ -294,17 +294,14 @@ public plugin_init()
 	return HC_SUPERCEDE;
 }
 
-@CSGameRules_GetPlayerSpawnSpot_Pre(id)
+@CSGameRules_GetPlayerSpawnSpot_Pre(const pPlayer)
 {
-	//if (!get_member_game(m_bFreezePeriod))
-	//	return HC_CONTINUE;
-
-	new TeamName:team = get_member(id, m_iTeam);
+	new TeamName:team = get_member(pPlayer, m_iTeam);
 
 	if (team != TEAM_TERRORIST && team != TEAM_CT)
 		return HC_CONTINUE;
 
-	new spot = EntSelectSpawnPoint(id);
+	new spot = EntSelectSpawnPoint(pPlayer);
 
 	if (is_nullent(spot))
 		return HC_CONTINUE;
@@ -317,12 +314,12 @@ public plugin_init()
 
 	vecOrigin[2] += 1.0;
 
-	set_entvar(id, var_origin, vecOrigin);
-	set_entvar(id, var_v_angle, NULL_VECTOR);
-	set_entvar(id, var_velocity, NULL_VECTOR);
-	set_entvar(id, var_angles, vecAngles);
-	set_entvar(id, var_punchangle, NULL_VECTOR);
-	set_entvar(id, var_fixangle, 1);
+	set_entvar(pPlayer, var_origin, vecOrigin);
+	set_entvar(pPlayer, var_v_angle, NULL_VECTOR);
+	set_entvar(pPlayer, var_velocity, NULL_VECTOR);
+	set_entvar(pPlayer, var_angles, vecAngles);
+	set_entvar(pPlayer, var_punchangle, NULL_VECTOR);
+	set_entvar(pPlayer, var_fixangle, 1);
 
 	SetHookChainReturn(ATYPE_INTEGER, spot);
 	return HC_SUPERCEDE;
@@ -431,18 +428,18 @@ ForceLevelInitialize()
 	set_member_game(m_bLevelInitialized, true);
 }
 
-EntSelectSpawnPoint(id)
+EntSelectSpawnPoint(const pPlayer)
 {
+	new spawnPointsNum = ArraySize(g_aSpawnPoints);
+	if (!spawnPointsNum)
+		return 0;
+
 	new spotId = g_iLastSpawnId;
-	new spawnPontsNum = ArraySize(g_aSpawnPoints);
-	new spot;
-	new Float:vecOrigin[3];
+	new spot, Float:vecOrigin[3];
 
-	do
+	for (new i = 0; i < spawnPointsNum; i++) 
 	{
-		if (++spotId >= spawnPontsNum)
-			spotId = 0;
-
+		spotId = (spotId + 1) % spawnPointsNum;
 		spot = ArrayGetCell(g_aSpawnPoints, spotId);
 
 		if (is_nullent(spot))
@@ -450,18 +447,14 @@ EntSelectSpawnPoint(id)
 
 		get_entvar(spot, var_origin, vecOrigin);
 
-		if (!IsHullVacant(id, vecOrigin, HULL_HUMAN))
-			continue;
-
-		break;
+		if (IsHullVacant(pPlayer, vecOrigin, HULL_HUMAN))
+			break;
 	}
-	while (spotId != g_iLastSpawnId);
 
 	if (is_nullent(spot))
 		return 0;
 
 	g_iLastSpawnId = spotId;
-
 	return spot;
 }
 
