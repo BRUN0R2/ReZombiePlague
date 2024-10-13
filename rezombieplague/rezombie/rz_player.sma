@@ -622,12 +622,13 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	set_member(id, m_bHasNightVision, true);
 }
 
-@CBasePlayer_Observer_IsValidTarget_Post(id, player, bool:sameTeam)
+@CBasePlayer_Observer_IsValidTarget_Post(const pObserver, const pTarget, bool:bSameTeam)
 {
-	if (GetHookChainReturn(ATYPE_INTEGER) != player)
+	if (GetHookChainReturn(ATYPE_INTEGER) != pTarget)
 		return;
 
-	g_iLastNVG[id] = rz_player_get(player, RZ_PLAYER_NIGHTVISION);
+	g_iLastNVG[pObserver] = rz_player_get(pTarget, RZ_PLAYER_NIGHTVISION);
+	RequestFrame("@RequestFrame_UpdateNightVision", pObserver);
 }
 
 @RequestFrame_CheckChangeClassWinConditions()
