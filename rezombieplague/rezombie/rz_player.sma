@@ -549,7 +549,6 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	rg_remove_all_items(id);
 	rg_give_custom_item(id, "weapon_knife", GT_APPEND, rz_player_get(id, RZ_PLAYER_KNIFE));
 
-	// double set
 	rz_nightvision_player_change(id, rz_player_get(id, RZ_PLAYER_NIGHTVISION), false);
 	return HC_SUPERCEDE;
 }
@@ -676,7 +675,7 @@ InfectionEffects(id)
 		write_short((1<<12) * 10);
 		message_end();
 	}
-	
+
 	new Float:vecOrigin[3];
 	get_entvar(id, var_origin, vecOrigin);
 	
