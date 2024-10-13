@@ -8,17 +8,13 @@
 
 new const EFFECT_MODEL[] = "models/rezombie/dropeffect.mdl"
 
-new gl_pMaxEntities
 new gl_pClassName
-
-const ENTITY_INTOLERANCE = 100
 
 public plugin_precache()
 {
 	register_plugin(PLUGIN, VERSION, AUTHOR)
 
 	precache_model(EFFECT_MODEL)
-	gl_pMaxEntities = global_get(glb_maxEntities)
 	gl_pClassName = engfunc(EngFunc_AllocString, "info_target")
 }
 
@@ -47,9 +43,6 @@ public plugin_init() {
 
 @Create_weapon_effect(const pEntity)
 {
-	if (gl_pMaxEntities - engfunc(EngFunc_NumberOfEntities) <= ENTITY_INTOLERANCE)
-		return
-
 	new pEffect = engfunc(EngFunc_CreateNamedEntity, gl_pClassName)
 
 	if (is_nullent(pEffect))
