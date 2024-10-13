@@ -67,9 +67,6 @@ enum RZMainProp
  * @noreturn
  */
 native rz_get_configsdir(buffer[], len);
-
-// The old method will be removed and we will only use the new one
-native rz_load_langs(const name[]);
 native rz_add_translate(const name[]);
 
 native rz_print(text[], any:...);

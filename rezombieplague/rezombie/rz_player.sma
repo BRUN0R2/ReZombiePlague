@@ -37,6 +37,7 @@ new Float:mp_round_restart_delay;
 public plugin_precache()
 {
 	register_plugin("[ReZP] Player", REZP_VERSION_STR, "fl0wer");
+	rz_add_translate("player");
 }
 
 public plugin_init()
@@ -68,8 +69,6 @@ public plugin_init()
 	RegisterHookChain(RG_CBasePlayer_Observer_IsValidTarget, "@CBasePlayer_Observer_IsValidTarget_Post", true);
 
 	bind_pcvar_float(get_cvar_pointer("mp_round_restart_delay"), mp_round_restart_delay);
-
-	rz_load_langs("player");
 
 	new nightVision = g_iIntoGameNVG = rz_nightvision_create("nightvision_intogame");
 

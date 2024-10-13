@@ -68,7 +68,6 @@ public plugin_natives()
 	ExecuteForward(CreateMultiForward("__rezp_version_check", ET_IGNORE, FP_STRING, FP_STRING), _, REZP_VERSION_MAJOR, REZP_VERSION_MINOR);
 
 	register_native("rz_get_configsdir", "@native_get_configsdir");
-	register_native("rz_load_langs", "@native_load_langs");
 	register_native("rz_print", "@native_print");
 	register_native("rz_log", "@native_log");
 	register_native("rz_sys_error", "@native_sys_error");
@@ -96,32 +95,6 @@ public plugin_natives()
 	enum { arg_buffer = 1, arg_len };
 
 	set_string(arg_buffer, g_sConfigDirPath, get_param(arg_len));
-}
-
-@native_load_langs(plugin, argc)
-{
-	enum { arg_name = 1 };
-
-	new name[32];
-	get_string(arg_name, name, charsmax(name));
-
-	if (!name[0])
-		return false;
-
-	new langsNum = get_langsnum();
-	new langName[3];
-
-	for (new i = 0; i < langsNum; i++)
-	{
-		get_lang(i, langName);
-
-		if (!file_exists(fmt("%s/%s/%s.txt", g_sLangDirPath, langName, name)))
-			continue;
-
-		register_dictionary(fmt("%s/%s/%s.txt", MOD_DIRECTORY, langName, name));
-	}
-
-	return true;
 }
 
 @native_print(plugin, argc)

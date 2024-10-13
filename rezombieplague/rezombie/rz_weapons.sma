@@ -13,6 +13,8 @@ public plugin_precache()
 {
 	register_plugin("[ReZP] Weapons", REZP_VERSION_STR, "fl0wer");
 
+	rz_add_translate("weapons");
+
 	rz_trie_create();
 
 	gl_iLaserSprite = precache_model("sprites/dot.spr");
@@ -39,8 +41,6 @@ public plugin_init()
 
 		RegisterHam(Ham_Spawn, weaponName, "@CBasePlayerWeapon_Spawn_Post", true);
 	}
-
-	rz_load_langs("weapons");
 }
 
 public plugin_end() {

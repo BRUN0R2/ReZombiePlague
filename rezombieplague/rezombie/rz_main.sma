@@ -16,6 +16,8 @@ public plugin_precache()
 {
 	register_plugin("[ReZP] Main", REZP_VERSION_STR, "fl0wer");
 
+	rz_add_translate("common");
+
 	register_cvar("rezp_version", REZP_VERSION_STR, FCVAR_SERVER | FCVAR_SPONLY);
 
 	ModInfoPrint();
@@ -44,8 +46,6 @@ public plugin_precache()
 public plugin_init()
 {
 	register_srvcmd("rezp", "@Command_ReZPCommand");
-
-	rz_load_langs("common");
 
 	if (g_iForward_Spawn_Pre)
 	{

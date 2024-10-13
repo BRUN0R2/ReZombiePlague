@@ -9,6 +9,7 @@ new Array:gamemodesArray;
 
 public plugin_precache() {
     register_plugin("[ReZP] Game Modes", REZP_VERSION_STR, "fl0wer");
+    rz_add_translate("gamemodes");
 }
 
 public plugin_init() {
@@ -21,8 +22,6 @@ public plugin_init() {
     // Initialize gamemodesArray
     gamemodesArray = ArrayCreate(1, 0);
     loadGamemodes();
-
-    rz_load_langs("gamemodes");
 }
 
 public plugin_cfg() {

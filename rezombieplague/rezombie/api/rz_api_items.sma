@@ -28,6 +28,8 @@ public plugin_precache()
 {
 	register_plugin("[ReZP] API: Items", REZP_VERSION_STR, "fl0wer");
 
+	rz_add_translate("items");
+
 	g_aItems = ArrayCreate(ItemData, 0);
 	g_iModule = rz_module_create("items", g_aItems);
 }
@@ -36,8 +38,6 @@ public plugin_init()
 {
 	gForwards[Fw_Items_Select_Pre] = CreateMultiForward("rz_items_select_pre", ET_CONTINUE, FP_CELL, FP_CELL);
 	gForwards[Fw_Items_Select_Post] = CreateMultiForward("rz_items_select_post", ET_IGNORE, FP_CELL, FP_CELL);
-
-	rz_load_langs("items");
 }
 
 @Command_BuyExtra(id, item)
