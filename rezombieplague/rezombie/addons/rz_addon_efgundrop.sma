@@ -2,7 +2,7 @@
 #include <reapi>
 #include <fakemeta>
 
-#define PLUGIN  "[REAPI] Drop effect"
+#define PLUGIN  "[REAPI] Gun drop effect"
 #define VERSION "1.0"
 #define AUTHOR  "BRUN0"
 

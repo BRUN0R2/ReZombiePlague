@@ -289,3 +289,28 @@ stock rz_send_weapon_animation(const pWeapon, const pPlayer, const pAnim = 0)
 		message_end();
 	}
 }
+
+stock Float:playerVelocityLength2d(const player) {
+	new Float:velocity[3]
+	get_entvar(player, var_velocity, velocity)
+	velocity[2] = 0.0
+	return vector_length(velocity)
+}
+
+stock getAimingAngle(const player, Float:aimingAngle[3]) {
+	new Float:viewAngle[3]
+	new Float:punchAngle[3]
+	get_entvar(player, var_v_angle, viewAngle)
+	get_entvar(player, var_punchangle, punchAngle)
+	for (new i = 0; i < sizeof(viewAngle); ++i) {
+		aimingAngle[i] = viewAngle[i] + punchAngle[i]
+	}
+}
+
+stock getGunPositionAndAiming(const player, Float:src[3], Float:aiming[3]) {
+	new Float:viewAngle[3]
+	getAimingAngle(player, viewAngle)
+	engfunc(EngFunc_MakeVectors, viewAngle)
+	ExecuteHamB(Ham_Player_GetGunPosition, player, src)
+	global_get(glb_v_forward, aiming)
+}
