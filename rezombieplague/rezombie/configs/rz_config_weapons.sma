@@ -14,7 +14,9 @@ new JSON:g_iJsonHandleCopy;
 new g_sBaseDirPath[PLATFORM_MAX_PATH];
 new g_sWeaponsDirPath[PLATFORM_MAX_PATH];
 
-new Float:g_flTemp, bool:gl_itemBool;
+new Float:g_flTemp;
+new bool:gl_itemBool;
+new gl_itemInt;
 new g_sTemp[RZ_MAX_RESOURCE_PATH];
 
 public plugin_precache()
@@ -170,7 +172,11 @@ WeaponConfigs()
 		WeaponPropField("weapon_beam_cynlinder", i, RZ_WEAPON_BEAM_CYLINDER, 24);
 		WeaponPropField("weapon_beam_cynlinder_color", i, RZ_WEAPON_BEAM_CYLINDER_COLOR, 32);
 		WeaponPropField("weapon_beam_pointer", i, RZ_WEAPON_BEAM_POINTER, 24);
+		WeaponPropField("weapon_beam_life", i, RZ_WEAPON_BEAM_POINTER_LIFE, 24);
+		WeaponPropField("weapon_beam_width", i, RZ_WEAPON_BEAM_POINTER_WIDTH, 24);
 		WeaponPropField("weapon_beam_pointer_color", i, RZ_WEAPON_BEAM_POINTER_COLOR, 32);
+		WeaponPropField("weapon_beam_noise_min", i, RZ_WEAPON_BEAM_POINTER_NOISE_MIN, 24);
+		WeaponPropField("weapon_beam_noise_max", i, RZ_WEAPON_BEAM_POINTER_NOISE_MAX, 24);
 
 		if (g_bCreating)
 		{
@@ -362,7 +368,7 @@ DefaultWeaponPropField(JSON:object, value[], any:weaponId, RZDefaultWeaponProp:p
 	}
 }
 
-WeaponPropField(value[], weapon, RZWeaponProp:prop, length)
+WeaponPropField(value[], weapon, WeaponProp:prop, length)
 {
 	switch (prop)
 	{
@@ -392,6 +398,20 @@ WeaponPropField(value[], weapon, RZWeaponProp:prop, length)
 			{
 				gl_itemBool = bool:get_weapon_var(weapon, prop);
 				json_object_set_bool(g_iJsonHandle, value, gl_itemBool);
+			}
+		}
+		case RZ_WEAPON_BEAM_POINTER_LIFE, RZ_WEAPON_BEAM_POINTER_WIDTH,
+		RZ_WEAPON_BEAM_POINTER_NOISE_MIN, RZ_WEAPON_BEAM_POINTER_NOISE_MAX:
+		{
+			if (!g_bCreating && json_object_has_value(g_iJsonHandle, value, JSONNumber))
+			{
+				gl_itemInt = json_object_get_number(g_iJsonHandle, value);
+				set_weapon_var(weapon, prop, gl_itemInt);
+			}
+			else
+			{
+				gl_itemInt = get_weapon_var(weapon, prop);
+				json_object_set_number(g_iJsonHandle, value, gl_itemInt);
 			}
 		}
 		case RZ_WEAPON_BEAM_CYLINDER_COLOR, RZ_WEAPON_BEAM_POINTER_COLOR:

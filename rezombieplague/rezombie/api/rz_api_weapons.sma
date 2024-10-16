@@ -37,7 +37,11 @@ enum _:WeaponData
 	Weapon_cylinder_bool,
 	Weapon_beampoint_bool,
 	Weapon_cylinder_color[4],
+	Weapon_beampoint_life,
+	Weapon_beampoint_width,
 	Weapon_beampoint_color[4],
+	Weapon_beampoint_noise_min,
+	Weapon_beampoint_noise_max,
 
 }; new Array:g_aWeapons;
 
@@ -156,10 +160,6 @@ public plugin_init()
 	new entity = GetHookChainReturn(ATYPE_INTEGER);
 
 	ExecuteForward(gForwards[Fw_Grenades_Throw_Pre], gForwards[Fw_Return], id, entity, impulse);
-
-	// what i'm doing...
-	//if (gForwards[Fw_Return] >= RZ_SUPERCEDE)
-	//	return;
 
 	set_entvar(entity, var_impulse, impulse);
 
@@ -353,7 +353,7 @@ public plugin_natives()
 		}
 		default:
 		{
-			rz_log(true, "Default weapon property '%d' not found for '%s'", prop, gDefaultWeaponData[DefaultWeapon_Handle]);
+			rz_log(true, "Default weapon property '%d' not found for '%s'", RZDefaultWeaponProp:prop, gDefaultWeaponData[DefaultWeapon_Handle]);
 			return false;
 		}
 	}
@@ -402,11 +402,16 @@ public plugin_natives()
 	data[Weapon_beampoint_bool] = false;
 
 	data[Weapon_cylinder_color] = {255, 255, 255, 255};
+
+	data[Weapon_beampoint_life] = 1;
+	data[Weapon_beampoint_width] = 1;
 	data[Weapon_beampoint_color] = {255, 255, 255, 255};
+
+	data[Weapon_beampoint_noise_min] = 0;
+	data[Weapon_beampoint_noise_max] = 0;
 
 	return ArrayPushArray(g_aWeapons, data) + rz_module_get_offset(g_iModule_Weapons);
 }
-
 
 @native_weapon_get(plugin, argc)
 {
@@ -421,7 +426,7 @@ public plugin_natives()
 
 	new prop = get_param(arg_prop);
 
-	switch (RZWeaponProp:prop)
+	switch (WeaponProp:prop)
 	{
 		case RZ_WEAPON_HANDLE:
 		{
@@ -503,9 +508,25 @@ public plugin_natives()
 		{
 			set_array(arg_3, gWeaponData[Weapon_cylinder_color], sizeof(gWeaponData[Weapon_cylinder_color]));
 		}
+		case RZ_WEAPON_BEAM_POINTER_LIFE:
+		{
+			return gWeaponData[Weapon_beampoint_life];
+		}
+		case RZ_WEAPON_BEAM_POINTER_WIDTH:
+		{
+			return gWeaponData[Weapon_beampoint_width];
+		}
 		case RZ_WEAPON_BEAM_POINTER_COLOR:
 		{
 			set_array(arg_3, gWeaponData[Weapon_beampoint_color], sizeof(gWeaponData[Weapon_beampoint_color]));
+		}
+		case RZ_WEAPON_BEAM_POINTER_NOISE_MIN:
+		{
+			return gWeaponData[Weapon_beampoint_noise_min];
+		}
+		case RZ_WEAPON_BEAM_POINTER_NOISE_MAX:
+		{
+			return gWeaponData[Weapon_beampoint_noise_max];
 		}
 		default:
 		{
@@ -530,7 +551,7 @@ public plugin_natives()
 
 	new prop = get_param(arg_prop);
 
-	switch (RZWeaponProp:prop)
+	switch (WeaponProp:prop)
 	{
 		case RZ_WEAPON_HANDLE:
 		{
@@ -611,6 +632,14 @@ public plugin_natives()
 		{
 			gWeaponData[Weapon_beampoint_bool] = get_param_byref(arg_3);
 		}
+		case RZ_WEAPON_BEAM_POINTER_LIFE:
+		{
+			gWeaponData[Weapon_beampoint_life] = get_param_byref(arg_3);
+		}
+		case RZ_WEAPON_BEAM_POINTER_WIDTH:
+		{
+			gWeaponData[Weapon_beampoint_width] = get_param_byref(arg_3);
+		}
 		case RZ_WEAPON_BEAM_CYLINDER_COLOR:
 		{
 			get_array(arg_3, gWeaponData[Weapon_cylinder_color], sizeof(gWeaponData[Weapon_cylinder_color]));
@@ -618,6 +647,14 @@ public plugin_natives()
 		case RZ_WEAPON_BEAM_POINTER_COLOR:
 		{
 			get_array(arg_3, gWeaponData[Weapon_beampoint_color], sizeof(gWeaponData[Weapon_beampoint_color]));
+		}
+		case RZ_WEAPON_BEAM_POINTER_NOISE_MIN:
+		{
+			gWeaponData[Weapon_beampoint_noise_min] = get_param_byref(arg_3);
+		}
+		case RZ_WEAPON_BEAM_POINTER_NOISE_MAX:
+		{
+			gWeaponData[Weapon_beampoint_noise_max] = get_param_byref(arg_3);
 		}
 		default:
 		{

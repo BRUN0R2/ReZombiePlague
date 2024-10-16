@@ -421,19 +421,23 @@ public plugin_end() {
 		BeamPointerColor[2] = clamp(BeamPointerColor[2], 0, 255); // Blue
 		BeamPointerColor[3] = clamp(BeamPointerColor[3], 0, 255); // Brightness
 
-		// noiseAmplitude = random_num(0, 30) = min and max shock effect
+		new pBeamLife = get_weapon_var(pImpulse, RZ_WEAPON_BEAM_POINTER_LIFE);
+		new pLineWidth = get_weapon_var(pImpulse, RZ_WEAPON_BEAM_POINTER_WIDTH);
+
+		new pNoiseAmplitudeMin = get_weapon_var(pImpulse, RZ_WEAPON_BEAM_POINTER_NOISE_MIN);
+		new pNoiseAmplitudeMax = get_weapon_var(pImpulse, RZ_WEAPON_BEAM_POINTER_NOISE_MAX);
 
 		rz_util_te_beamentoint(
 			.startEntity = pAttacker|0x1000, // The effect comes out of the gun barrel 0x1000
 			.end = vecEnd,
 			.spriteIndex = gl_iLaserSprite,
 			.startingFrame = 0,
-			.frameRate = 0,
-			.life = 1,
-			.lineWidth = 5,
-			.noiseAmplitude = 0,
+			.frameRate = 30,
+			.life = _:pBeamLife,
+			.lineWidth = _:pLineWidth,
+			.noiseAmplitude = random_num(_:pNoiseAmplitudeMin, _:pNoiseAmplitudeMax),
 			.RGBA = BeamPointerColor,
-			.scrollSpeed = 0
+			.scrollSpeed = 75
 		);
 	}
 }

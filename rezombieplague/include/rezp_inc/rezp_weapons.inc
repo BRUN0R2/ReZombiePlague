@@ -26,7 +26,7 @@ native rz_weapons_default_find(const hanlde[]);
 /**
  * Weapon properties.
  */
-enum RZWeaponProp
+enum WeaponProp
 {
 	RZ_WEAPON_HANDLE,				// [RZ_MAX_HANDLE_LENGTH]
 	RZ_WEAPON_REFERENCE,			// [RZ_MAX_REFERENCE_LENGTH]
@@ -48,7 +48,11 @@ enum RZWeaponProp
 	RZ_WEAPON_BEAM_CYLINDER,		// Bool
 	RZ_WEAPON_BEAM_POINTER,			// Bool
 	RZ_WEAPON_BEAM_CYLINDER_COLOR,	// [4]
+	RZ_WEAPON_BEAM_POINTER_LIFE,
+	RZ_WEAPON_BEAM_POINTER_WIDTH,
 	RZ_WEAPON_BEAM_POINTER_COLOR,	// [4]
+	RZ_WEAPON_BEAM_POINTER_NOISE_MIN,
+	RZ_WEAPON_BEAM_POINTER_NOISE_MAX,
 };
 
 /**
@@ -66,21 +70,21 @@ native rz_weapon_create(const handle[], const reference[]);
  * Returns a weapon's property.
  *
  * @param weapon	Weapon index
- * @param prop		Weapon property. See RZWeaponProp enum
+ * @param prop		Weapon property. See WeaponProp enum
  *
  * @return          Value or array passed via the 3rd argument and more
  */
-native any:get_weapon_var(weapon, RZWeaponProp:prop, any:...);
+native any:get_weapon_var(weapon, WeaponProp:prop, any:...);
 
 /**
  * Sets a weapon's property.
  *
  * @param weapon	Weapon index
- * @param prop		Weapon property. See RZWeaponProp enum
+ * @param prop		Weapon property. See WeaponProp enum
  *
  * @return			true on success, 0 otherwise
  */
-native set_weapon_var(weapon, RZWeaponProp:prop, any:...);
+native set_weapon_var(weapon, WeaponProp:prop, any:...);
 
 native rz_weapons_start();
 
