@@ -268,6 +268,29 @@ stock rz_util_precache_sprites_from_txt(const szTextFile[])
 	if (iFile) fclose(iFile);
 }
 
+// Messages dmg_bio, dmg_poison, dmg_chem, dmg_cold, dmg_drown
+// dmg_heat, dmg_gas, dmg_rad, dmg_shock
+
+stock rz_util_status_icon(id, status, const spriteName[], RGB[3] = {0, 0, 0})
+{
+	if (!is_user_alive(id))
+		return;
+
+	message_begin(MSG_ONE, get_user_msgid("StatusIcon"), .player = id);
+
+	write_byte(status);
+	write_string(spriteName);
+
+	if (status != 0)
+	{
+		write_byte(RGB[0]);
+		write_byte(RGB[1]);
+		write_byte(RGB[2]);
+	}
+
+	message_end();
+}
+
 // All stocks are from tempentities.inc and messages.inc
 // I just did it to make things easier
 

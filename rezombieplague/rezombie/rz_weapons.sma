@@ -356,6 +356,8 @@ public plugin_end() {
 		SetHookChainArg(4, ATYPE_FLOAT, pDamage);
 	}
 
+	if (!is_user_alive(pVictim)) {return HC_CONTINUE;}
+
 	if (bool:get_weapon_var(impulse, RZ_WEAPON_BEAM_CYLINDER))
 	{
 		static Float:pVictimOrigin[3], Float:pVecAxis[3];
@@ -423,6 +425,8 @@ public plugin_end() {
 
 		new pBeamLife = get_weapon_var(pImpulse, RZ_WEAPON_BEAM_POINTER_LIFE);
 		new pLineWidth = get_weapon_var(pImpulse, RZ_WEAPON_BEAM_POINTER_WIDTH);
+
+		// Adicione o efeito wall puff (Lembre-se)
 
 		new pNoiseAmplitudeMin = get_weapon_var(pImpulse, RZ_WEAPON_BEAM_POINTER_NOISE_MIN);
 		new pNoiseAmplitudeMax = get_weapon_var(pImpulse, RZ_WEAPON_BEAM_POINTER_NOISE_MAX);

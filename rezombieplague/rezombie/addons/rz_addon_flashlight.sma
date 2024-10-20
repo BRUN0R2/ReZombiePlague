@@ -64,9 +64,9 @@ public rz_class_change_post(id, attacker, class)
 	SetFlashlightEnabled(id, .enabled = false);
 }
 
-@CBasePlayer_UpdateClientData_Pre(id)
+@CBasePlayer_UpdateClientData_Pre(const id)
 {
-	if (!g_bHasFlashLight[id])
+	if (!g_bHasFlashLight[id] || !is_user_connected(id))
 		return;
 
 	new Float:time = get_gametime();
@@ -103,17 +103,17 @@ public rz_class_change_post(id, attacker, class)
 	SendFlashBat(flashBattery);
 }
 
-@CBasePlayer_UpdateClientData_Post(id)
+@CBasePlayer_UpdateClientData_Post(const id)
 {
-	if (!g_flNextFlashLightTime[id])
+	if (!g_flNextFlashLightTime[id] || !is_user_alive(id))
 		return;
 
-	new Float:time = get_gametime();
+	static Float:pGameTime; pGameTime = get_gametime();
 
-	if (g_flNextFlashLightTime[id] > time)
+	if (g_flNextFlashLightTime[id] > pGameTime)
 		return;
 
-	g_flNextFlashLightTime[id] = time + 0.1;
+	g_flNextFlashLightTime[id] = pGameTime + 0.1;
 
 	new Float:fraction;
 	new Float:vecSrc[3];
@@ -154,8 +154,11 @@ public rz_class_change_post(id, attacker, class)
 	return HC_CONTINUE;
 }
 
-SetFlashlightEnabled(id, bool:enabled = false)
+SetFlashlightEnabled(const id, bool:enabled = false)
 {
+	if (!is_user_connected(id))
+		return;
+
 	// In this part a bug occurs when the human becomes a zombie
 	// a deactivated flashlight sound comes out
 
