@@ -136,9 +136,12 @@ public rz_class_change_post(id, attacker, class, bool:preSpawn)
 	return PLUGIN_HANDLED;
 }
 
-@CBasePlayer_Spawn_Post(id)
+@CBasePlayer_Spawn_Post(const id)
 {
 	if (!is_user_alive(id))
+		return;
+
+	if (rz_player_get(id, RZ_PLAYER_CLASS) != g_iClass_Human)
 		return;
 
 	g_bWeaponsGiven[id] = false;
@@ -268,7 +271,7 @@ FillField(id, field[], textDest[128], selects[], selectsNum)
 	return false;
 }
 
-@HandleMenu_Main(id, key)
+@HandleMenu_Main(const id, const key)
 {
 	if (key == 9)
 	{

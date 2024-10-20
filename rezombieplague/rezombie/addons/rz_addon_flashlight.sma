@@ -34,7 +34,7 @@ public plugin_precache()
 	bind_pcvar_float(create_cvar("rz_flashlight_drain_time", "1.2", FCVAR_NONE, "", true, 0.0, false), rz_flashlight_drain_time);
 	bind_pcvar_float(create_cvar("rz_flashlight_charge_time", "0.2", FCVAR_NONE, "", true, 0.0, false), rz_flashlight_charge_time);
 	bind_pcvar_float(create_cvar("rz_flashlight_distance", "1024", FCVAR_NONE, "", true, 0.0, false), rz_flashlight_distance);
-	bind_pcvar_num(create_cvar("rz_flashlight_radius", "7", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_radius);
+	bind_pcvar_num(create_cvar("rz_flashlight_radius", "12", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_radius);
 	bind_pcvar_num(create_cvar("rz_flashlight_color_red", "255", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_color[0]);
 	bind_pcvar_num(create_cvar("rz_flashlight_color_green", "255", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_color[1]);
 	bind_pcvar_num(create_cvar("rz_flashlight_color_blue", "255", FCVAR_NONE, "", true, 0.0, true, 255.0), rz_flashlight_color[2]);
@@ -113,7 +113,7 @@ public rz_class_change_post(id, attacker, class)
 	if (g_flNextFlashLightTime[id] > pGameTime)
 		return;
 
-	g_flNextFlashLightTime[id] = pGameTime + 0.1;
+	g_flNextFlashLightTime[id] = pGameTime + 0.01;
 
 	new Float:fraction;
 	new Float:vecSrc[3];
@@ -137,7 +137,7 @@ public rz_class_change_post(id, attacker, class)
 
 	get_tr2(0, TR_vecEndPos, vecEnd);
 
-	rz_util_te_dlight(vecEnd, rz_flashlight_radius, rz_flashlight_color, 3, 0);
+	rz_util_te_dlight(vecEnd, rz_flashlight_radius, rz_flashlight_color, 1, 0);
 }
 
 @CBasePlayer_ImpulseCommands_Pre(id)
