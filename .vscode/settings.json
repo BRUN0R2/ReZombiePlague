@@ -1,0 +1,25 @@
+{
+    "amxxpawn.compiler.includePaths": [
+        "D:\\MEUS REPOSITORIOS\\REZOMBIE 2.0.4\\ReZombiePlague\\rezombieplague\\include",
+        "D:\\MEUS REPOSITORIOS\\REZOMBIE NEXT 1.0\\zombie_plague_next\\include",
+        "D:\\MEUS REPOSITORIOS\\Compiler\\include"
+    ],
+    "amxxpawn.compiler.executablePath": "D:\\MEUS REPOSITORIOS\\Compiler\\amxxpc.exe",
+    "security.workspace.trust.untrustedFiles": "open",
+    "amxxpawn.compiler.outputPath": "D:\\MEUS REPOSITORIOS\\Compiler\\compiled",
+    "amxxpawn.compiler.showInfoMessages": true,
+    "amxxpawn.compiler.outputType": "path",
+    "editor.suggestSelection": "first",
+    "amxxpawn.compiler.reformatOutput": false,
+    "files.autoSave": "onWindowChange",
+    "amxxpawn.language.webApiLinks": true,
+    "workbench.colorTheme": "One Dark Pro",
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "window.confirmSaveUntitledWorkspace": false,
+    "git.openRepositoryInParentFolders": "always",
+    "diffEditor.ignoreTrimWhitespace": false,
+}
