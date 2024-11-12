@@ -191,13 +191,13 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 		if (pClass) {
 			new Float:pDistance = 1200.0;
 			rz_class_get(pClass, RZ_CLASS_FOG_COLOR, pVisionColor);
-			rz_class_get(pClass, RZ_CLASS_FOG_DISTANCE, pDistance);
+			pDistance = rz_class_get(pClass, RZ_CLASS_FOG_DISTANCE);
 
 			new pSubclass = rz_player_get(player, RZ_PLAYER_SUBCLASS);
 	
 			if (pSubclass) {
 				rz_subclass_get(pSubclass, RZ_SUBCLASS_FOG_COLOR, pVisionColor);
-				rz_subclass_get(pSubclass, RZ_SUBCLASS_FOG_DISTANCE, pDistance);
+				pDistance = rz_subclass_get(pSubclass, RZ_SUBCLASS_FOG_DISTANCE);
 			}
 
 			pVisionColor[0] = clamp(pVisionColor[0], 0, 255);
@@ -500,17 +500,17 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	return HC_CONTINUE;
 }
 
-@CBasePlayer_Killed_Post(victim, attacker, gib)
+@CBasePlayer_Killed_Post(this, attacker, gib)
 {
-	if (!rg_is_player_can_respawn(victim))
+	if (!rg_is_player_can_respawn(this))
 		return HC_CONTINUE;
 
-	set_member(victim, m_flRespawnPending, get_gametime() + float(RESPAWN_TIME));
+	set_member(this, m_flRespawnPending, get_gametime() + float(RESPAWN_TIME));
 
-	message_begin(MSG_ONE, gmsgBarTime, _, victim);
+	message_begin(MSG_ONE, gmsgBarTime, _, this);
 	SendBarTime(RESPAWN_TIME);
 
-	client_print(victim, print_center, "%L", LANG_PLAYER, "RZ_NOTICE_RESPAWN_TIME", RESPAWN_TIME);
+	client_print(this, print_center, "%L", this, "RZ_NOTICE_RESPAWN_TIME", RESPAWN_TIME);
 
 	return HC_CONTINUE;
 }
