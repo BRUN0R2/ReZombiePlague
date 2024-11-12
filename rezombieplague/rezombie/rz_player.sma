@@ -515,33 +515,24 @@ public rz_nightvisions_change_post(nightvision, player, bool:enabled)
 	return HC_CONTINUE;
 }
 
-@CBasePlayer_ResetMaxSpeed_Pre(id)
+@CBasePlayer_ResetMaxSpeed_Pre(const id)
 {
-	if (!is_user_alive(id))
-		return HC_CONTINUE;
+    if (!is_user_alive(id))
+        return HC_CONTINUE;
 
-	new props = rz_player_get(id, RZ_PLAYER_PROPS);
+    new props = rz_player_get(id, RZ_PLAYER_PROPS);
 
-	if (!rz_playerprops_valid(props))
-		return HC_CONTINUE;
+    if (!rz_playerprops_valid(props))
+        return HC_CONTINUE;
 
-	new Float:speed;
-	new Float:propSpeed = Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_SPEED);
+    new Float:speed = Float:rz_playerprops_get(props, RZ_PLAYER_PROPS_SPEED);
+    new activeItem = get_member(id, m_pActiveItem);
 
-	if (!propSpeed)
-	{
-		new activeItem = get_member(id, m_pActiveItem);
-		
-		if (!is_nullent(activeItem))
-			ExecuteHamB(Ham_CS_Item_GetMaxSpeed, activeItem, speed);
-		else
-			speed = 240.0;
-	}
-	else
-		speed = propSpeed;
+    if (!is_nullent(activeItem))
+        speed -= float(rg_get_iteminfo(activeItem, ItemInfo_iWeight));
 
-	set_entvar(id, var_maxspeed, speed);
-	return HC_SUPERCEDE;
+    set_entvar(id, var_maxspeed, speed);
+    return HC_SUPERCEDE;
 }
 
 @CBasePlayer_GiveDefaultItems_Pre(id)

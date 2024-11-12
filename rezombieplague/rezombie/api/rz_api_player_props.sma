@@ -61,11 +61,11 @@ public plugin_natives()
 	data[PlayerProp_Armor] = 0.0;
 	data[PlayerProp_Helmet] = false;
 	data[PlayerProp_Gravity] = 1.0;
-	data[PlayerProp_Speed] = 0.0;
+	data[PlayerProp_Speed] = 240.0;
 	data[PlayerProp_Footsteps] = true;
-	data[PlayerProp_VelMod] = 0.65;
-	data[PlayerProp_VelModHead] = 0.5;
-	data[PlayerProp_Knockback] = 0.0;
+	data[PlayerProp_VelMod] = 1.0;
+	data[PlayerProp_VelModHead] = 1.0;
+	data[PlayerProp_Knockback] = 1.0;
 	data[PlayerProp_BloodColor] = 247;
 	data[PlayerProp_Impacts] = false;
 	data[PlayerProp_WeaponInteract] = false;

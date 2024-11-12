@@ -5,14 +5,14 @@
 #define _rezp_player_included
 
 enum PlayerProtectionState {
-  Protection_NoSet,
+  Protection_NoSet = 0,
   Protection_Active,
   Protection_Expired,
 };
 
 enum RZPlayerProp
 {
-	RZ_PLAYER_CLASS,
+	RZ_PLAYER_CLASS = 0,
 	RZ_PLAYER_SUBCLASS,
 	RZ_PLAYER_SUBCLASS_CHOSEN,
 	RZ_PLAYER_PROPS,
@@ -29,7 +29,7 @@ native rz_player_set(id, RZPlayerProp:prop, any:...);
 
 enum RZClassProp
 {
-	RZ_CLASS_HANDLE,		// [RZ_MAX_HANDLE_LENGTH]
+	RZ_CLASS_HANDLE = 0,		// [RZ_MAX_HANDLE_LENGTH]
 	RZ_CLASS_NAME,			// [RZ_MAX_LANGKEY_LENGTH]
 	RZ_CLASS_TEAM,			// enum TeamName
 	RZ_CLASS_HUD_COLOR,		// [3]
@@ -60,7 +60,7 @@ forward rz_class_change_post(id, attacker, class, bool:preSpawn);
 
 enum RZSubclassProp
 {
-	RZ_SUBCLASS_HANDLE,		// [RZ_MAX_HANDLE_LENGTH]
+	RZ_SUBCLASS_HANDLE = 0,		// [RZ_MAX_HANDLE_LENGTH]
 	RZ_SUBCLASS_CLASS,		// cell
 	RZ_SUBCLASS_NAME,		// [RZ_MAX_LANGKEY_LENGTH]
 	RZ_SUBCLASS_DESC,		// [RZ_MAX_LANGKEY_LENGTH]
@@ -92,7 +92,7 @@ forward rz_subclass_change_post(id, subclass, attacker);
 
 enum RZPlayerPropsProp
 {
-	RZ_PLAYER_PROPS_HANDLE,			// [RZ_MAX_HANDLE_LENGTH]
+	RZ_PLAYER_PROPS_HANDLE = 0,			// [RZ_MAX_HANDLE_LENGTH]
 	RZ_PLAYER_PROPS_HEALTH,			// Float
 	RZ_PLAYER_PROPS_BASE_HEALTH,	// Float
 	RZ_PLAYER_PROPS_ARMOR,			// Float
@@ -137,7 +137,7 @@ enum RZPainSound
 
 enum RZPlayerSoundProp
 {
-	RZ_PLAYER_SOUND_HANDLE, // [RZ_MAX_HANDLE_LENGTH]
+	RZ_PLAYER_SOUND_HANDLE = 0, // [RZ_MAX_HANDLE_LENGTH]
 	RZ_PLAYER_SOUND_SOUNDS_BANK, // [MAX_PAIN_SOUNDS], Array
 };
 
@@ -152,7 +152,7 @@ native rz_playersound_add(playerSound, RZPainSound:painSound, const sample[]);
 
 enum RZNightVisionProp
 {
-	RZ_NIGHTVISION_HANDLE, // [RZ_MAX_HANDLE_LENGTH]
+	RZ_NIGHTVISION_HANDLE = 0, // [RZ_MAX_HANDLE_LENGTH]
 	RZ_NIGHTVISION_EQUIP, // enum RZNightVisionEquip
 	RZ_NIGHTVISION_COLOR, // [3]
 	RZ_NIGHTVISION_ALPHA, // cell
@@ -160,7 +160,7 @@ enum RZNightVisionProp
 
 enum RZNightVisionEquip
 {
-	RZ_NVG_EQUIP_DISABLED,
+	RZ_NVG_EQUIP_DISABLED = 0,
 	RZ_NVG_EQUIP_APPEND,
 	RZ_NVG_EQUIP_APPEND_AND_ENABLE,
 };
